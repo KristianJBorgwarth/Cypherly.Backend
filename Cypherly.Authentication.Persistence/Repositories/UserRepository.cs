@@ -1,9 +1,10 @@
 ﻿using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Persistence.Context;
 
 namespace Cypherly.Authentication.Persistence.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(AuthenticationDbContext context) : IUserRepository
 {
     public Task CreateAsync(User entity)
     {
