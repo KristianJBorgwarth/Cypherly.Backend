@@ -6,4 +6,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Cypherly.Persistence\Cypherly.Persistence.csproj" />
+      <ProjectReference Include="..\Cypherly.UserManagement.Application\Cypherly.UserManagement.Application.csproj" />
+      <ProjectReference Include="..\Cypherly.UserManagement.Domain\Cypherly.UserManagement.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
