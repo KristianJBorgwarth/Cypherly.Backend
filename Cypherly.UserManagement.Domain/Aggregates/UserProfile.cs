@@ -1,22 +1,22 @@
 ﻿using Cypherly.Domain.Common;
+using Cypherly.UserManagement.Domain.ValueObjects;
 
 namespace Cypherly.UserManagement.Domain.Aggregates;
 
 public partial class UserProfile : AggregateRoot
 {
     public string Username { get; private set; } = null!;
-    public string UserTag { get; private set; } = null!;
+    public UserTag UserTag { get; private set; } = null!;
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
 
     public UserProfile() {} // For EF Core
 
-    public UserProfile(string username, string userTag)
+    public UserProfile(string username, UserTag userUserTag)
     {
         Username = username;
-        UserTag = userTag;
+        UserTag = userUserTag;
     }
-
     public void SetProfilePictureUrl(string profilePictureUrl)
     {
         ProfilePictureUrl = profilePictureUrl;

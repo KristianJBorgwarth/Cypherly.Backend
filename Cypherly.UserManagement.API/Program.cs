@@ -21,7 +21,7 @@ if (env.IsDevelopment())
 #endregion
 
 #region Application Layer
-builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.Authentication.Application"));
+builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.UserManagement.Application"));
 #endregion
 
 #region Persistence Layer
