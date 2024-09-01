@@ -1,10 +1,10 @@
 ﻿using Cypherly.Domain.Common;
 
-namespace Cypherly.Domain.ValueObjects;
+namespace Cypherly.Authentication.Domain.ValueObjects;
 
 public class Email : ValueObject
 {
-    public string Address { get; private set; }
+    public string Address { get; private set; } = null!;
 
     public Email() { } //For EF Core
 
@@ -14,6 +14,11 @@ public class Email : ValueObject
         Address = address;
     }
 
+    /// <summary>
+    /// Validates and creates an email address
+    /// </summary>
+    /// <param name="address">Address of the email</param>
+    /// <returns>Result containing the Email, if param is valid</returns>
     public static Result<Email> Create(string address)
     {
         try

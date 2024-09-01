@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Cypherly.Domain\Cypherly.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

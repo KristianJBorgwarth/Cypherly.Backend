@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using Cypherly.Domain.Common;
 
-namespace Cypherly.Domain.ValueObjects
+namespace Cypherly.Authentication.Domain.ValueObjects
 {
     public class Password : ValueObject
     {
@@ -14,6 +14,11 @@ namespace Cypherly.Domain.ValueObjects
             HashedPassword = hashedPassword;
         }
 
+        /// <summary>
+        /// Validates and creates a password
+        /// </summary>
+        /// <param name="plainPassword"></param>
+        /// <returns>Result containing the password, if param is valid</returns>
         public static Result<Password> Create(string plainPassword)
         {
             try
@@ -26,6 +31,12 @@ namespace Cypherly.Domain.ValueObjects
                 return Result.Fail<Password>(Errors.General.UnspecifiedError(ex.Message));
             }
         }
+
+        /// <summary>
+        /// Compares the plain password to the hashed password
+        /// </summary>
+        /// <param name="plainPassword"></param>
+        /// <returns>Boolean value representing the result of the comparison</returns>
         public bool Verify(string plainPassword)
         {
             return BCrypt.Net.BCrypt.Verify(plainPassword, HashedPassword);
