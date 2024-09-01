@@ -1,5 +1,6 @@
 using System.Reflection;
 using Cypherly.Authentication.Application.Configuration;
+using Cypherly.Authentication.Persistence.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,12 @@ if (env.IsDevelopment())
 #region Application Layer
 
 builder.Services.AddAuthenticationApplication(Assembly.Load("Cypherly.Authentication.Application"));
+
+#endregion
+
+#region Persistence Layer
+
+builder.Services.AddAuthenticationPersistence(configuration);
 
 #endregion
 

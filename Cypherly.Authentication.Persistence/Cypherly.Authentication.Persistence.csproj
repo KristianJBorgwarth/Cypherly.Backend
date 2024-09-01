@@ -7,8 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Context\" />
-      <Folder Include="Repositories\" />
+      <ProjectReference Include="..\Cypherly.Authentication.Application\Cypherly.Authentication.Application.csproj" />
+      <ProjectReference Include="..\Cypherly.Authentication.Domain\Cypherly.Authentication.Domain.csproj" />
+      <ProjectReference Include="..\Cypherly.Persistence\Cypherly.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

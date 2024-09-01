@@ -34,6 +34,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Persistence", "Cypherly.Persistence\Cypherly.Persistence.csproj", "{D1B7FA2D-C4A1-4307-9535-72FCE9CD7B8C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AA7360CD-69A6-41F1-A8C8-2D263D4581AA}"
+	ProjectSection(SolutionItems) = preProject
+		cypherly-dev-docker-compose.yml = cypherly-dev-docker-compose.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
