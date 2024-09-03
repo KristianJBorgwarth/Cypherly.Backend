@@ -1,4 +1,5 @@
-﻿using Cypherly.Authentication.Domain.ValueObjects;
+﻿using Cypherly.Authentication.Domain.Events.User;
+using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Services.User;
@@ -21,9 +22,10 @@ public class UserService : IUserService
             return Result.Fail<Aggregates.User>(pwResult.Error);
 
         var user = new Aggregates.User(emailResult.Value, pwResult.Value, isVerified: false);
-        
+
         user.SetVerificationCode();
-        
+        user.AddDomainEvent(new UserCreatedEvent(user.Id, user.Email.Address));
+
         return user;
     }
 }

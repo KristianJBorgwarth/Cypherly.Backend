@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Cypherly.Domain.Common;
 using Cypherly.Persistence.Outbox;
 using Cypherly.Application.Contracts.Repository;
+using Cypherly.Domain.Events;
 
 namespace Cypherly.Persistence.Repositories;
 
@@ -24,11 +25,12 @@ public class UnitOfWork<TContext>(TContext context) : IUnitOfWork where TContext
     /// </summary>
     private void ConvertDomainEventsToOutboxMessages()
     {
-        var domainEntities = context.ChangeTracker.Entries<AggregateRoot>()
+        var outboxMessages = context.ChangeTracker.Entries<AggregateRoot>()
             .Select(x => x.Entity)
+            .Where(x => x.DomainEvents.Any())
             .SelectMany(aggregateRoot =>
             {
-                var domainEvents = aggregateRoot.DomainEvents;
+                var domainEvents = aggregateRoot.DomainEvents.ToList();
                 aggregateRoot.ClearDomainEvents();
                 return domainEvents;
             }).Select(domainEvent => new OutboxMessage()
@@ -40,7 +42,8 @@ public class UnitOfWork<TContext>(TContext context) : IUnitOfWork where TContext
                     new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }),
             }).ToList();
 
-        context.Set<OutboxMessage>().AddRange(domainEntities);
+        if(outboxMessages.Count != 0)
+            context.Set<OutboxMessage>().AddRange(outboxMessages);
     }
 
     /// <summary>

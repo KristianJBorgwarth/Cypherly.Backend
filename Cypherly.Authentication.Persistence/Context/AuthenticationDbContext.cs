@@ -13,8 +13,8 @@ public class AuthenticationDbContext(DbContextOptions options) : CypherlyBaseDbC
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new UserModelConfiguration());
         modelBuilder.ApplyConfiguration(new VerificationCodeModelConfiguration());
+        base.OnModelCreating(modelBuilder);
     }
 }
