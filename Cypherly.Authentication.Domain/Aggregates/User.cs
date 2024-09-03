@@ -1,9 +1,11 @@
-﻿using Cypherly.Authentication.Domain.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+using Cypherly.Authentication.Domain.Entities;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Aggregates;
 
+[SuppressMessage("ReSharper", "ClassWithVirtualMembersNeverInherited.Global")]
 public class User : AggregateRoot
 {
     public Email Email { get; init; } = null!;

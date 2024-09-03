@@ -1,15 +1,13 @@
 ﻿using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cypherly.Authentication.Persistence.Repositories;
 
 public class UserRepository(AuthenticationDbContext context) : IUserRepository
 {
-    public Task CreateAsync(User entity)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task CreateAsync(User entity) => await context.User.AddAsync(entity);
 
     public Task DeleteAsync(Guid id)
     {
@@ -25,4 +23,6 @@ public class UserRepository(AuthenticationDbContext context) : IUserRepository
     {
         throw new NotImplementedException();
     }
+
+    public async Task<User?> GetUserByEmail(string email) => await context.User.FirstOrDefaultAsync(c => c.Email.Address.Equals(email));
 }

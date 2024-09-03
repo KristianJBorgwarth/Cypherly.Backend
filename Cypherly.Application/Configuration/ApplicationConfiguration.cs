@@ -10,12 +10,12 @@ public static class ApplicationConfiguration
 {
     public static void AddApplication(this IServiceCollection services, Assembly assembly)
     {
-        services.AddAutoMapper(assembly);
         services.AddValidatorsFromAssembly(assembly);
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(assembly);
         });
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddAutoMapper(assembly);
     }
 }

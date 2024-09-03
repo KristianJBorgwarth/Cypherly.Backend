@@ -16,7 +16,7 @@ public static class PersistenceConfiguration
                     b => b.MigrationsAssembly(assembly.FullName))
                 .UseLazyLoadingProxies());
 
-        services.AddScoped<IUnitOfWork<TContext>, UnitOfWork<TContext>>();
+        services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
 
         return services;
     }

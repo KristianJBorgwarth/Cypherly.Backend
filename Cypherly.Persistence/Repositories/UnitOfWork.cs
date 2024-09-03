@@ -6,7 +6,7 @@ using Cypherly.Application.Contracts.Repository;
 
 namespace Cypherly.Persistence.Repositories;
 
-public class UnitOfWork<TContext>(TContext context) : IUnitOfWork<TContext> where TContext : DbContext
+public class UnitOfWork<TContext>(TContext context) : IUnitOfWork where TContext : DbContext
 {
     /// <summary>
     /// Saves all changes made in the context to the database.

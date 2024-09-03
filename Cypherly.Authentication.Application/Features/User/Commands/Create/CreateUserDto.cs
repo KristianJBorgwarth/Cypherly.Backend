@@ -1,7 +1,7 @@
 ﻿namespace Cypherly.Authentication.Application.Features.User.Commands.Create;
 
-public sealed class CreateUserDto
+public sealed record CreateUserDto
 {
-    public required Guid UserId { get; init; }
+    public required Guid Id { get; init; }
     public required string Email { get; init; }
 }

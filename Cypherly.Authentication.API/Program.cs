@@ -1,5 +1,6 @@
 using System.Reflection;
 using Cypherly.Authentication.Application.Configuration;
+using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,12 @@ if (env.IsDevelopment())
     configuration.AddJsonFile($"appsettings.{Environments.Development}.json", true, true);
     configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 }
+#endregion
+
+#region Domain Layer
+
+builder.Services.AddAuthenticationDomain();
+
 #endregion
 
 #region Application Layer
