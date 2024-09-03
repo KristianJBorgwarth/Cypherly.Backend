@@ -2,6 +2,7 @@ using System.Reflection;
 using Cypherly.Authentication.Application.Configuration;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,16 @@ if (env.IsDevelopment())
     configuration.AddJsonFile($"appsettings.{Environments.Development}.json", true, true);
     configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 }
+#endregion
+
+#region Logger
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
 #endregion
 
 #region Domain Layer

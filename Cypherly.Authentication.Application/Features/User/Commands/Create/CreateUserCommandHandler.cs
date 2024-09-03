@@ -9,11 +9,11 @@ using Microsoft.Extensions.Logging;
 namespace Cypherly.Authentication.Application.Features.User.Commands.Create;
 
 public class CreateUserCommandHandler(
-    IUserRepository userRepository, 
-    IMapper mapper, 
+    IUserRepository userRepository,
+    IMapper mapper,
     IUserService userService,
     IUnitOfWork unitOfWork,
-    ILogger<CreateUserCommandHandler> logger) 
+    ILogger<CreateUserCommandHandler> logger)
     : ICommandHandler<CreateUserCommand, CreateUserDto>
 {
     public async Task<Result<CreateUserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -22,23 +22,23 @@ public class CreateUserCommandHandler(
         {
             if( await DoesEmailExist(email: request.Email))
                 return Result.Fail<CreateUserDto>(Errors.General.UnspecifiedError("An account already exists with that email"));
-            
+
             var userResult = userService.CreateUser(request.Email, request.Password);
-            
+
             if (userResult.Success is false)
                 return Result.Fail<CreateUserDto>(userResult.Error);
 
             await userRepository.CreateAsync(userResult.Value);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            
+
             var dto = mapper.Map<CreateUserDto>(userResult.Value);
-            
+
             return Result.Ok(dto);
         }
         catch (Exception ex)
         {
             logger.LogError(ex.Message + "Exception occured while attempting to create a user");
-            return Result.Fail<CreateUserDto>(Errors.General.UnspecifiedError("Exception occured while attempting to create a user"));
+            return Result.Fail<CreateUserDto>(Errors.General.UnspecifiedError("Exception occured while attempting to create a user. Check logs for more information"));
         }
     }
 
