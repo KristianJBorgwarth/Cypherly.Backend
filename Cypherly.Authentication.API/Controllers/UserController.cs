@@ -17,9 +17,9 @@ public class UserController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
-    
+
     [HttpPut]
-    [Route("")]
+    [Route("verify")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Verify([FromBody]VerifyUserCommand command)
