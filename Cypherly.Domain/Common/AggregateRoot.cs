@@ -10,6 +10,7 @@ public abstract class AggregateRoot : Entity
 
     public void AddDomainEvent(IDomainEvent eventItem)
     {
+        Console.Write("Adding domain event: ");
         _domainEvents.Add(eventItem);
     }
 

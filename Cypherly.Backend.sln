@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authenticaion.API", "Cypherly.Authenticaion.API\Cypherly.Authenticaion.API.csproj", "{F62BB38C-EAD8-4882-86F4-C06114A1FB03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.API", "Cypherly.Authentication.API\Cypherly.Authentication.API.csproj", "{F62BB38C-EAD8-4882-86F4-C06114A1FB03}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D388C026-0CAC-4E23-AFC5-080C14BC571D}"
 EndProject
@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Domain", "Cypherly.Authentication.Domain\Cypherly.Authentication.Domain.csproj", "{0B525638-FE25-4385-822B-5E93B97D6234}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.API", "Cypherly.UserManagement.API\Cypherly.UserManagement.API.csproj", "{1AB97CD3-CEEE-4DD2-97AA-BA42C83E49EB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Application", "Cypherly.UserManagement.Application\Cypherly.UserManagement.Application.csproj", "{BBD38C80-3EBA-4611-8851-4FD658E527C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Domain", "Cypherly.UserManagement.Domain\Cypherly.UserManagement.Domain.csproj", "{1D2E8A97-F292-4421-919F-F6B555C54E3C}"
@@ -29,6 +27,32 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Persistence", "Cypherly.UserManagement.Persistence\Cypherly.UserManagement.Persistence.csproj", "{D7D9E91D-E989-42D9-BD8C-D0E8C4A2BA2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Persistence", "Cypherly.Authentication.Persistence\Cypherly.Authentication.Persistence.csproj", "{8E337A98-8218-4EC2-9262-408DF01DDFB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{ECC35AA6-754E-40A8-B62D-0557715E42AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Persistence", "Cypherly.Persistence\Cypherly.Persistence.csproj", "{D1B7FA2D-C4A1-4307-9535-72FCE9CD7B8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AA7360CD-69A6-41F1-A8C8-2D263D4581AA}"
+	ProjectSection(SolutionItems) = preProject
+		cypherly-dev-docker-compose.yml = cypherly-dev-docker-compose.yml
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.API", "Cypherly.UserManagement.API\Cypherly.UserManagement.API.csproj", "{C346E2BF-4AC9-4252-92E6-5376DD402269}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{E895BA28-EE61-4B1D-A846-77FDD447597D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cypherly.Authentication.Test", "Cypherly.Authentication.Test", "{BDA59F14-F25E-4483-BB4C-A93DA1A4CFD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Architecture.Test", "Cypherly.Authentication.Architecture.Test\Cypherly.Authentication.Architecture.Test.csproj", "{1E4A0D81-346A-436D-89D1-1C135B0B7851}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cypherly.UserManagement.Test", "Cypherly.UserManagement.Test", "{6ACA2E08-F122-4F46-8774-90F0CD4705C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Architecture.Test", "Cypherly.UserManagement.Architecture.Test\Cypherly.UserManagement.Architecture.Test.csproj", "{BBABFDB4-E516-4F54-A633-A7EF5D444BB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Application.Test.Unit", "Cypherly.Authentication.Application.Test.Unit\Cypherly.Authentication.Application.Test.Unit.csproj", "{2E741E65-C36B-41B3-A433-3EBB78F3BC01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Domain.Test.Unit", "Cypherly.Authentication.Domain.Test.Unit\Cypherly.Authentication.Domain.Test.Unit.csproj", "{86E51C34-A2F3-4B0E-BF11-6233C117CDDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,10 +80,6 @@ Global
 		{0B525638-FE25-4385-822B-5E93B97D6234}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B525638-FE25-4385-822B-5E93B97D6234}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B525638-FE25-4385-822B-5E93B97D6234}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1AB97CD3-CEEE-4DD2-97AA-BA42C83E49EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1AB97CD3-CEEE-4DD2-97AA-BA42C83E49EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1AB97CD3-CEEE-4DD2-97AA-BA42C83E49EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1AB97CD3-CEEE-4DD2-97AA-BA42C83E49EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BBD38C80-3EBA-4611-8851-4FD658E527C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BBD38C80-3EBA-4611-8851-4FD658E527C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBD38C80-3EBA-4611-8851-4FD658E527C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,6 +96,30 @@ Global
 		{8E337A98-8218-4EC2-9262-408DF01DDFB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E337A98-8218-4EC2-9262-408DF01DDFB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E337A98-8218-4EC2-9262-408DF01DDFB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1B7FA2D-C4A1-4307-9535-72FCE9CD7B8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1B7FA2D-C4A1-4307-9535-72FCE9CD7B8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1B7FA2D-C4A1-4307-9535-72FCE9CD7B8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1B7FA2D-C4A1-4307-9535-72FCE9CD7B8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C346E2BF-4AC9-4252-92E6-5376DD402269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C346E2BF-4AC9-4252-92E6-5376DD402269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C346E2BF-4AC9-4252-92E6-5376DD402269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C346E2BF-4AC9-4252-92E6-5376DD402269}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E4A0D81-346A-436D-89D1-1C135B0B7851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E4A0D81-346A-436D-89D1-1C135B0B7851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E4A0D81-346A-436D-89D1-1C135B0B7851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E4A0D81-346A-436D-89D1-1C135B0B7851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBABFDB4-E516-4F54-A633-A7EF5D444BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBABFDB4-E516-4F54-A633-A7EF5D444BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBABFDB4-E516-4F54-A633-A7EF5D444BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBABFDB4-E516-4F54-A633-A7EF5D444BB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E741E65-C36B-41B3-A433-3EBB78F3BC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E741E65-C36B-41B3-A433-3EBB78F3BC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E741E65-C36B-41B3-A433-3EBB78F3BC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E741E65-C36B-41B3-A433-3EBB78F3BC01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86E51C34-A2F3-4B0E-BF11-6233C117CDDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86E51C34-A2F3-4B0E-BF11-6233C117CDDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86E51C34-A2F3-4B0E-BF11-6233C117CDDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86E51C34-A2F3-4B0E-BF11-6233C117CDDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FBB8E791-E41F-4207-9D92-3B6500B8B1C1} = {D388C026-0CAC-4E23-AFC5-080C14BC571D}
@@ -87,10 +131,18 @@ Global
 		{63BB4D90-CDFB-40E8-9636-96DDAB90FA6E} = {CA28311D-8063-462F-9FA0-1C4E5FDFA7B0}
 		{256F1CCB-0972-4850-A410-2E67A324C461} = {EFD5686F-D5D3-4BD0-BFBC-0C776BDD0413}
 		{0B525638-FE25-4385-822B-5E93B97D6234} = {CA28311D-8063-462F-9FA0-1C4E5FDFA7B0}
-		{1AB97CD3-CEEE-4DD2-97AA-BA42C83E49EB} = {FBB8E791-E41F-4207-9D92-3B6500B8B1C1}
 		{BBD38C80-3EBA-4611-8851-4FD658E527C8} = {EFD5686F-D5D3-4BD0-BFBC-0C776BDD0413}
 		{1D2E8A97-F292-4421-919F-F6B555C54E3C} = {CA28311D-8063-462F-9FA0-1C4E5FDFA7B0}
-		{D7D9E91D-E989-42D9-BD8C-D0E8C4A2BA2E} = {8918B395-BF77-410D-A2CE-8D0389FD3EB8}
-		{8E337A98-8218-4EC2-9262-408DF01DDFB2} = {8918B395-BF77-410D-A2CE-8D0389FD3EB8}
+		{ECC35AA6-754E-40A8-B62D-0557715E42AA} = {8918B395-BF77-410D-A2CE-8D0389FD3EB8}
+		{8E337A98-8218-4EC2-9262-408DF01DDFB2} = {ECC35AA6-754E-40A8-B62D-0557715E42AA}
+		{D7D9E91D-E989-42D9-BD8C-D0E8C4A2BA2E} = {ECC35AA6-754E-40A8-B62D-0557715E42AA}
+		{D1B7FA2D-C4A1-4307-9535-72FCE9CD7B8C} = {ECC35AA6-754E-40A8-B62D-0557715E42AA}
+		{C346E2BF-4AC9-4252-92E6-5376DD402269} = {FBB8E791-E41F-4207-9D92-3B6500B8B1C1}
+		{BDA59F14-F25E-4483-BB4C-A93DA1A4CFD8} = {E895BA28-EE61-4B1D-A846-77FDD447597D}
+		{1E4A0D81-346A-436D-89D1-1C135B0B7851} = {BDA59F14-F25E-4483-BB4C-A93DA1A4CFD8}
+		{6ACA2E08-F122-4F46-8774-90F0CD4705C3} = {E895BA28-EE61-4B1D-A846-77FDD447597D}
+		{BBABFDB4-E516-4F54-A633-A7EF5D444BB8} = {6ACA2E08-F122-4F46-8774-90F0CD4705C3}
+		{2E741E65-C36B-41B3-A433-3EBB78F3BC01} = {BDA59F14-F25E-4483-BB4C-A93DA1A4CFD8}
+		{86E51C34-A2F3-4B0E-BF11-6233C117CDDB} = {BDA59F14-F25E-4483-BB4C-A93DA1A4CFD8}
 	EndGlobalSection
 EndGlobal

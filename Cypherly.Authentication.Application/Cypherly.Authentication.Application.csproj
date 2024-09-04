@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Cypherly.Application\Cypherly.Application.csproj" />
+      <ProjectReference Include="..\Cypherly.Authentication.Domain\Cypherly.Authentication.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

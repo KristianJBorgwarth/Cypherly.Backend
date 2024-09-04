@@ -10,14 +10,17 @@ public abstract class Entity
     protected Entity()
     {
         Id = Guid.NewGuid();
+    }
+    public void SetCreated()
+    {
         Created = DateTime.UtcNow;
-        LastModified = DateTime.UtcNow;
     }
 
-    public void UpdateLastModified()
+    public void SetLastModified()
     {
         LastModified = DateTime.UtcNow;
     }
+
 
     public override bool Equals(object obj)
     {
