@@ -1,4 +1,5 @@
 ﻿using Cypherly.Authentication.Application.Features.User.Commands.Create;
+using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,5 +16,15 @@ public class UserController(ISender sender) : BaseController
     {
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+    [HttpPut]
+    [Route("verify")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Verify([FromBody]VerifyUserCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
     }
 }
