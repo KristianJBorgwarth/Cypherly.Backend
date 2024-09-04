@@ -1,8 +1,5 @@
 using System.Reflection;
 using Cypherly.Messaging.MassTransit.Configuration;
-using Cypherly.UserManagement.Application.Configuration;
-using Cypherly.UserManagement.Persistence.Configuration;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,32 +19,13 @@ if (env.IsDevelopment())
 }
 #endregion
 
-#region Logger
-
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(configuration)
-    .CreateLogger();
-
-builder.Host.UseSerilog();
-
-#endregion
-
-#region Application Layer
-builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.UserManagement.Application"));
-#endregion
-
-#region Persistence Layer
-builder.Services.AddUserManagementPersistence(configuration);
-#endregion
-
 #region MassTransit
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.UserManagement.Application"));
+builder.Services.AddMassTransitWithRabbitMq(Assembly.GetExecutingAssembly());
 
 #endregion
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -60,9 +38,4 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
 app.Run();
