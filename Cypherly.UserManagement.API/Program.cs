@@ -1,4 +1,5 @@
 using System.Reflection;
+using Cypherly.Application.Contracts.Messaging.PublishMessages;
 using Cypherly.Messaging.MassTransit.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;

@@ -16,4 +16,8 @@
       <PackageReference Include="MassTransit.RabbitMQ" Version="8.2.5" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Cypherly.Application\Cypherly.Application.csproj" />
+    </ItemGroup>
+
 </Project>

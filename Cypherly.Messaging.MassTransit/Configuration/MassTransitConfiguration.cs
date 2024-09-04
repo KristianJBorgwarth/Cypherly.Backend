@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Cypherly.Application.Contracts.Messaging.PublishMessages;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -7,7 +8,7 @@ namespace Cypherly.Messaging.MassTransit.Configuration;
 
 public static class MassTransitConfiguration
 {
-    public static void AddMassTransitWithRabbitMq(this IServiceCollection services, Assembly consumerAssembly)
+    public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services, Assembly consumerAssembly)
     {
         services.AddMassTransit(x =>
         {
@@ -37,5 +38,12 @@ public static class MassTransitConfiguration
                 cfg.ConfigureEndpoints(context);
             });
         });
+        return services;
+    }
+
+    public static IServiceCollection AddProducer<TMessage>(this IServiceCollection services) where TMessage : BaseMessage
+    {
+        services.AddScoped<IProducer<TMessage>, Producer<TMessage>>();
+        return services;
     }
 }
