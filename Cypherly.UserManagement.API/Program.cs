@@ -1,4 +1,5 @@
 using System.Reflection;
+using Cypherly.Messaging.MassTransit.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;
 using Serilog;
@@ -37,6 +38,13 @@ builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.UserManage
 
 #region Persistence Layer
 builder.Services.AddUserManagementPersistence(configuration);
+#endregion
+
+#region MassTransit
+
+builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.UserManagement.Application"));
+
 #endregion
 
 builder.Services.AddControllers();

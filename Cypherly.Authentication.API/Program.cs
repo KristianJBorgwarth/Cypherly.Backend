@@ -2,6 +2,8 @@ using System.Reflection;
 using Cypherly.Authentication.Application.Configuration;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
+using Cypherly.Messaging.MassTransit.Configuration;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +49,13 @@ builder.Services.AddAuthenticationApplication(Assembly.Load("Cypherly.Authentica
 #region Persistence Layer
 
 builder.Services.AddAuthenticationPersistence(configuration);
+
+#endregion
+
+#region MassTransit
+
+builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"));
 
 #endregion
 

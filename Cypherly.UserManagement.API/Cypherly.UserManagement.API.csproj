@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Cypherly.Domain\Cypherly.Domain.csproj" />
+      <ProjectReference Include="..\Cypherly.Messaging.MassTransit\Cypherly.Messaging.MassTransit.csproj" />
       <ProjectReference Include="..\Cypherly.UserManagement.Application\Cypherly.UserManagement.Application.csproj" />
       <ProjectReference Include="..\Cypherly.UserManagement.Persistence\Cypherly.UserManagement.Persistence.csproj" />
     </ItemGroup>
