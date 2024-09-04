@@ -14,14 +14,12 @@ public class UserRepository(AuthenticationDbContext context) : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<User?> GetByIdAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<User?> GetByIdAsync(Guid id) => await context.User.FindAsync(id);
 
     public Task UpdateAsync(User entity)
     {
-        throw new NotImplementedException();
+        context.User.Update(entity);
+        return Task.CompletedTask;
     }
 
     public async Task<User?> GetUserByEmail(string email) => await context.User.FirstOrDefaultAsync(c => c.Email.Address.Equals(email));
