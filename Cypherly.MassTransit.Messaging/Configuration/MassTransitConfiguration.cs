@@ -4,7 +4,7 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Cypherly.Messaging.MassTransit.Configuration;
+namespace Cypherly.MassTransit.Messaging.Configuration;
 
 public static class MassTransitConfiguration
 {

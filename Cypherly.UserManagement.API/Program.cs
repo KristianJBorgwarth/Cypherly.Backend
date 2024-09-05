@@ -1,5 +1,6 @@
 using System.Reflection;
-using Cypherly.Messaging.MassTransit.Configuration;
+using Cypherly.MassTransit.Messaging.Configuration;
+using Cypherly.Outboxing.Messaging.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;
 using Serilog;
@@ -38,6 +39,12 @@ builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.UserManage
 
 #region Persistence Layer
 builder.Services.AddUserManagementPersistence(configuration);
+#endregion
+
+#region Outboxing
+
+builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.UserManagement.Application"));
+
 #endregion
 
 #region MassTransit

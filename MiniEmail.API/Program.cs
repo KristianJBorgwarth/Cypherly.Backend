@@ -1,5 +1,5 @@
 using System.Reflection;
-using Cypherly.Messaging.MassTransit.Configuration;
+using Cypherly.MassTransit.Messaging.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

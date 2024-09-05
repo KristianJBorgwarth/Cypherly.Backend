@@ -4,6 +4,6 @@ namespace Cypherly.Persistence.Repositories;
 
 public interface IOutboxRepository
 {
-    Task<IEnumerable<OutboxMessage>> GetUnprocessedAsync(int batchSize);
+    Task<OutboxMessage[]> GetUnprocessedAsync(int batchSize);
     Task MarkAsProcessedAsync(OutboxMessage message);
 }

@@ -54,13 +54,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Domain.Test.Unit", "Cypherly.Authentication.Domain.Test.Unit\Cypherly.Authentication.Domain.Test.Unit.csproj", "{86E51C34-A2F3-4B0E-BF11-6233C117CDDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Messaging.MassTransit", "Cypherly.Messaging.MassTransit\Cypherly.Messaging.MassTransit.csproj", "{0039AE6C-7E26-4B32-ABED-942F4C274B78}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.MassTransit.Messaging", "Cypherly.MassTransit.Messaging\Cypherly.MassTransit.Messaging.csproj", "{0039AE6C-7E26-4B32-ABED-942F4C274B78}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Messaging", "Messaging", "{26F11944-D49E-4C9B-885B-92B642A5EAE4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEmail.API", "MiniEmail.API\MiniEmail.API.csproj", "{1EFDDFE7-F9DB-4F7C-ACC0-1CB6698E3D39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Messaging.Outboxing", "Cypherly.Messaging.Outboxing\Cypherly.Messaging.Outboxing.csproj", "{0414AF85-92BA-45B6-B95B-28F270D5A31E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Outboxing.Messaging", "Cypherly.Outboxing.Messaging\Cypherly.Outboxing.Messaging.csproj", "{0414AF85-92BA-45B6-B95B-28F270D5A31E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cypherly.Messaging.MassTransit\Cypherly.Messaging.MassTransit.csproj" />
+      <ProjectReference Include="..\Cypherly.MassTransit.Messaging\Cypherly.MassTransit.Messaging.csproj" />
     </ItemGroup>
 
 </Project>

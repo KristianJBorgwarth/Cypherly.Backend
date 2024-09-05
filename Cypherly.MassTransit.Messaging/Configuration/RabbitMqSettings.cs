@@ -1,4 +1,4 @@
-﻿namespace Cypherly.Messaging.MassTransit.Configuration;
+﻿namespace Cypherly.MassTransit.Messaging.Configuration;
 
 public sealed class RabbitMqSettings
 {

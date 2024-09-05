@@ -2,7 +2,7 @@
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace Cypherly.Messaging.MassTransit;
+namespace Cypherly.MassTransit.Messaging;
 
 public class Producer<TMessage>(
     IPublishEndpoint publishEndpoint,

@@ -10,7 +10,7 @@ public class UserCreatedEventHandler(
 {
     public Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
-        Console.Write("User created: ");
+        Console.WriteLine("User created: ");
         Console.WriteLine(notification.Email);
         return Task.CompletedTask;
     }

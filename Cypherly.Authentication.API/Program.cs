@@ -2,8 +2,8 @@ using System.Reflection;
 using Cypherly.Authentication.Application.Configuration;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
-using Cypherly.Messaging.MassTransit.Configuration;
-using Microsoft.Extensions.Options;
+using Cypherly.MassTransit.Messaging.Configuration;
+using Cypherly.Outboxing.Messaging.Configuration;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +49,12 @@ builder.Services.AddAuthenticationApplication(Assembly.Load("Cypherly.Authentica
 #region Persistence Layer
 
 builder.Services.AddAuthenticationPersistence(configuration);
+
+#endregion
+
+#region Outboxing
+
+builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.Authentication.Application"));
 
 #endregion
 
