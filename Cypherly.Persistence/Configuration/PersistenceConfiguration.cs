@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Cypherly.Application.Contracts.Repository;
+using Cypherly.Persistence.Context;
 using Cypherly.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +10,7 @@ namespace Cypherly.Persistence.Configuration;
 
 public static class PersistenceConfiguration
 {
-    public static IServiceCollection AddPersistence<TContext>(this IServiceCollection services, IConfiguration configuration, Assembly assembly, string connectionStringName) where TContext : DbContext
+    public static IServiceCollection AddPersistence<TContext>(this IServiceCollection services, IConfiguration configuration, Assembly assembly, string connectionStringName) where TContext : CypherlyBaseDbContext
     {
         services.AddDbContext<TContext>(options=>
             options.UseNpgsql(configuration.GetConnectionString(connectionStringName)!,
@@ -17,6 +18,7 @@ public static class PersistenceConfiguration
                 .UseLazyLoadingProxies());
 
         services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
+        services.AddScoped<IOutboxRepository, OutboxRepository<TContext>>();
 
         return services;
     }
