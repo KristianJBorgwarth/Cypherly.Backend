@@ -1,16 +1,12 @@
 ﻿// ReSharper disable ConvertConstructorToMemberInitializers
 namespace Cypherly.Domain.Common;
 
-public abstract class Entity
+public abstract class Entity(Guid id)
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; } = id;
     public DateTime LastModified { get; protected set; }
     public DateTime Created { get; protected set; }
 
-    protected Entity()
-    {
-        Id = Guid.NewGuid();
-    }
     public void SetCreated()
     {
         Created = DateTime.UtcNow;
@@ -20,7 +16,6 @@ public abstract class Entity
     {
         LastModified = DateTime.UtcNow;
     }
-
 
     public override bool Equals(object obj)
     {

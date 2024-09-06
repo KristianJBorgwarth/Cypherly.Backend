@@ -33,7 +33,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.Upd
             var verificationCode = "validCode";
             var email = Email.Create("test@mail.com").Value;
             var password = Password.Create("Password123!").Value;
-            var user = new User(email, password, isVerified: false);
+            var user = new User(Guid.NewGuid(),email, password, isVerified: false);
             user.SetVerificationCode();  // Setting the verification code
 
             A.CallTo(() => _fakeUserRepository.GetByIdAsync(userId)).Returns(user);
@@ -84,7 +84,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.Upd
             var userId = Guid.NewGuid();
             var email = Email.Create("test@mail.com").Value;
             var password = Password.Create("Password123!").Value;
-            var user = new User(email, password, isVerified: false);
+            var user = new User(Guid.NewGuid(),email, password, isVerified: false);
             user.SetVerificationCode();  // Setting the verification code
 
             A.CallTo(() => _fakeUserRepository.GetByIdAsync(userId)).Returns(user);

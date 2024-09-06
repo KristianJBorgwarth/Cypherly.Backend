@@ -10,9 +10,9 @@ public partial class UserProfile : AggregateRoot
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
 
-    public UserProfile() {} // For EF Core
+    public UserProfile() : base(Guid.Empty){} // For EF Core
 
-    public UserProfile(string username, UserTag userUserTag)
+    public UserProfile(Guid id, string username, UserTag userUserTag) : base(id)
     {
         Username = username;
         UserTag = userUserTag;

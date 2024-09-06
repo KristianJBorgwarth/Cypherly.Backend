@@ -20,7 +20,7 @@ public class CreateUserCommandHandlerTests
     private readonly IUserService _fakeUserService;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly CreateUserCommandHandler _sut;
-    
+
     public CreateUserCommandHandlerTests()
     {
         _fakeRepo = A.Fake<IUserRepository>();
@@ -30,7 +30,7 @@ public class CreateUserCommandHandlerTests
         var fakeLogger = A.Fake<ILogger<CreateUserCommandHandler>>();
         _sut = new(_fakeRepo, _fakeMapper, _fakeUserService, _fakeUnitOfWork, fakeLogger);
     }
-    
+
     [Fact]
     public async void Handle_Valid_Command_Should_Return_ResultOk()
     {
@@ -40,9 +40,9 @@ public class CreateUserCommandHandlerTests
             Email = "test@mail.dk",
             Password = "password923K=?"
         };
-        
+
         A.CallTo(()=> _fakeRepo.GetUserByEmail(cmd.Email)).Returns<User>(null);
-        A.CallTo(()=> _fakeUserService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Ok(new User(Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified:false)));
+        A.CallTo(()=> _fakeUserService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Ok(new User(Guid.NewGuid(),Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified:false)));
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();
         A.CallTo(()=> _fakeRepo.CreateAsync(A<User>.Ignored)).DoesNothing();
         A.CallTo(()=> _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).Returns(new CreateUserDto
@@ -50,10 +50,10 @@ public class CreateUserCommandHandlerTests
             Email = cmd.Email,
             Id = default
         });
-        
+
         // Act
         var result = await _sut.Handle(cmd, new CancellationToken());
-        
+
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Email.Should().Be(cmd.Email);
@@ -72,12 +72,12 @@ public class CreateUserCommandHandlerTests
             Email = "test@mail.dk",
             Password = "password923K=?"
         };
-        
-        A.CallTo(()=> _fakeRepo.GetUserByEmail(cmd.Email)).Returns(new User(Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified:false));
-        
+
+        A.CallTo(()=> _fakeRepo.GetUserByEmail(cmd.Email)).Returns(new User(Guid.NewGuid(),Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified:false));
+
         // Act
         var result = await _sut.Handle(cmd, new CancellationToken());
-        
+
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("An account already exists with that email");
@@ -87,7 +87,7 @@ public class CreateUserCommandHandlerTests
         A.CallTo(()=>_fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
         A.CallTo(()=>_fakeUserService.CreateUser(A<string>.Ignored, A<string>.Ignored)).MustNotHaveHappened();
     }
-    
+
     [Fact]
     public async void Handle_Given_UserService_CreateUser_Fails_Should_Return_ResultFail()
     {
@@ -97,13 +97,13 @@ public class CreateUserCommandHandlerTests
             Email = "test@mail.dk",
             Password = "password923K=?"
         };
-        
+
         A.CallTo(()=> _fakeRepo.GetUserByEmail(cmd.Email)).Returns<User>(null);
         A.CallTo(()=> _fakeUserService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Fail<User>(Errors.General.UnspecifiedError("error")));
-        
+
         // Act
         var result = await _sut.Handle(cmd, new CancellationToken());
-        
+
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("error");
@@ -113,7 +113,7 @@ public class CreateUserCommandHandlerTests
         A.CallTo(()=>_fakeRepo.CreateAsync(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(()=>_fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
     }
-    
+
     [Fact]
     public async void Handle_Exception_Is_Thrown_Should_Return_ResultFail()
     {
@@ -141,8 +141,8 @@ public class CreateUserCommandHandlerTests
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
     }
 
-    
-    
-    
-        
+
+
+
+
 }

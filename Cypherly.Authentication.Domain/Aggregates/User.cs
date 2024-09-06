@@ -13,16 +13,16 @@ public class User : AggregateRoot
     public bool IsVerified { get; private set; }
     public virtual VerificationCode? VerificationCode { get; private set; }
 
-    public User() {} // For EF Core
+    public User() : base(Guid.Empty) {} // For EF Core
 
-    public User(Email email, Password password, bool isVerified)
+    public User(Guid id, Email email, Password password, bool isVerified) : base(id)
     {
         Email = email;
         Password = password;
         IsVerified = isVerified;
     }
 
-    public void SetVerificationCode() => VerificationCode = new(Id);
+    public void SetVerificationCode() => VerificationCode = new(id: Guid.NewGuid(), userId: Id);
 
     public Result Verify(string verificationCode)
     {

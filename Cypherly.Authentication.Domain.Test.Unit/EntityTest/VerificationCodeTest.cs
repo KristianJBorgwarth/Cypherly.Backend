@@ -9,12 +9,12 @@ public class VerificationCodeTest
     public void Verify_WhenCodeIsUsed_ReturnsError()
     {
         // Arrange
-        var verificationCode = new VerificationCode(Guid.NewGuid());
+        var verificationCode = new VerificationCode(Guid.NewGuid(),Guid.NewGuid());
         verificationCode.Use();
-        
+
         // Act
         var result = verificationCode.Verify("123456");
-        
+
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("Verification code has already been used");
@@ -24,11 +24,11 @@ public class VerificationCodeTest
     public void Verify_WhenCodeIsInvalid_ReturnsError()
     {
         // Arrange
-        var verificationCode = new VerificationCode(Guid.NewGuid());
-        
+        var verificationCode = new VerificationCode(Guid.NewGuid(), Guid.NewGuid());
+
         // Act
         var result = verificationCode.Verify("123456");
-        
+
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("Invalid verification code");
@@ -38,24 +38,24 @@ public class VerificationCodeTest
     public void Verify_WhenCodeIsValid_ReturnsSuccess()
     {
         // Arrange
-        var verificationCode = new VerificationCode(Guid.NewGuid());
-        
+        var verificationCode = new VerificationCode(Guid.NewGuid(),Guid.NewGuid());
+
         // Act
         var result = verificationCode.Verify(verificationCode.Code);
-        
+
         // Assert
         result.Success.Should().BeTrue();
     }
-    
+
     [Fact]
     public void Use_MarksCodeAsUsed()
     {
         // Arrange
-        var verificationCode = new VerificationCode(Guid.NewGuid());
-        
+        var verificationCode = new VerificationCode(Guid.NewGuid(),Guid.NewGuid());
+
         // Act
         verificationCode.Use();
-        
+
         // Assert
         verificationCode.IsUsed.Should().BeTrue();
     }

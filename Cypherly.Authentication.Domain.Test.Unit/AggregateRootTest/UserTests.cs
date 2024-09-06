@@ -12,7 +12,7 @@ public class UserTests
         // Arrange
         var email = Email.Create("test@mail.com").Value;
         var password = Password.Create("Password123!").Value;
-        var user = new User(email, password, isVerified: false);
+        var user = new User(Guid.NewGuid(),email, password, isVerified: false);
 
         // Act
         user.SetVerificationCode();
@@ -28,7 +28,7 @@ public class UserTests
         // Arrange
         var email = Email.Create("test@mail.com").Value;
         var password = Password.Create("Password123!").Value;
-        var user = new User(email, password, isVerified: false);
+        var user = new User(Guid.NewGuid(),email, password, isVerified: false);
 
         // Act
         var result = user.Verify("someCode");
@@ -44,7 +44,7 @@ public class UserTests
         // Arrange
         var email = Email.Create("test@mail.com").Value;
         var password = Password.Create("Password123!").Value;
-        var user = new User(email, password, isVerified: true);
+        var user = new User(Guid.NewGuid(),email, password, isVerified: true);
         user.SetVerificationCode();
 
         // Act
@@ -61,7 +61,7 @@ public class UserTests
         // Arrange
         var email = Email.Create("test@mail.com").Value;
         var password = Password.Create("Password123!").Value;
-        var user = new User(email, password, isVerified: false);
+        var user = new User(Guid.NewGuid(),email, password, isVerified: false);
         user.SetVerificationCode();
 
         // Act
@@ -69,7 +69,7 @@ public class UserTests
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be("Invalid verification code"); 
+        result.Error.Message.Should().Be("Invalid verification code");
     }
 
     [Fact]
@@ -78,7 +78,7 @@ public class UserTests
         // Arrange
         var email = Email.Create("test@mail.com").Value;
         var password = Password.Create("Password123!").Value;
-        var user = new User(email, password, isVerified: false);
+        var user = new User(Guid.NewGuid(),email, password, isVerified: false);
         user.SetVerificationCode();
 
         // Act
@@ -96,9 +96,9 @@ public class UserTests
         // Arrange
         var email = Email.Create("test@mail.com").Value;
         var password = Password.Create("Password123!").Value;
-        var user = new User(email, password, isVerified: false);
+        var user = new User(Guid.NewGuid(),email, password, isVerified: false);
         user.SetVerificationCode();
-        
+
         // First time verification
         user.Verify(user.VerificationCode!.Code);
 
@@ -107,6 +107,6 @@ public class UserTests
 
         // Assert
         result.Success.Should().BeFalse();
-        result.Error.Message.Should().Be("This chat user is already verified"); 
+        result.Error.Message.Should().Be("This chat user is already verified");
     }
 }
