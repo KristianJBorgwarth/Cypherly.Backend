@@ -2,6 +2,6 @@
 
 public sealed class CreateUserProfileRequest(Guid userId, string username) : RequestMessage
 {
-    public Guid UserId { get; init; } = userId;
-    public required string Username { get; init; } = username;
+    public Guid UserId { get; private set; } = userId;
+    public string Username { get; private set; } = username;
 }

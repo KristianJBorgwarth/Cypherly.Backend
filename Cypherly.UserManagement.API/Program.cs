@@ -2,6 +2,7 @@ using System.Reflection;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
+using Cypherly.UserManagement.Domain.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;
 using Serilog;
 
@@ -31,6 +32,10 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
+#endregion
+
+#region Domain Layer
+builder.Services.AddUserManagementDomainServices();
 #endregion
 
 #region Application Layer

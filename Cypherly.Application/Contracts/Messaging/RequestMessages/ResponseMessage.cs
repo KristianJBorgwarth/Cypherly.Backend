@@ -2,8 +2,8 @@
 
 namespace Cypherly.Application.Contracts.Messaging.RequestMessages;
 
-public abstract class ResponseMessage(bool success, Error? error)
+public abstract class ResponseMessage(bool isSuccess, Error? error)
 {
-    public bool Success { get; init; } = success;
+    public bool IsSuccess { get; init; } = isSuccess;
     public Error? Error { get; init; } = error;
 }

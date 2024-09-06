@@ -6,10 +6,7 @@ namespace Cypherly.UserManagement.Persistence.Repositories;
 
 public class UserProfileRepository(UserManagementDbContext context) : IUserProfileRepository
 {
-    public Task CreateAsync(UserProfile entity)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task CreateAsync(UserProfile entity) => await context.UserProfile.AddAsync(entity);
 
     public Task DeleteAsync(Guid id)
     {
