@@ -1,17 +1,36 @@
 ﻿using Cypherly.Application.Abstractions;
+using Cypherly.Application.Contracts.Messaging.PublishMessages;
+using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Domain.Events.User;
+using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.User.Events;
 
 public class UserCreatedEventHandler(
-    IUserRepository userRepository)
+    IUserRepository userRepository,
+    IProducer<SendEmailMessage> emailProducer,
+    ILogger<UserCreatedEventHandler> logger)
     : IDomainEventHandler<UserCreatedEvent>
 {
-    public Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
-        Console.WriteLine("User created: ");
-        Console.WriteLine(notification.Email);
-        return Task.CompletedTask;
+        var user = await userRepository.GetByIdAsync(notification.UserId);
+        if (user is null)
+        {
+            logger.LogError("User with id {UserId} not found", notification.UserId);
+            throw new InvalidOperationException("User not found");
+        }
+
+        var verificationCode = user!.VerificationCode;
+        if (verificationCode is null)
+        {
+            logger.LogError("Verification code for user with id {UserId} not found", notification.UserId);
+            throw new InvalidOperationException("Verification code not found");
+        }
+
+        var emailMessage = new SendEmailMessage(user.Email.Address, "Welcome to Cypherly",
+            "Welcome to Cypherly! Below is your verification code: " + user.VerificationCode!.Code);
+        await emailProducer.PublishMessageAsync(emailMessage, cancellationToken);
     }
 }

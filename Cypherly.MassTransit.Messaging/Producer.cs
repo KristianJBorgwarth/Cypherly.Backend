@@ -11,11 +11,11 @@ public class Producer<TMessage>(
     where TMessage : BaseMessage
 {
 
-    public async Task PublishMessageAsync(TMessage message)
+    public async Task PublishMessageAsync(TMessage message, CancellationToken cancellationToken)
     {
         try
         {
-            await publishEndpoint.Publish(message);
+            await publishEndpoint.Publish(message, cancellationToken);
         }
         catch (Exception ex)
         {

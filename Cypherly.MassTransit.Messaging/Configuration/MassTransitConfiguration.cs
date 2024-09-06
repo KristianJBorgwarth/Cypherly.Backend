@@ -41,6 +41,12 @@ public static class MassTransitConfiguration
         return services;
     }
 
+    /// <summary>
+    /// Add a <see cref="Producer{TMessage}"/> for a specific message type to the service collection
+    /// </summary>
+    /// <param name="services">service collection producer will be added to</param>
+    /// <typeparam name="TMessage">TMessage type the producer will handle. TMessage type should be of type <see cref="BaseMessage"/></typeparam>
+    /// <returns><see cref="IServiceCollection"/></returns>
     public static IServiceCollection AddProducer<TMessage>(this IServiceCollection services) where TMessage : BaseMessage
     {
         services.AddScoped<IProducer<TMessage>, Producer<TMessage>>();
