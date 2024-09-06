@@ -1,4 +1,4 @@
-﻿namespace MinimalEmail.API.Configuration;
+﻿namespace MinimalEmail.API.Email.Smtp;
 
 public sealed class SmtpSettings
 {

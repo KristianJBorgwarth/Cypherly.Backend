@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace MinimalEmail.API.Features.Email;
+namespace MinimalEmail.API.Email;
 
 public interface IEmailService
 {
