@@ -24,7 +24,7 @@ public class UserService : IUserService
         var user = new Aggregates.User(Guid.NewGuid(), emailResult.Value, pwResult.Value, isVerified: false);
 
         user.SetVerificationCode();
-        user.AddDomainEvent(new UserCreatedEvent(user.Id, user.Email.Address));
+        user.AddDomainEvent(new UserCreatedEvent(user.Id));
 
         return user;
     }

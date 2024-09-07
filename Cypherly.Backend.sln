@@ -66,6 +66,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MiniEmail.API.Test", "MiniE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEmail.API.Test.Unit", "MiniEmail.API.Test.Unit\MiniEmail.API.Test.Unit.csproj", "{4BAE76CB-9004-475B-B651-FC6441893914}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Domain.Test.Unit", "Cypherly.UserManagement.Domain.Test.Unit\Cypherly.UserManagement.Domain.Test.Unit.csproj", "{96DE9446-D69A-4037-8066-959920804B8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Application.Test.Unit", "Cypherly.UserManagement.Application.Test.Unit\Cypherly.UserManagement.Application.Test.Unit.csproj", "{2DF24CD5-38D4-4ACB-828F-34378E04B34F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -148,6 +152,14 @@ Global
 		{4BAE76CB-9004-475B-B651-FC6441893914}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BAE76CB-9004-475B-B651-FC6441893914}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BAE76CB-9004-475B-B651-FC6441893914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96DE9446-D69A-4037-8066-959920804B8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96DE9446-D69A-4037-8066-959920804B8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96DE9446-D69A-4037-8066-959920804B8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96DE9446-D69A-4037-8066-959920804B8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DF24CD5-38D4-4ACB-828F-34378E04B34F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DF24CD5-38D4-4ACB-828F-34378E04B34F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DF24CD5-38D4-4ACB-828F-34378E04B34F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DF24CD5-38D4-4ACB-828F-34378E04B34F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FBB8E791-E41F-4207-9D92-3B6500B8B1C1} = {D388C026-0CAC-4E23-AFC5-080C14BC571D}
@@ -178,5 +190,7 @@ Global
 		{0414AF85-92BA-45B6-B95B-28F270D5A31E} = {26F11944-D49E-4C9B-885B-92B642A5EAE4}
 		{FB7A00E3-FAB1-45B6-B563-CD6DF78FAC6D} = {E895BA28-EE61-4B1D-A846-77FDD447597D}
 		{4BAE76CB-9004-475B-B651-FC6441893914} = {FB7A00E3-FAB1-45B6-B563-CD6DF78FAC6D}
+		{96DE9446-D69A-4037-8066-959920804B8D} = {6ACA2E08-F122-4F46-8774-90F0CD4705C3}
+		{2DF24CD5-38D4-4ACB-828F-34378E04B34F} = {6ACA2E08-F122-4F46-8774-90F0CD4705C3}
 	EndGlobalSection
 EndGlobal
