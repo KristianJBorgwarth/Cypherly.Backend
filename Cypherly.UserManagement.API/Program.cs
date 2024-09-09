@@ -1,5 +1,8 @@
 using System.Reflection;
+using Cypherly.MassTransit.Messaging.Configuration;
+using Cypherly.Outboxing.Messaging.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
+using Cypherly.UserManagement.Domain.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;
 using Serilog;
 
@@ -31,12 +34,29 @@ builder.Host.UseSerilog();
 
 #endregion
 
+#region Domain Layer
+builder.Services.AddUserManagementDomainServices();
+#endregion
+
 #region Application Layer
 builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.UserManagement.Application"));
 #endregion
 
 #region Persistence Layer
 builder.Services.AddUserManagementPersistence(configuration);
+#endregion
+
+#region Outboxing
+
+builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.UserManagement.Application"));
+
+#endregion
+
+#region MassTransit
+
+builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.UserManagement.Application"));
+
 #endregion
 
 builder.Services.AddControllers();

@@ -3,7 +3,7 @@
 
 namespace Cypherly.Domain.Common;
 
-public abstract class AggregateRoot : Entity
+public abstract class AggregateRoot(Guid id) : Entity(id)
 {
     private readonly List<IDomainEvent> _domainEvents = [];
     public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents;

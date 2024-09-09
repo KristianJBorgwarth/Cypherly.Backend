@@ -21,10 +21,10 @@ public class UserService : IUserService
         if (pwResult.Success is false)
             return Result.Fail<Aggregates.User>(pwResult.Error);
 
-        var user = new Aggregates.User(emailResult.Value, pwResult.Value, isVerified: false);
+        var user = new Aggregates.User(Guid.NewGuid(), emailResult.Value, pwResult.Value, isVerified: false);
 
         user.SetVerificationCode();
-        user.AddDomainEvent(new UserCreatedEvent(user.Id, user.Email.Address));
+        user.AddDomainEvent(new UserCreatedEvent(user.Id));
 
         return user;
     }

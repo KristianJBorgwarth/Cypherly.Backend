@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Cypherly.Domain.Common;
 using Cypherly.Persistence.Outbox;
 using Cypherly.Application.Contracts.Repository;
-using Cypherly.Domain.Events;
 
 namespace Cypherly.Persistence.Repositories;
 
@@ -37,7 +36,7 @@ public class UnitOfWork<TContext>(TContext context) : IUnitOfWork where TContext
             {
                 Id = Guid.NewGuid(),
                 OccurredOn = DateTime.UtcNow,
-                Type = domainEvent.GetType().Name,
+                Type = domainEvent.GetType().AssemblyQualifiedName ?? throw new InvalidOperationException("The domain event type must have an assembly qualified name"),
                 Content = JsonConvert.SerializeObject(domainEvent,
                     new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All }),
             }).ToList();

@@ -83,7 +83,6 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             var userCreatedEvent = user.DomainEvents.OfType<UserCreatedEvent>().FirstOrDefault();
             userCreatedEvent.Should().NotBeNull();
             userCreatedEvent!.UserId.Should().Be(user.Id);
-            userCreatedEvent.Email.Should().Be(user.Email.Address);
         }
 
         [Fact]

@@ -20,6 +20,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Cypherly.Authentication.Application\Cypherly.Authentication.Application.csproj" />
       <ProjectReference Include="..\Cypherly.Authentication.Persistence\Cypherly.Authentication.Persistence.csproj" />
+      <ProjectReference Include="..\Cypherly.MassTransit.Messaging\Cypherly.MassTransit.Messaging.csproj" />
+      <ProjectReference Include="..\Cypherly.Outboxing.Messaging\Cypherly.Outboxing.Messaging.csproj" />
     </ItemGroup>
 
 </Project>

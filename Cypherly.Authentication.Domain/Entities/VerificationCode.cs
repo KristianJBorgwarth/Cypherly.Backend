@@ -9,9 +9,9 @@ public class VerificationCode : Entity
     public DateTime ExpirationDate { get; private set; }
     public bool IsUsed { get; private set; }
 
-    public VerificationCode() { } // For EF Core
+    public VerificationCode() : base(Guid.Empty){ } // For EF Core
 
-    public VerificationCode(Guid userId)
+    public VerificationCode(Guid id, Guid userId) : base(id)
     {
         UserId = userId;
         Code = GenerateCode();

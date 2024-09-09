@@ -1,7 +1,10 @@
 using System.Reflection;
+using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
 using Cypherly.Authentication.Application.Configuration;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
+using Cypherly.MassTransit.Messaging.Configuration;
+using Cypherly.Outboxing.Messaging.Configuration;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +50,20 @@ builder.Services.AddAuthenticationApplication(Assembly.Load("Cypherly.Authentica
 #region Persistence Layer
 
 builder.Services.AddAuthenticationPersistence(configuration);
+
+#endregion
+
+#region Outboxing
+
+builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.Authentication.Application"));
+
+#endregion
+
+#region MassTransit
+
+builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"))
+    .AddProducer<SendEmailMessage>();
 
 #endregion
 
