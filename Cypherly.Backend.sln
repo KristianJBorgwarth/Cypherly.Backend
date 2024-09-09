@@ -76,6 +76,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Outboxing.Messagin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.MassTransit.Messaging.Test.Unit", "Cypherly.MassTransit.Messaging.Test.Unit\Cypherly.MassTransit.Messaging.Test.Unit.csproj", "{05EACA90-2644-4BD0-93C1-256F56CC01E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Application.Test.Integration", "Cypherly.Authentication.Application.Test.Integration\Cypherly.Authentication.Application.Test.Integration.csproj", "{E06001E5-A9E2-4F2F-8A80-4D368771349E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUtilities", "TestUtilities\TestUtilities.csproj", "{66E5236F-7375-4E2B-817D-A2E68FD401A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -174,6 +178,14 @@ Global
 		{05EACA90-2644-4BD0-93C1-256F56CC01E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05EACA90-2644-4BD0-93C1-256F56CC01E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05EACA90-2644-4BD0-93C1-256F56CC01E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FBB8E791-E41F-4207-9D92-3B6500B8B1C1} = {D388C026-0CAC-4E23-AFC5-080C14BC571D}
@@ -209,5 +221,7 @@ Global
 		{19A86B3A-127B-416E-A295-31191A5F32D0} = {E895BA28-EE61-4B1D-A846-77FDD447597D}
 		{DB33667A-C105-4E0D-B5BB-765FCF93C762} = {19A86B3A-127B-416E-A295-31191A5F32D0}
 		{05EACA90-2644-4BD0-93C1-256F56CC01E1} = {19A86B3A-127B-416E-A295-31191A5F32D0}
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E} = {BDA59F14-F25E-4483-BB4C-A93DA1A4CFD8}
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9} = {E895BA28-EE61-4B1D-A846-77FDD447597D}
 	EndGlobalSection
 EndGlobal

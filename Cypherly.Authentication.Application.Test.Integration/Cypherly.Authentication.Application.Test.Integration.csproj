@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.collector" Version="6.0.0"/>
+        <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
+        <PackageReference Include="xunit" Version="2.5.3"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Cypherly.Application\Cypherly.Application.csproj" />
+      <ProjectReference Include="..\Cypherly.Authentication.API\Cypherly.Authentication.API.csproj" />
+      <ProjectReference Include="..\Cypherly.Authentication.Application\Cypherly.Authentication.Application.csproj" />
+      <ProjectReference Include="..\Cypherly.Authentication.Domain\Cypherly.Authentication.Domain.csproj" />
+      <ProjectReference Include="..\Cypherly.Authentication.Persistence\Cypherly.Authentication.Persistence.csproj" />
+      <ProjectReference Include="..\Cypherly.Domain\Cypherly.Domain.csproj" />
+      <ProjectReference Include="..\Cypherly.MassTransit.Messaging\Cypherly.MassTransit.Messaging.csproj" />
+      <ProjectReference Include="..\Cypherly.Outboxing.Messaging\Cypherly.Outboxing.Messaging.csproj" />
+      <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
+    </ItemGroup>
+
+</Project>

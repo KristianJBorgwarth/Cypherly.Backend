@@ -33,7 +33,7 @@ public class CreateUserCommandHandler(
             await userRepository.CreateAsync(userResult.Value);
 
 
-            var createProfileResult = await CreateProfile(userResult.Value.Id, "username");
+            var createProfileResult = await CreateProfile(userResult.Value.Id, request.Username);
 
             if (createProfileResult.Success is false)
                 return Result.Fail<CreateUserDto>(createProfileResult.Error);

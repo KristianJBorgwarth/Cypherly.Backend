@@ -41,7 +41,8 @@ public class CreateUserCommandHandlerTests
         var cmd = new CreateUserCommand()
         {
             Email = "test@mail.dk",
-            Password = "password923K=?"
+            Password = "password923K=?",
+            Username = "validUsername"
         };
 
         var user = new User(Guid.NewGuid(), Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified: false);
@@ -87,8 +88,10 @@ public class CreateUserCommandHandlerTests
         var cmd = new CreateUserCommand()
         {
             Email = "test@mail.dk",
-            Password = "password923K=?"
+            Password = "password923K=?",
+            Username = "validUsername"
         };
+
 
         var existingUser = new User(Guid.NewGuid(), Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified: false);
 
@@ -116,8 +119,10 @@ public class CreateUserCommandHandlerTests
         var cmd = new CreateUserCommand()
         {
             Email = "test@mail.dk",
-            Password = "password923K=?"
+            Password = "password923K=?",
+            Username = "validUsername"
         };
+
 
         A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).Returns<User>(null);
         A.CallTo(() => _fakeUserService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Fail<User>(Errors.General.UnspecifiedError("error")));
@@ -145,8 +150,10 @@ public class CreateUserCommandHandlerTests
         var cmd = new CreateUserCommand()
         {
             Email = "test@mail.dk",
-            Password = "password923K=?"
+            Password = "password923K=?",
+            Username = "validUsername"
         };
+
 
         // Simulate an exception when calling the repository's GetUserByEmail method
         A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).Throws(new Exception("Database connection failed"));
