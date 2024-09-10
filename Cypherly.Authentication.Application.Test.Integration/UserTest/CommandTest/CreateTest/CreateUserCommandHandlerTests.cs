@@ -18,8 +18,10 @@ namespace Cypherly.Authentication.Application.Test.Integration.UserTest.CommandT
 public class CreateUserCommandHandlerTests : IntegrationTestBase
 {
     private readonly CreateUserCommandHandler _sut;
+
     public CreateUserCommandHandlerTests(IntegrationTestFactory<Program, AuthenticationDbContext> factory) : base(factory)
     {
+
         var scope = factory.Services.CreateScope();
         var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
         var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
@@ -55,6 +57,7 @@ public class CreateUserCommandHandlerTests : IntegrationTestBase
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("An account already exists with that email");
         Db.User.Should().HaveCount(1);
+        Db.OutboxMessage.Should().HaveCount(0);
     }
 
     [Fact]
@@ -76,6 +79,7 @@ public class CreateUserCommandHandlerTests : IntegrationTestBase
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("Invalid email address.");
         Db.User.Should().HaveCount(0);
+        Db.OutboxMessage.Should().HaveCount(0);
     }
 
     [Fact]
@@ -87,9 +91,23 @@ public class CreateUserCommandHandlerTests : IntegrationTestBase
     [Fact]
     public async Task Handle_WhenUserCreationSucceeds_ReturnsSuccess()
     {
+        // Arrange
+        var command = new CreateUserCommand()
+        {
+            Email = "valid@email.dk",
+            Password = "validPassword=?23",
+            Username = "validUsername"
+        };
 
+        // Act
+        var result = await _sut.Handle(command, CancellationToken.None);
+
+        // Assert
+        Harness.Published.Select<CreateUserProfileRequest>().Count().Should().Be(1);
+        Harness.Published.Select<CreateUserProfileRequest>().First().Context.Message.Username.Should().Be("validUsername");
+        result.Success.Should().BeTrue();
+        result.Error.Should().BeNull();
+        Db.User.Should().HaveCount(1);
+        Db.OutboxMessage.Count().Should().Be(1);
     }
-
-
-
 }

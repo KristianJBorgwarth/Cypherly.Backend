@@ -35,4 +35,8 @@
       <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UserTest\EndpointTest\" />
+    </ItemGroup>
+
 </Project>
