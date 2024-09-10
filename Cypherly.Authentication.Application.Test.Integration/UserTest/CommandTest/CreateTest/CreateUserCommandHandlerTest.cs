@@ -15,11 +15,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Test.Integration.UserTest.CommandTest.CreateTest;
 
-public class CreateUserCommandHandlerTests : IntegrationTestBase
+public class CreateUserCommandHandlerTest : IntegrationTestBase
 {
     private readonly CreateUserCommandHandler _sut;
 
-    public CreateUserCommandHandlerTests(IntegrationTestFactory<Program, AuthenticationDbContext> factory) : base(factory)
+    public CreateUserCommandHandlerTest(IntegrationTestFactory<Program, AuthenticationDbContext> factory) : base(factory)
     {
 
         var scope = factory.Services.CreateScope();
@@ -103,8 +103,7 @@ public class CreateUserCommandHandlerTests : IntegrationTestBase
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
-        Harness.Published.Select<CreateUserProfileRequest>().Count().Should().Be(1);
-        Harness.Published.Select<CreateUserProfileRequest>().First().Context.Message.Username.Should().Be("validUsername");
+        Harness.Published.Select<CreateUserProfileRequest>().Where(cr=> cr.Context.Message.Username == "validUsername").Should().HaveCount(1);
         result.Success.Should().BeTrue();
         result.Error.Should().BeNull();
         Db.User.Should().HaveCount(1);

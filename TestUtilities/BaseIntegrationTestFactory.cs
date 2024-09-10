@@ -40,7 +40,8 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
             services.AddDbContext<TDbContext>(options =>
             {
                 options.UseNpgsql(_dbContainer.GetConnectionString(),
-                    b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName));
+                    b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName))
+                    .UseLazyLoadingProxies();
             });
 
             #endregion

@@ -12,7 +12,7 @@ public class IntegrationTestBase : IDisposable
     protected readonly HttpClient Client;
     protected readonly ITestHarness Harness;
 
-    protected IntegrationTestBase(IntegrationTestFactory<Program, AuthenticationDbContext> factory)
+    public IntegrationTestBase(IntegrationTestFactory<Program, AuthenticationDbContext> factory)
     {
         Harness = factory.Services.GetTestHarness();
         var scope = factory.Services.CreateScope();
