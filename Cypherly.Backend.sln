@@ -76,6 +76,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Outboxing.Messagin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.MassTransit.Messaging.Test.Unit", "Cypherly.MassTransit.Messaging.Test.Unit\Cypherly.MassTransit.Messaging.Test.Unit.csproj", "{05EACA90-2644-4BD0-93C1-256F56CC01E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Application.Test.Integration", "Cypherly.Authentication.Application.Test.Integration\Cypherly.Authentication.Application.Test.Integration.csproj", "{E06001E5-A9E2-4F2F-8A80-4D368771349E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUtilities", "TestUtilities\TestUtilities.csproj", "{66E5236F-7375-4E2B-817D-A2E68FD401A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Application.Test.Integration", "Cypherly.UserManagement.Application.Test.Integration\Cypherly.UserManagement.Application.Test.Integration.csproj", "{911467ED-70E6-4E9B-A1BA-768C0196D00A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEmail.API.Test.Integration", "MiniEmail.API.Test.Integration\MiniEmail.API.Test.Integration.csproj", "{CBA4C11F-B9CA-4933-B7D6-3A2F17F86C29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -174,6 +182,22 @@ Global
 		{05EACA90-2644-4BD0-93C1-256F56CC01E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05EACA90-2644-4BD0-93C1-256F56CC01E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05EACA90-2644-4BD0-93C1-256F56CC01E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{911467ED-70E6-4E9B-A1BA-768C0196D00A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{911467ED-70E6-4E9B-A1BA-768C0196D00A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{911467ED-70E6-4E9B-A1BA-768C0196D00A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{911467ED-70E6-4E9B-A1BA-768C0196D00A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBA4C11F-B9CA-4933-B7D6-3A2F17F86C29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBA4C11F-B9CA-4933-B7D6-3A2F17F86C29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBA4C11F-B9CA-4933-B7D6-3A2F17F86C29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBA4C11F-B9CA-4933-B7D6-3A2F17F86C29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FBB8E791-E41F-4207-9D92-3B6500B8B1C1} = {D388C026-0CAC-4E23-AFC5-080C14BC571D}
@@ -209,5 +233,9 @@ Global
 		{19A86B3A-127B-416E-A295-31191A5F32D0} = {E895BA28-EE61-4B1D-A846-77FDD447597D}
 		{DB33667A-C105-4E0D-B5BB-765FCF93C762} = {19A86B3A-127B-416E-A295-31191A5F32D0}
 		{05EACA90-2644-4BD0-93C1-256F56CC01E1} = {19A86B3A-127B-416E-A295-31191A5F32D0}
+		{E06001E5-A9E2-4F2F-8A80-4D368771349E} = {BDA59F14-F25E-4483-BB4C-A93DA1A4CFD8}
+		{66E5236F-7375-4E2B-817D-A2E68FD401A9} = {E895BA28-EE61-4B1D-A846-77FDD447597D}
+		{911467ED-70E6-4E9B-A1BA-768C0196D00A} = {6ACA2E08-F122-4F46-8774-90F0CD4705C3}
+		{CBA4C11F-B9CA-4933-B7D6-3A2F17F86C29} = {FB7A00E3-FAB1-45B6-B563-CD6DF78FAC6D}
 	EndGlobalSection
 EndGlobal

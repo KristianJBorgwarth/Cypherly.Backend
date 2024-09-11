@@ -16,12 +16,13 @@ public class CreateUserCommandValidatorTests
         var cmd = new CreateUserCommand()
         {
             Email = "valid@email.dk",
-            Password = "validPassword97?"
+            Password = "validPassword97?",
+            Username = "validUsername"
         };
-        
+
         // Act
         var result = _sut.TestValidate(cmd);
-        
+
         // Assert
         result.IsValid.Should().BeTrue();
     }
@@ -33,12 +34,13 @@ public class CreateUserCommandValidatorTests
         var cmd = new CreateUserCommand()
         {
             Email = "",
-            Password = "validPassword97?"
+            Password = "validPassword97?",
+            Username = "validUsername"
         };
-        
-        // Act 
+
+        // Act
         var result = _sut.TestValidate(cmd);
-        
+
         // Assert
         result.ShouldHaveAnyValidationError();
         result.Errors[0].ErrorMessage.Should().Be(Errors.General.ValueIsEmpty(nameof(CreateUserCommand.Email)).Message);
@@ -52,14 +54,38 @@ public class CreateUserCommandValidatorTests
         {
             Email = "valid@email.com",
             Password = "",
+            Username = "validUsername"
         };
-        
+
         // Act
         var result = _sut.TestValidate(cmd);
-        
+
         // Assert
         result.ShouldHaveAnyValidationError();
         result.Errors[0].ErrorMessage.Should()
             .Be(Errors.General.ValueIsEmpty(nameof(CreateUserCommand.Password)).Message);
+    }
+
+    [Theory]
+    [InlineData("a")]
+    [InlineData("")]
+    [InlineData("ælkajdlækjasldkjalæsklæaskjdæaslkjd")]
+    public void Validate_Given_Invalid_Username_Should_Return_Invalid(string username)
+    {
+        // Arrange
+        var cmd = new CreateUserCommand()
+        {
+            Email = "valid@email.com",
+            Password = "validPassword97?",
+            Username = ""
+        };
+
+        // Act
+        var result = _sut.TestValidate(cmd);
+
+
+        // Assert
+        result.ShouldHaveAnyValidationError();
+        result.IsValid.Should().BeFalse();
     }
 }
