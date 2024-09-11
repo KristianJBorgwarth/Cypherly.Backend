@@ -6,7 +6,6 @@ using Cypherly.Authentication.Domain.Services.Claim;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
-//TODO: TEST THIS
 namespace Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
 
 public class CreateClaimCommandHandler(
@@ -23,16 +22,16 @@ public class CreateClaimCommandHandler(
         {
             if(await claimRepository.DoesClaimExistAsync(request.ClaimType))
                 return Result.Fail<CreateClaimDto>(Errors.General.UnspecifiedError("Claim already exists"));
-            
+
             var claimResult = claimService.CreateClaim(request.ClaimType);
             if (claimResult.Success is false)
                 return Result.Fail<CreateClaimDto>(claimResult.Error);
-            
+
             await claimRepository.CreateAsync(claimResult.Value);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            
+
             var claimDto = mapper.Map<CreateClaimDto>(claimResult.Value);
-            
+
             return Result.Ok(claimDto);
         }
         catch (Exception ex)
