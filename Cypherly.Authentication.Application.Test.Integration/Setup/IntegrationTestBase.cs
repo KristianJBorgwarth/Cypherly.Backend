@@ -27,6 +27,8 @@ public class IntegrationTestBase : IDisposable
         Db.VerificationCode.ExecuteDelete();
         Db.User.ExecuteDelete();
         Db.OutboxMessage.ExecuteDelete();
+        Db.Claim.ExecuteDelete();
+        Db.UserClaim.ExecuteDelete();
         Harness.Stop();
     }
 }

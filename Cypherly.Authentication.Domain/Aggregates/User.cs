@@ -12,6 +12,7 @@ public class User : AggregateRoot
     public Password Password { get; private set; } = null!;
     public bool IsVerified { get; private set; }
     public virtual VerificationCode? VerificationCode { get; private set; }
+    public virtual ICollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
 
     public User() : base(Guid.Empty) {} // For EF Core
 
