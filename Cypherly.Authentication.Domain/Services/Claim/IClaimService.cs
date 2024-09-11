@@ -1,7 +1,6 @@
 ﻿using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Services.Claim;
-//TODO: TEST THIS
 
 public interface IClaimService
 {

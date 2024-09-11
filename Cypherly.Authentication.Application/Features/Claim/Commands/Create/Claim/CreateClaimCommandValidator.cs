@@ -1,13 +1,13 @@
-﻿using FluentValidation;
+﻿using Cypherly.Domain.Common;
+using FluentValidation;
 
 namespace Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
 
-public class CreateUserClaimCommandValidator : AbstractValidator<CreateClaimCommand>
+public class CreateClaimCommandValidator : AbstractValidator<CreateClaimCommand>
 {
-    public CreateUserClaimCommandValidator()
+    public CreateClaimCommandValidator()
     {
         RuleFor(v => v.ClaimType)
-            .MaximumLength(30)
-            .NotEmpty();
+            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(CreateClaimCommand.ClaimType)).Message);
     }
 }

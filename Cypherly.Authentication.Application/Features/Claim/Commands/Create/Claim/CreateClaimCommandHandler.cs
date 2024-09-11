@@ -15,18 +15,18 @@ public class CreateClaimCommandHandler(
     IUnitOfWork unitOfWork,
     ILogger<CreateClaimCommandHandler> logger,
     IMapper mapper)
-    : ICommandHandler<CreateClaimCommand>
+    : ICommandHandler<CreateClaimCommand, CreateClaimDto>
 {
-    public async Task<Result> Handle(CreateClaimCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CreateClaimDto>> Handle(CreateClaimCommand request, CancellationToken cancellationToken)
     {
         try
         {
             if(await claimRepository.DoesClaimExistAsync(request.ClaimType))
-                return Result.Fail(Errors.General.UnspecifiedError("Claim already exists"));
+                return Result.Fail<CreateClaimDto>(Errors.General.UnspecifiedError("Claim already exists"));
             
             var claimResult = claimService.CreateClaim(request.ClaimType);
             if (claimResult.Success is false)
-                return Result.Fail(claimResult.Error);
+                return Result.Fail<CreateClaimDto>(claimResult.Error);
             
             await claimRepository.CreateAsync(claimResult.Value);
             await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -38,7 +38,7 @@ public class CreateClaimCommandHandler(
         catch (Exception ex)
         {
             logger.LogError(ex, "Error creating claim");
-            return Result.Fail(Errors.General.UnspecifiedError("An exception occurred while creating the claim"));
+            return Result.Fail<CreateClaimDto>(Errors.General.UnspecifiedError("An exception occurred while creating the claim"));
         }
     }
 }
