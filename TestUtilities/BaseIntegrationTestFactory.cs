@@ -1,17 +1,10 @@
-﻿using System.ComponentModel;
-using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
-using Cypherly.MassTransit.Messaging.Configuration;
-using Cypherly.Outboxing.Messaging.BackgroundJobs;
-using Cypherly.Outboxing.Messaging.Configuration;
-using DotNet.Testcontainers.Builders;
+﻿using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Quartz;
 using Testcontainers.PostgreSql;
-using IContainer = DotNet.Testcontainers.Containers.IContainer;
 
 namespace TestUtilities;
 
@@ -46,22 +39,7 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
 
             #endregion
 
-            #region RabbitMq Configuration
 
-            var rmgDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(IBusControl));
-
-            if (rmgDescriptor is not null)
-                services.Remove(rmgDescriptor);
-
-            services.AddMassTransitTestHarness(cfg =>
-            {
-                cfg.AddHandler<CreateUserProfileRequest>(async cxt =>
-                {
-                    await cxt.RespondAsync(new CreateUserProfileResponse());
-                });
-            });
-
-            #endregion
         });
     }
 

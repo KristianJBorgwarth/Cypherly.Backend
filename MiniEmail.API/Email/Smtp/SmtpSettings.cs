@@ -2,10 +2,10 @@
 
 public sealed class SmtpSettings
 {
-    public required string Host { get; init; }
-    public int Port { get; init; }
-    public required string Username { get; init; }
-    public required string Password { get; init; }
-    public required string FromAddress { get; init; }
-    public bool UseSsl { get; init; } = true;
+    public required string Host { get; set; }
+    public int Port { get; set; }
+    public required string Username { get; set; }
+    public required string Password { get; set; }
+    public required string FromAddress { get; set; }
+    public bool UseSsl { get; set; } = true;
 }

@@ -69,3 +69,6 @@ app.MapPost("send-email", async (SendEmailRequest request, IValidator<SendEmailR
 .WithOpenApi();
 
 app.Run();
+
+public partial class Program
+{}

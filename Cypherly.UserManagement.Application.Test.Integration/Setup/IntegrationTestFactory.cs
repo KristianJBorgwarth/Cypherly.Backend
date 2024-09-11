@@ -1,17 +1,16 @@
-﻿using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
-using MassTransit;
+﻿using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using TestUtilities;
+
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace Cypherly.Authentication.Application.Test.Integration.Setup;
+namespace Cypherly.UserManagement.Application.Test.Integration.Setup;
 
 public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestFactory<TProgram, TDbContext>
     where TProgram : class
     where TDbContext : DbContext
 {
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         base.ConfigureWebHost(builder);
@@ -27,10 +26,7 @@ public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestF
 
             services.AddMassTransitTestHarness(cfg =>
             {
-                cfg.AddHandler<CreateUserProfileRequest>(async cxt =>
-                {
-                    await cxt.RespondAsync(new CreateUserProfileResponse());
-                });
+                cfg.AddConsumers(typeof(TProgram).Assembly);
             });
 
             #endregion
