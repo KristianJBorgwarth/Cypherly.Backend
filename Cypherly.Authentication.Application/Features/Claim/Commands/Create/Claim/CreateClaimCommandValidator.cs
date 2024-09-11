@@ -6,6 +6,8 @@ public class CreateUserClaimCommandValidator : AbstractValidator<CreateClaimComm
 {
     public CreateUserClaimCommandValidator()
     {
-
+        RuleFor(v => v.ClaimType)
+            .MaximumLength(30)
+            .NotEmpty();
     }
 }

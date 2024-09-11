@@ -16,5 +16,6 @@ public static class AuthenticationPersistenceConfiguration
         services.AddPersistence<AuthenticationDbContext>(configuration, Assembly.GetExecutingAssembly(), ConnectionStringName);
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IClaimRepository, ClaimRepository>();
     }
 }

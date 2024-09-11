@@ -10,11 +10,17 @@ public class AuthenticationDbContext(DbContextOptions options) : CypherlyBaseDbC
 {
     public DbSet<User> User { get; set; } = null!;
     public DbSet<VerificationCode> VerificationCode { get; set; } = null!;
+    
+    public DbSet<Claim> Claim { get; set; } = null!;
+    
+    public DbSet<UserClaim> UserClaim { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserModelConfiguration());
         modelBuilder.ApplyConfiguration(new VerificationCodeModelConfiguration());
+        modelBuilder.ApplyConfiguration(new ClaimModelConfiguration());
+        modelBuilder.ApplyConfiguration(new UserClaimModelConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }
