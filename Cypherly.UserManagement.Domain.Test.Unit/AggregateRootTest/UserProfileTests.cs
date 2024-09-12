@@ -83,5 +83,68 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
             result.Error.Message.Should().Contain("not valid");
             userProfile.DisplayName.Should().BeNull();
         }
+
+                public void AddFriendship_ShouldFail_WhenAddingSelfAsFriend()
+        {
+            // Arrange
+            var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+
+            // Act
+            var result = userProfile.AddFriendship(userProfile);
+
+            // Assert
+            result.Success.Should().BeFalse();
+            result.Error.Message.Should().Contain("Cannot add self as friend");
+        }
+
+        [Fact]
+        public void AddFriendship_ShouldSucceed_WhenAddingValidFriend()
+        {
+            // Arrange
+            var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+            var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+
+            // Act
+            var result = userProfile.AddFriendship(friendProfile);
+
+            // Assert
+            result.Success.Should().BeTrue();
+            userProfile.FriendshipsInitiated.Should().ContainSingle(f => f.FriendProfileId == friendProfile.Id);
+        }
+
+        [Fact]
+        public void AddFriendship_ShouldFail_WhenFriendshipAlreadyExists()
+        {
+            // Arrange
+            var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+            var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+
+            // Act
+            userProfile.AddFriendship(friendProfile); // First time, should succeed
+            var result = userProfile.AddFriendship(friendProfile); // Second time, should fail
+
+            // Assert
+            result.Success.Should().BeFalse();
+            result.Error.Message.Should().Contain("Friendship already exists");
+        }
+
+        [Fact]
+        public void AddFriendship_ShouldFail_WhenFriendshipExistsInReceivedList()
+        {
+            // Arrange
+            var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
+            var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+
+            // Simulate that friend has already initiated a friendship with userProfile
+            friendProfile.AddFriendship(userProfile);
+            userProfile.AddFriendship(friendProfile);
+
+            // Act
+            var result = userProfile.AddFriendship(friendProfile); // Should fail, because friendship is in received list
+
+            // Assert
+            result.Success.Should().BeFalse();
+            result.Error.Message.Should().Contain("Friendship already exists");
+        }
     }
 }

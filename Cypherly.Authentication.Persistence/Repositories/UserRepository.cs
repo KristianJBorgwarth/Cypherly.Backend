@@ -7,14 +7,20 @@ namespace Cypherly.Authentication.Persistence.Repositories;
 
 public class UserRepository(AuthenticationDbContext context) : IUserRepository
 {
-    public async Task CreateAsync(User entity) => await context.User.AddAsync(entity);
+    public async Task CreateAsync(User entity)
+    {
+        await context.User.AddAsync(entity);
+    }
 
-    public Task DeleteAsync(Guid id)
+    public Task DeleteAsync(User entity)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<User?> GetByIdAsync(Guid id) => await context.User.FindAsync(id);
+    public async Task<User?> GetByIdAsync(Guid id)
+    {
+        return await context.User.FindAsync(id);
+    }
 
     public Task UpdateAsync(User entity)
     {
@@ -22,5 +28,8 @@ public class UserRepository(AuthenticationDbContext context) : IUserRepository
         return Task.CompletedTask;
     }
 
-    public async Task<User?> GetUserByEmail(string email) => await context.User.FirstOrDefaultAsync(c => c.Email.Address.Equals(email));
+    public async Task<User?> GetUserByEmail(string email)
+    {
+        return await context.User.FirstOrDefaultAsync(c => c.Email.Address.Equals(email));
+    }
 }

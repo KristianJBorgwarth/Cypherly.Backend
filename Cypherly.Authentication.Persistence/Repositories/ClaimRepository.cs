@@ -7,13 +7,15 @@ namespace Cypherly.Authentication.Persistence.Repositories;
 
 public class ClaimRepository(AuthenticationDbContext context) : IClaimRepository
 {
-    public async Task CreateAsync(Claim entity) => await context.Claim.AddAsync(entity);
+    public async Task CreateAsync(Claim entity)
+    {
+        await context.Claim.AddAsync(entity);
+    }
 
-    public Task DeleteAsync(Guid id)
+    public Task DeleteAsync(Claim entity)
     {
         throw new NotImplementedException();
     }
-
     public Task<Claim?> GetByIdAsync(Guid id)
     {
         throw new NotImplementedException();
@@ -24,5 +26,8 @@ public class ClaimRepository(AuthenticationDbContext context) : IClaimRepository
         throw new NotImplementedException();
     }
 
-    public async Task<bool> DoesClaimExistAsync(string claimType) => await context.Claim.AnyAsync(c => c.ClaimType.Equals(claimType));
+    public async Task<bool> DoesClaimExistAsync(string claimType)
+    {
+        return await context.Claim.AnyAsync(c => c.ClaimType.Equals(claimType));
+    }
 }
