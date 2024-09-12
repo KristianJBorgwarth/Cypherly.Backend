@@ -13,5 +13,6 @@ public class UserManagementDbContext(DbContextOptions options) : CypherlyBaseDbC
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new UserProfileModelConfiguration());
+        modelBuilder.ApplyConfiguration(new FriendshipModelConfiguration());
     }
 }

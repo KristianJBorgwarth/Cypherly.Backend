@@ -5,5 +5,5 @@ namespace Cypherly.UserManagement.Application.Contracts;
 
 public interface IUserProfileRepository : IRepository<UserProfile>
 {
-
+    Task<UserProfile?> GetByUserTag(string userTag);
 }

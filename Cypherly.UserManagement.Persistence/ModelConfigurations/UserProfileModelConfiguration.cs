@@ -25,5 +25,15 @@ public class UserProfileModelConfiguration : IEntityTypeConfiguration<UserProfil
             .HasMaxLength(20);
 
         builder.Property(x => x.ProfilePictureUrl);
+
+        builder.HasMany(x => x.FriendshipsInitiated)
+            .WithOne(x => x.UserProfile)
+            .HasForeignKey(x => x.UserProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.FriendshipsRecieved)
+            .WithOne(x => x.FriendProfile)
+            .HasForeignKey(x => x.FriendProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
