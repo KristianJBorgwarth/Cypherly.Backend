@@ -13,6 +13,6 @@ public class UserProfileController(ISender sender) : BaseController
     public async Task<ActionResult> CreateFriendship([FromBody] CreateFriendshipCommand command)
     {
         var result = await sender.Send(command);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        return result.Success ? Ok() : Error(result.Error);
     }
 }

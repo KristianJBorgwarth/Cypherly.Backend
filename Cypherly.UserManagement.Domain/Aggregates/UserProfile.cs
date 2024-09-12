@@ -17,9 +17,7 @@ public partial class UserProfile : AggregateRoot
     private readonly List<Friendship> _friendshipsInitiated = [];
     public virtual IReadOnlyCollection<Friendship> FriendshipsInitiated => _friendshipsInitiated;
 
-    public UserProfile() : base(Guid.Empty)
-    {
-    } // For EF Core
+    public UserProfile() : base(Guid.Empty) { } // For EF Core
 
     public UserProfile(Guid id, string username, UserTag userUserTag) : base(id)
     {
@@ -42,6 +40,19 @@ public partial class UserProfile : AggregateRoot
             return Result.Fail(Errors.General.UnexpectedValue(nameof(displayName)));
 
         DisplayName = displayName;
+        return Result.Ok();
+    }
+
+    public Result AddFriendship(UserProfile userProfile)
+    {
+        if(Id == userProfile.Id)
+            return Result.Fail(Errors.General.UnspecifiedError("Cannot add self as friend"));
+
+        if(_friendshipsInitiated.Any(f=> f.FriendProfileId == userProfile.Id)
+           || _friendshipsRecieved.Any(f=> f.UserProfileId == userProfile.Id))
+            return Result.Fail(Errors.General.UnspecifiedError("Friendship already exists"));
+
+        _friendshipsInitiated.Add(new(Guid.NewGuid(), Id, userProfile.Id));
         return Result.Ok();
     }
 
