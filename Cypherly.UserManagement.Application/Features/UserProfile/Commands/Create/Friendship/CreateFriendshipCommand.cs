@@ -4,6 +4,6 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Crea
 
 public sealed record CreateFriendshipCommand : ICommand
 {
-    public Guid UserId { get; set; }
-    public required string FriendTag { get; set; }
+    public Guid UserId { get; init; }
+    public required string FriendTag { get; init; }
 }

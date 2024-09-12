@@ -17,7 +17,6 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.Consumer
         private readonly IUserProfileRepository _fakeUserProfileRepo;
         private readonly IUnitOfWork _fakeUnitOfWork;
         private readonly IUserProfileService _fakeUserProfileService;
-        private readonly ILogger<CreateUserProfileConsumer> _fakeLogger;
         private readonly CreateUserProfileConsumer _sut;
 
         public CreateUserProfileConsumerTest()
@@ -25,8 +24,8 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.Consumer
             _fakeUserProfileRepo = A.Fake<IUserProfileRepository>();
             _fakeUnitOfWork = A.Fake<IUnitOfWork>();
             _fakeUserProfileService = A.Fake<IUserProfileService>();
-            _fakeLogger = A.Fake<ILogger<CreateUserProfileConsumer>>();
-            _sut = new(_fakeUserProfileRepo, _fakeUnitOfWork, _fakeUserProfileService, _fakeLogger);
+            var fakeLogger = A.Fake<ILogger<CreateUserProfileConsumer>>();
+            _sut = new(_fakeUserProfileRepo, _fakeUnitOfWork, _fakeUserProfileService, fakeLogger);
         }
 
         [Fact]

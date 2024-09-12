@@ -8,7 +8,7 @@ namespace Cypherly.UserManagement.API.Controllers;
 public class UserProfileController(ISender sender) : BaseController
 {
     [HttpPost("friendship")]
-    [ProducesResponseType(typeof(CreateFriendshipDto),StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> CreateFriendship([FromBody] CreateFriendshipCommand command)
     {

@@ -48,8 +48,10 @@ public partial class UserProfile : AggregateRoot
         if(Id == userProfile.Id)
             return Result.Fail(Errors.General.UnspecifiedError("Cannot add self as friend"));
 
-        if(_friendshipsInitiated.Any(f=> f.FriendProfileId == userProfile.Id)
-           || _friendshipsRecieved.Any(f=> f.UserProfileId == userProfile.Id))
+        if(FriendshipsInitiated.Any(f=> f.FriendProfileId == userProfile.Id))
+            return Result.Fail(Errors.General.UnspecifiedError("Friendship already exists"));
+
+        if(FriendshipsRecieved.Any(f=> f.UserProfileId == userProfile.Id))
             return Result.Fail(Errors.General.UnspecifiedError("Friendship already exists"));
 
         _friendshipsInitiated.Add(new(Guid.NewGuid(), Id, userProfile.Id));
