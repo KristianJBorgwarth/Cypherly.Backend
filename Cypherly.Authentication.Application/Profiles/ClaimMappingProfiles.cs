@@ -4,9 +4,9 @@ using Cypherly.Authentication.Domain.Aggregates;
 
 namespace Cypherly.Authentication.Application.Profiles;
 
-public class ClaimProfiles : Profile
+public class ClaimMappingProfiles : Profile
 {
-    public ClaimProfiles()
+    public ClaimMappingProfiles()
     {
         CreateMap<Claim, CreateClaimDto>().ReverseMap();
     }
