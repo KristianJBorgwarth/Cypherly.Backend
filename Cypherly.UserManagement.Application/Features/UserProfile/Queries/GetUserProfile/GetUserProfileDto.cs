@@ -1,6 +1,6 @@
-﻿namespace Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileById;
+﻿namespace Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 
-public sealed record GetUserProfileByIdDto
+public sealed record GetUserProfileDto
 {
     public required Guid Id { get; init; }
     public required string Username { get; init; }

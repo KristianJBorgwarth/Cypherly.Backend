@@ -1,5 +1,6 @@
 ﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileById;
+using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
+using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +19,24 @@ public class UserProfileController(ISender sender) : BaseController
     }
 
     [HttpGet("")]
-    [ProducesResponseType(typeof(GetUserProfileByIdDto),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetUserProfileDto),StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetUserProfile([FromQuery] GetUserProfileByIdQuery query)
+    public async Task<IActionResult> GetUserProfile([FromQuery] GetUserProfileQuery query)
     {
         var result = await sender.Send(query);
         return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+    [HttpGet("friends")]
+    [ProducesResponseType(typeof(GetFriendsDto),StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetFriends([FromQuery] GetFriendsQuery query)
+    {
+        var result = await sender.Send(query);
+
+        if (result.Success is false) return Error(result.Error);
+
+        return result.Value.Count > 0 ? Ok(result.Value) : NoContent();
     }
 }

@@ -31,7 +31,7 @@ public class UserProfileModelConfiguration : IEntityTypeConfiguration<UserProfil
             .HasForeignKey(x => x.UserProfileId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(x => x.FriendshipsRecieved)
+        builder.HasMany(x => x.FriendshipsReceived)
             .WithOne(x => x.FriendProfile)
             .HasForeignKey(x => x.FriendProfileId)
             .OnDelete(DeleteBehavior.Cascade);

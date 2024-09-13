@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileById;
+using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 using Cypherly.UserManagement.Application.Test.Integration.Setup;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
@@ -9,17 +9,17 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.QueryTest.GetUserProfileByIdTest;
+namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.QueryTest.GetUserProfileTest;
 
-public class GetUserProfileByIdQuerHandlerTest : IntegrationTestBase
+public class GetUserProfileQueryHandlerTest : IntegrationTestBase
 {
-    private readonly GetUserProfileByIdQueryHandler _sut;
-    public GetUserProfileByIdQuerHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    private readonly GetUserProfileQueryHandler _sut;
+    public GetUserProfileQueryHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetUserProfileByIdQueryHandler>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetUserProfileQueryHandler>>();
 
         _sut = new(repo, mapper, logger);
     }
@@ -32,7 +32,7 @@ public class GetUserProfileByIdQuerHandlerTest : IntegrationTestBase
         Db.UserProfile.Add(userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetUserProfileByIdQuery { UserProfileId = userProfile.Id };
+        var query = new GetUserProfileQuery { UserProfileId = userProfile.Id };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -46,7 +46,7 @@ public class GetUserProfileByIdQuerHandlerTest : IntegrationTestBase
     public async void Handle_Query_With_Invalid_ID_Should_Return_NotFound()
     {
         // Arrange
-        var query = new GetUserProfileByIdQuery { UserProfileId = Guid.NewGuid() };
+        var query = new GetUserProfileQuery { UserProfileId = Guid.NewGuid() };
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);

@@ -40,7 +40,7 @@ public class CreateFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
         var userProfileResult = await Db.UserProfile.FirstOrDefaultAsync(u => u.Id == user.Id);
         userProfileResult!.FriendshipsInitiated.Should().HaveCount(1);
         var friendResult = await Db.UserProfile.FirstOrDefaultAsync(u => u.Id == friend.Id);
-        friendResult!.FriendshipsRecieved.Should().HaveCount(1);
+        friendResult!.FriendshipsReceived.Should().HaveCount(1);
     }
 
     [Fact]

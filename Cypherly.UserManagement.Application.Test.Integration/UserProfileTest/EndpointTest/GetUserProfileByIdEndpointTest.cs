@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
 using Cypherly.Authentication.API.Utilities;
-using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileById;
+using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 using Cypherly.UserManagement.Application.Test.Integration.Setup;
 using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
@@ -21,10 +21,10 @@ public class GetUserProfileByIdEndpointTest(IntegrationTestFactory<Program, User
         Db.UserProfile.Add(userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetUserProfileByIdQuery { UserProfileId = userProfile.Id };
+        var query = new GetUserProfileQuery { UserProfileId = userProfile.Id };
 
         // Act
-        var response = await Client.GetFromJsonAsync<Envelope<GetUserProfileByIdDto>>($"/api/userprofile?UserProfileId={userProfile.Id}");
+        var response = await Client.GetFromJsonAsync<Envelope<GetUserProfileDto>>($"/api/userprofile?UserProfileId={userProfile.Id}");
 
         // Assert
         response.Should().NotBeNull();
@@ -42,7 +42,7 @@ public class GetUserProfileByIdEndpointTest(IntegrationTestFactory<Program, User
         Db.UserProfile.Add(userProfile);
         await Db.SaveChangesAsync();
 
-        var query = new GetUserProfileByIdQuery { UserProfileId = userProfile.Id };
+        var query = new GetUserProfileQuery { UserProfileId = userProfile.Id };
 
         // Act
         var response = await Client.GetAsync($"/api/userprofile?UserProfileId={Guid.NewGuid()}"); //WRONG ID
