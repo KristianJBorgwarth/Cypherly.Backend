@@ -11,8 +11,8 @@ public partial class UserProfile : AggregateRoot
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
 
-    private readonly List<Friendship> _friendshipsRecieved = [];
-    public virtual IReadOnlyCollection<Friendship> FriendshipsRecieved => _friendshipsRecieved;
+    private readonly List<Friendship> _friendshipsReceived = [];
+    public virtual IReadOnlyCollection<Friendship> FriendshipsReceived => _friendshipsReceived;
 
     private readonly List<Friendship> _friendshipsInitiated = [];
     public virtual IReadOnlyCollection<Friendship> FriendshipsInitiated => _friendshipsInitiated;
@@ -51,7 +51,7 @@ public partial class UserProfile : AggregateRoot
         if(FriendshipsInitiated.Any(f=> f.FriendProfileId == userProfile.Id))
             return Result.Fail(Errors.General.UnspecifiedError("Friendship already exists"));
 
-        if(FriendshipsRecieved.Any(f=> f.UserProfileId == userProfile.Id))
+        if(FriendshipsReceived.Any(f=> f.UserProfileId == userProfile.Id))
             return Result.Fail(Errors.General.UnspecifiedError("Friendship already exists"));
 
         _friendshipsInitiated.Add(new(Guid.NewGuid(), Id, userProfile.Id));
