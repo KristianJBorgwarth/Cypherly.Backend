@@ -9,12 +9,12 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.QueryTest.GetUserProfileByIdTest;
+namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.QueryTest.GetUserProfileTest;
 
-public class GetUserProfileByIdQuerHandlerTest : IntegrationTestBase
+public class GetUserProfileQueryHandlerTest : IntegrationTestBase
 {
     private readonly GetUserProfileQueryHandler _sut;
-    public GetUserProfileByIdQuerHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
+    public GetUserProfileQueryHandlerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();

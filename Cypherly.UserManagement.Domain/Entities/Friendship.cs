@@ -22,4 +22,9 @@ public class Friendship : Entity
         FriendProfileId = friendProfileId;
         Status = FriendshipStatus.Pending;
     }
+
+    public void AcceptFriendship()
+    {
+        Status = FriendshipStatus.Accepted;
+    }
 }
