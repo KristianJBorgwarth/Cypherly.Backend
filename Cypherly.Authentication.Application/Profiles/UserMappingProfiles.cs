@@ -4,9 +4,9 @@ using Cypherly.Authentication.Domain.Aggregates;
 
 namespace Cypherly.Authentication.Application.Profiles;
 
-public class UserProfiles : Profile
+public class UserMappingProfiles : Profile
 {
-    public UserProfiles()
+    public UserMappingProfiles()
     {
         CreateMap<User, CreateUserDto>().ReverseMap();
     }
