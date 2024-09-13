@@ -1,4 +1,5 @@
 ﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 using MediatR;
@@ -38,5 +39,14 @@ public class UserProfileController(ISender sender) : BaseController
         if (result.Success is false) return Error(result.Error);
 
         return result.Value.Count > 0 ? Ok(result.Value) : NoContent();
+    }
+
+    [HttpPut("profile-picture")]
+    [ProducesResponseType(typeof(UpdateUserProfilePictureDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetProfilePicture([FromQuery] UpdateUserProfilePictureCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 }
