@@ -4,6 +4,7 @@ using Cypherly.Outboxing.Messaging.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
 using Cypherly.UserManagement.Domain.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;
+using Cypherly.UserManagement.Storage.Configuration;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,6 +45,13 @@ builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.UserManage
 
 #region Persistence Layer
 builder.Services.AddUserManagementPersistence(configuration);
+#endregion
+
+#region Storage
+
+builder.Services.Configure<MinioSettings>(configuration.GetSection("Bucket"));
+builder.Services.AddStorage(configuration);
+
 #endregion
 
 #region Outboxing
