@@ -13,12 +13,15 @@ public static class StorageConfiguration
     public static IServiceCollection AddStorage(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IAmazonS3>(sp =>
+        
         {
-            var minioSettings = sp.GetRequiredService<IOptions<MinioSettings>>();
-            var credentials = new Amazon.Runtime.BasicAWSCredentials(minioSettings.Value.User, minioSettings.Value.Password);
+            var minioSettings = sp.GetRequiredService<IOptions<MinioSettings>>().Value;
+            var credentials = new Amazon.Runtime.BasicAWSCredentials(minioSettings.User, minioSettings.Password);
+            Console.WriteLine($"Minio Host: {minioSettings.Host}");
+            Console.WriteLine($"Minio User: {minioSettings.User}");
             return new AmazonS3Client(credentials, new AmazonS3Config
             {
-                ServiceURL = minioSettings.Value.Host,
+                ServiceURL = minioSettings.Host,
                 ForcePathStyle = true
             });
         });

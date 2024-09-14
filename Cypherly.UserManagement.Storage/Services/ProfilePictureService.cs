@@ -102,11 +102,16 @@ public class ProfilePictureService(
         };
 
         var listResponse = await s3Client.ListObjectsV2Async(listRequest);
-        var keys = listResponse.S3Objects.Select(o => o.Key);
 
-        foreach (var key in keys)
+        // Check if S3Objects is null or empty before proceeding
+        if (listResponse.S3Objects != null && listResponse.S3Objects.Any())
         {
-            await DeleteProfilePictureAsync(key);
+            var keys = listResponse.S3Objects.Select(o => o.Key);
+
+            foreach (var key in keys)
+            {
+                await DeleteProfilePictureAsync(key);
+            }
         }
     }
 }
