@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Cypherly.Application.Abstractions;
+﻿using Cypherly.Application.Abstractions;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Domain.Common;
 using Cypherly.UserManagement.Application.Contracts;
@@ -10,7 +9,6 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Upda
 public class UpdateUserProfilePictureCommandHandler(
     IUserProfileRepository userProfileRepository,
     IProfilePictureService profilePictureService,
-    IMapper mapper,
     IUnitOfWork unitOfWork,
     ILogger<UpdateUserProfilePictureCommandHandler> logger)
     : ICommandHandler<UpdateUserProfilePictureCommand, UpdateUserProfilePictureDto>
@@ -29,7 +27,7 @@ public class UpdateUserProfilePictureCommandHandler(
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var dto = mapper.Map<UpdateUserProfilePictureDto>(user);
+            var dto = new UpdateUserProfilePictureDto(result.Value);
 
             return Result.Ok(dto);
         }

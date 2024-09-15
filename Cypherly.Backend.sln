@@ -88,6 +88,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{DD48
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Storage", "Cypherly.UserManagement.Storage\Cypherly.UserManagement.Storage.csproj", "{C2F8BFA7-A559-4FDA-8350-A1B94CAFF4F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Storage.Test.Unit", "Cypherly.UserManagement.Storage.Test.Unit\Cypherly.UserManagement.Storage.Test.Unit.csproj", "{BEFC1B36-6D64-4F11-A1B7-B85F922ED098}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -206,6 +208,10 @@ Global
 		{C2F8BFA7-A559-4FDA-8350-A1B94CAFF4F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2F8BFA7-A559-4FDA-8350-A1B94CAFF4F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2F8BFA7-A559-4FDA-8350-A1B94CAFF4F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEFC1B36-6D64-4F11-A1B7-B85F922ED098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEFC1B36-6D64-4F11-A1B7-B85F922ED098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEFC1B36-6D64-4F11-A1B7-B85F922ED098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEFC1B36-6D64-4F11-A1B7-B85F922ED098}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FBB8E791-E41F-4207-9D92-3B6500B8B1C1} = {D388C026-0CAC-4E23-AFC5-080C14BC571D}
@@ -247,5 +253,6 @@ Global
 		{CBA4C11F-B9CA-4933-B7D6-3A2F17F86C29} = {FB7A00E3-FAB1-45B6-B563-CD6DF78FAC6D}
 		{DD489ABA-C4B3-461F-9000-944629E9265E} = {8918B395-BF77-410D-A2CE-8D0389FD3EB8}
 		{C2F8BFA7-A559-4FDA-8350-A1B94CAFF4F0} = {DD489ABA-C4B3-461F-9000-944629E9265E}
+		{BEFC1B36-6D64-4F11-A1B7-B85F922ED098} = {6ACA2E08-F122-4F46-8774-90F0CD4705C3}
 	EndGlobalSection
 EndGlobal
