@@ -14,7 +14,6 @@
         <PackageReference Include="FakeItEasy" Version="8.3.0" />
         <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.4" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
-        <PackageReference Include="Minio" Version="6.0.3" />
         <PackageReference Include="xunit" Version="2.5.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
     </ItemGroup>
@@ -24,9 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cypherly.UserManagement.API\Cypherly.UserManagement.API.csproj" />
-      <ProjectReference Include="..\Cypherly.UserManagement.Persistence\Cypherly.UserManagement.Persistence.csproj" />
-      <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
+      <ProjectReference Include="..\Cypherly.UserManagement.Storage\Cypherly.UserManagement.Storage.csproj" />
     </ItemGroup>
 
 </Project>

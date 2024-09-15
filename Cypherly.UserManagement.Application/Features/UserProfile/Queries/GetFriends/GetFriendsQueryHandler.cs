@@ -52,7 +52,6 @@ public class GetFriendsQueryHandler(
             Username = friendProfile.Username,
             UserTag = friendProfile.UserTag.Tag,
             DisplayName = friendProfile.DisplayName,
-            ProfilePictureUrl = friendProfile.ProfilePictureUrl
         };
     }
 }
