@@ -19,9 +19,10 @@ public class GetUserProfileQueryHandlerTest : IntegrationTestBase
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+        var profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetUserProfileQueryHandler>>();
 
-        _sut = new(repo, mapper, logger);
+        _sut = new(repo,profilePictureService, mapper, logger);
     }
 
     [Fact]
