@@ -25,5 +25,6 @@ public class IntegrationTestBase : IDisposable
     public void Dispose()
     {
         Db.UserProfile.ExecuteDelete();
+        Db.OutboxMessage.ExecuteDelete();
     }
 }

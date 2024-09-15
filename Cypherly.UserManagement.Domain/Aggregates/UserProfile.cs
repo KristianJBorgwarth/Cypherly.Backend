@@ -1,5 +1,6 @@
 ﻿using Cypherly.Domain.Common;
 using Cypherly.UserManagement.Domain.Entities;
+using Cypherly.UserManagement.Domain.Events.UserProfile;
 using Cypherly.UserManagement.Domain.ValueObjects;
 
 namespace Cypherly.UserManagement.Domain.Aggregates;
@@ -28,6 +29,7 @@ public partial class UserProfile : AggregateRoot
     public void SetProfilePictureUrl(string profilePictureUrl)
     {
         ProfilePictureUrl = profilePictureUrl;
+        AddDomainEvent(new UserProfilePictureUpdatedEvent(Id));
     }
 
     public Result SetDisplayName(string displayName)

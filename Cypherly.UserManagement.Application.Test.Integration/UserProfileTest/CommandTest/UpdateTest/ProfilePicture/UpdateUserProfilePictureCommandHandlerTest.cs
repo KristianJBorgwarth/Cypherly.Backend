@@ -50,6 +50,7 @@ public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
         result.Should().NotBeNull();
         var updatedChatUser = await Db.UserProfile.AsNoTracking().FirstOrDefaultAsync(x => x.Id == user.Id);
         updatedChatUser!.ProfilePictureUrl.Should().NotBeNull().And.Be(result.Value.ProfilePictureUrl);
+        Db.OutboxMessage.Should().HaveCount(1);
     }
 
     [Fact]

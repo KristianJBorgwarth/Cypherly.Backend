@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 using Cypherly.Authentication.API.Utilities;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
@@ -50,6 +49,7 @@ public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program
         envelope.Should().NotBeNull();
         envelope.Result.Should().NotBeNull();
         envelope.Result.ProfilePictureUrl.Should().NotBeNullOrEmpty();
+        Db.OutboxMessage.Should().HaveCount(1);
     }
 
 
