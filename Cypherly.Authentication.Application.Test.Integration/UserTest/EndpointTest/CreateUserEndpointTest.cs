@@ -8,12 +8,9 @@ using FluentAssertions;
 
 namespace Cypherly.Authentication.Application.Test.Integration.UserTest.EndpointTest;
 
-public class CreateUserEndpointTest : IntegrationTestBase
+public class CreateUserEndpointTest(IntegrationTestFactory<Program, AuthenticationDbContext> factory)
+    : IntegrationTestBase(factory)
 {
-    public CreateUserEndpointTest(IntegrationTestFactory<Program, AuthenticationDbContext> factory) : base(factory)
-    {
-    }
-
     [Fact]
     public async void Valid_Request_Should_Create_User_And_Return_200_Ok()
     {
@@ -34,7 +31,6 @@ public class CreateUserEndpointTest : IntegrationTestBase
         Db.User.Count().Should().Be(1);
         Db.User.First().Email.Address.Should().Be(req.Email);
         Db.OutboxMessage.Count().Should().Be(1);
-
     }
 
     [Fact]

@@ -23,11 +23,17 @@ public class ClaimRepository(AuthenticationDbContext context) : IClaimRepository
 
     public Task UpdateAsync(Claim entity)
     {
-        throw new NotImplementedException();
+        context.Claim.Update(entity);
+        return Task.CompletedTask;
     }
 
     public async Task<bool> DoesClaimExistAsync(string claimType)
     {
         return await context.Claim.AnyAsync(c => c.ClaimType.Equals(claimType));
+    }
+
+    public Task<Claim?> GetClaimByTypeAsync(string claimType, CancellationToken cancellationToken)
+    {
+        return context.Claim.FirstOrDefaultAsync(c => c.ClaimType.Equals(claimType), cancellationToken);
     }
 }

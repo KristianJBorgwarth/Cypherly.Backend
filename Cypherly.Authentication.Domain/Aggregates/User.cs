@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Cypherly.Authentication.Domain.Entities;
+using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Domain.Common;
 
@@ -25,6 +26,7 @@ public class User : AggregateRoot
 
     public void SetVerificationCode() => VerificationCode = new(id: Guid.NewGuid(), userId: Id);
 
+    //TODO: retest thjis method to assert domain event is added
     public Result Verify(string verificationCode)
     {
         if(VerificationCode is null)
@@ -40,6 +42,7 @@ public class User : AggregateRoot
 
         VerificationCode.Use();
         IsVerified = true;
+        AddDomainEvent(new UserVerifiedEvent(Id));
         return Result.Ok();
     }
 }

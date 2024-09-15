@@ -29,4 +29,13 @@
       <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Setup\Resources\confirm_style_2_002.wav">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Setup\Resources\test_profile_picture.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

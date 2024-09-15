@@ -6,4 +6,5 @@ namespace Cypherly.Authentication.Application.Contracts;
 public interface IClaimRepository : IRepository<Claim>
 {
     public Task<bool> DoesClaimExistAsync(string claimType);
+    public Task<Claim?> GetClaimByTypeAsync(string claimType, CancellationToken cancellationToken);
 }

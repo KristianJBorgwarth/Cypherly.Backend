@@ -10,19 +10,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cypherly.Authentication.Application.Test.Integration.UserTest.EndpointTest;
 
-public class VerifyUserEndpointTest : IntegrationTestBase
+public class VerifyUserEndpointTest(IntegrationTestFactory<Program, AuthenticationDbContext> factory)
+    : IntegrationTestBase(factory)
 {
-    public VerifyUserEndpointTest(IntegrationTestFactory<Program, AuthenticationDbContext> factory) : base(factory)
-    {
-    }
-
     [Fact]
-    public async void Valid_Request_Should_Verify_User_And_Return_200_Ok()
+    public async Task Valid_Request_Should_Verify_User_And_Return_200_Ok()
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"), false);
         user.SetVerificationCode();
         await Db.User.AddAsync(user);
+        await Db.Claim.AddAsync(new Claim(Guid.NewGuid(), "user"));
         await Db.SaveChangesAsync();
 
         var req = new VerifyUserCommand()
@@ -38,6 +36,7 @@ public class VerifyUserEndpointTest : IntegrationTestBase
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         Db.User.AsNoTracking().FirstOrDefault(u => u.Id == user.Id)!.IsVerified.Should().BeTrue();
         Db.VerificationCode.AsNoTracking().FirstOrDefault(vc => vc.UserId == user.Id)!.IsUsed.Should().BeTrue();
+        Db.OutboxMessage.Should().HaveCount(1);
     }
 
     [Fact]
@@ -62,5 +61,6 @@ public class VerifyUserEndpointTest : IntegrationTestBase
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         Db.User.AsNoTracking().FirstOrDefault(u => u.Id == user.Id)!.IsVerified.Should().BeFalse();
         Db.VerificationCode.AsNoTracking().FirstOrDefault(vc => vc.UserId == user.Id)!.IsUsed.Should().BeFalse();
+        Db.OutboxMessage.Should().HaveCount(0);
     }
 }
