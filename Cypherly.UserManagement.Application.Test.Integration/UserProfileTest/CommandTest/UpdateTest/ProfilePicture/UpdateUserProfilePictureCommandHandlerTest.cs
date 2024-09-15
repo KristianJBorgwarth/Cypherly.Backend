@@ -36,7 +36,6 @@ public class UpdateUserProfilePictureCommandHandlerTest : IntegrationTestBase
         var user = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));
         Db.UserProfile.Add(user);
         await Db.SaveChangesAsync();
-        await Db.SaveChangesAsync();
 
         var command = new UpdateUserProfilePictureCommand()
         {
