@@ -4,7 +4,7 @@ using Cypherly.Domain.Common;
 using Cypherly.UserManagement.Application.Contracts;
 using Microsoft.Extensions.Logging;
 
-namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update;
+namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 
 public class UpdateUserProfilePictureCommandHandler(
     IUserProfileRepository userProfileRepository,

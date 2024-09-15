@@ -59,7 +59,7 @@ public class ProfilePictureService(
         {
             BucketName = _bucketName,
             Key = profilePictureUrl,
-            Expires = DateTime.UtcNow.AddMinutes(10) // Use UTC to avoid time zone issues
+            Expires = DateTime.UtcNow.AddMinutes(10)
         };
 
         var url = await s3Client.GetPreSignedURLAsync(getRequest);

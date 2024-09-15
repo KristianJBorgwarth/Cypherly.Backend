@@ -1,7 +1,7 @@
 ﻿using Cypherly.Application.Abstractions;
 using Microsoft.AspNetCore.Http;
 
-namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update;
+namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 
 public sealed record UpdateUserProfilePictureCommand : ICommand<UpdateUserProfilePictureDto>
 {
