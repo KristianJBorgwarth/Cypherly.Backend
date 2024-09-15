@@ -27,7 +27,21 @@ public class UpdateUserProfilePictureCommandHandler(
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var dto = new UpdateUserProfilePictureDto(result.Value);
+            string? presignedUrl = null;
+
+            var presignedUrlResult = await profilePictureService.GetPresignedProfilePictureUrlAsync(result.Value);
+
+            if (presignedUrlResult.Success is false)
+            {
+                logger.LogWarning("Failed to retrieve presigned URL for profile picture with key {Key} for user {UserId}",
+                    result.Value, request.Id);
+            }
+            else
+            {
+                presignedUrl = presignedUrlResult.Value;
+            }
+
+            var dto = new UpdateUserProfilePictureDto(presignedUrl);
 
             return Result.Ok(dto);
         }
