@@ -9,6 +9,7 @@ public class UserProfileMappingProfiles : Profile
     public UserProfileMappingProfiles()
     {
         CreateMap<UserProfile, GetUserProfileDto>()
-            .ForMember(dest => dest.UserTag, opt => opt.MapFrom(src => src.UserTag.Tag)).ReverseMap();
+            .ForMember(dest => dest.UserTag, opt => opt.MapFrom(src => src.UserTag.Tag))
+            .ForMember(dest=> dest.ProfilePictureUrl, opt => opt.Ignore()).ReverseMap();
     }
 }

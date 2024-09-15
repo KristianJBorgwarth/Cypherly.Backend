@@ -48,6 +48,9 @@ public class UpdateUserProfilePictuerCommandHandler
 
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<System.Threading.CancellationToken>._)).DoesNothing();
 
+        A.CallTo(()=> _fakeProfilePicService.GetPresignedProfilePictureUrlAsync("somestring"))
+            .Returns(Result.Ok("somestring"));
+
         // Act
         var result = await _sut.Handle(command, new());
 
