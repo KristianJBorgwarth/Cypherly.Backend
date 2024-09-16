@@ -31,7 +31,6 @@ public class UserProfileService : IUserProfileService
         return Result.Ok();
     }
 
-    //TODO: unit test this method
     public Result AcceptFriendship(UserProfile userProfile, string friendTag)
     {
         var friendship = userProfile.FriendshipsReceived.FirstOrDefault(f => f.UserProfile.UserTag.Tag == friendTag);
