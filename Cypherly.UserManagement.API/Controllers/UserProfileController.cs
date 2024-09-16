@@ -1,5 +1,6 @@
 ﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
@@ -49,5 +50,14 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+    [HttpPut("friendship")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AcceptFriendship([FromBody] AcceptFriendshipCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
     }
 }
