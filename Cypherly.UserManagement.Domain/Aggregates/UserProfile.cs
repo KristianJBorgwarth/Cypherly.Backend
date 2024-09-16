@@ -42,6 +42,7 @@ public partial class UserProfile : AggregateRoot
             return Result.Fail(Errors.General.UnexpectedValue(nameof(displayName)));
 
         DisplayName = displayName;
+        AddDomainEvent(new UserProfileDisplayNameUpdatedEvent(Id));
         return Result.Ok();
     }
 

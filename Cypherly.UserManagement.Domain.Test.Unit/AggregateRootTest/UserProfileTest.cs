@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
 {
-    public class UserProfileTests
+    public class UserProfileTest
     {
         [Fact]
         public void SetProfilePictureUrl_ShouldUpdateProfilePictureUrl()
@@ -19,6 +19,7 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
 
             // Assert
             userProfile.ProfilePictureUrl.Should().Be(profilePictureUrl);
+            userProfile.DomainEvents.Should().HaveCount(1);
         }
 
         [Fact]
@@ -34,6 +35,7 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
             // Assert
             result.Success.Should().BeTrue();
             userProfile.DisplayName.Should().Be(validDisplayName);
+            userProfile.DomainEvents.Should().HaveCount(1);
         }
 
         [Fact]
@@ -50,6 +52,7 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
             result.Success.Should().BeFalse();
             result.Error.Message.Should().Contain("should be at least 3.");
             userProfile.DisplayName.Should().BeNull();
+            userProfile.DomainEvents.Should().HaveCount(0);
         }
 
         [Fact]
@@ -66,6 +69,8 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
             result.Success.Should().BeFalse();
             result.Error.Message.Should().Contain("should not exceed 20.");
             userProfile.DisplayName.Should().BeNull();
+            userProfile.DomainEvents.Should().HaveCount(0);
+
         }
 
         [Fact]
@@ -82,9 +87,12 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
             result.Success.Should().BeFalse();
             result.Error.Message.Should().Contain("not valid");
             userProfile.DisplayName.Should().BeNull();
+            userProfile.DomainEvents.Should().HaveCount(0);
+
         }
 
-                public void AddFriendship_ShouldFail_WhenAddingSelfAsFriend()
+        [Fact]
+        public void AddFriendship_ShouldFail_WhenAddingSelfAsFriend()
         {
             // Arrange
             var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("TestUser"));

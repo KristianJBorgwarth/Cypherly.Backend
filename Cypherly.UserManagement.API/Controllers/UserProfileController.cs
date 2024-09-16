@@ -1,5 +1,7 @@
 ﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
@@ -11,14 +13,6 @@ namespace Cypherly.UserManagement.API.Controllers;
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
 {
-    [HttpPost("friendship")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> CreateFriendship([FromBody] CreateFriendshipCommand command)
-    {
-        var result = await sender.Send(command);
-        return result.Success ? Ok() : Error(result.Error);
-    }
 
     [HttpGet("")]
     [ProducesResponseType(typeof(GetUserProfileDto),StatusCodes.Status200OK)]
@@ -29,7 +23,35 @@ public class UserProfileController(ISender sender) : BaseController
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
-    [HttpGet("friends")]
+    [HttpPut("profile-picture")]
+    [ProducesResponseType(typeof(UpdateUserProfilePictureDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetProfilePicture([FromForm] UpdateUserProfilePictureCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+    [HttpPut("displayname")]
+    [ProducesResponseType(typeof(UpdateUserProfileDisplayNameDto) ,StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateDisplayName([FromBody] UpdateUserProfileDisplayNameCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+
+    [HttpPost("friendship")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> CreateFriendship([FromBody] CreateFriendshipCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
+    }
+
+    [HttpGet("friendships")]
     [ProducesResponseType(typeof(GetFriendsDto),StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -41,13 +63,12 @@ public class UserProfileController(ISender sender) : BaseController
 
         return result.Value.Count > 0 ? Ok(result.Value) : NoContent();
     }
-
-    [HttpPut("profile-picture")]
-    [ProducesResponseType(typeof(UpdateUserProfilePictureDto), StatusCodes.Status200OK)]
+    [HttpPut("friendship")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetProfilePicture([FromForm] UpdateUserProfilePictureCommand command)
+    public async Task<IActionResult> AcceptFriendship([FromBody] AcceptFriendshipCommand command)
     {
         var result = await sender.Send(command);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        return result.Success ? Ok() : Error(result.Error);
     }
 }
