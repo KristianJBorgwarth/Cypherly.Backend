@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 using Cypherly.UserManagement.Domain.Aggregates;
 
@@ -11,5 +12,6 @@ public class UserProfileMappingProfiles : Profile
         CreateMap<UserProfile, GetUserProfileDto>()
             .ForMember(dest => dest.UserTag, opt => opt.MapFrom(src => src.UserTag.Tag))
             .ForMember(dest=> dest.ProfilePictureUrl, opt => opt.Ignore()).ReverseMap();
+        CreateMap<UserProfile, UpdateUserProfileDisplayNameDto>().ReverseMap();
     }
 }

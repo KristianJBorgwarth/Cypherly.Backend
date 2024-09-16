@@ -4,7 +4,7 @@ using FluentAssertions;
 
 namespace Cypherly.Authentication.Domain.Test.Unit.AggregateRootTest;
 
-public class UserTests
+public class UserTest
 {
     [Fact]
     public void SetVerificationCode_Should_Set_VerificationCode()
