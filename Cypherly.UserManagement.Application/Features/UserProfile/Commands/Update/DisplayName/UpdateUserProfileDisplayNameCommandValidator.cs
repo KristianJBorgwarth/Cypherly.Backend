@@ -11,6 +11,7 @@ public class UpdateUserProfileDisplayNameCommandValidator : AbstractValidator<Up
             .NotNull().NotEmpty().WithMessage(Errors.General
                 .ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.UserProfileId)).Message);
         RuleFor(cmd => cmd.DisplayName)
-            .NotNull().NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.DisplayName)).Message);
+            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(UpdateUserProfileDisplayNameCommand.DisplayName)).Message)
+            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.DisplayName)).Message);
     }
 }
