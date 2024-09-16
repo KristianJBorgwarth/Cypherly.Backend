@@ -33,7 +33,7 @@ public class GetFriendsEndpointTest(IntegrationTestFactory<Program, UserManageme
         await Db.SaveChangesAsync();
 
         // Act
-        var response = await Client.GetAsync($"/api/userprofile/friends?UserProfileId={userProfile.Id}");
+        var response = await Client.GetAsync($"/api/userprofile/friendships?UserProfileId={userProfile.Id}");
 
 
         // Assert
@@ -51,7 +51,7 @@ public class GetFriendsEndpointTest(IntegrationTestFactory<Program, UserManageme
         await Db.SaveChangesAsync();
 
         // Act
-        var response = await Client.GetAsync($"/api/userprofile/friends?UserProfileId={Guid.NewGuid()}");
+        var response = await Client.GetAsync($"/api/userprofile/friendships?UserProfileId={Guid.NewGuid()}");
 
 
         // Assert
@@ -67,7 +67,7 @@ public class GetFriendsEndpointTest(IntegrationTestFactory<Program, UserManageme
         await Db.SaveChangesAsync();
 
         // Act
-        var response = await Client.GetAsync($"/api/userprofile/friends?UserProfileId={userProfile.Id}");
+        var response = await Client.GetAsync($"/api/userprofile/friendships?UserProfileId={userProfile.Id}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
