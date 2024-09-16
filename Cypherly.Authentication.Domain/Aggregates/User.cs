@@ -17,9 +17,7 @@ public class User : AggregateRoot
     public virtual IReadOnlyCollection<VerificationCode> VerificationCodes => _verificationCodes;
     public virtual ICollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
 
-    public User() : base(Guid.Empty)
-    {
-    } // For EF Core
+    public User() : base(Guid.Empty) { } // For EF Core
 
     public User(Guid id, Email email, Password password, bool isVerified) : base(id)
     {
