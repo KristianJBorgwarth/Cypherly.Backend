@@ -1,4 +1,5 @@
-﻿using Cypherly.Authentication.Domain.Entities;
+﻿using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,5 +19,9 @@ public class VerificationCodeModelConfiguration : IEntityTypeConfiguration<Verif
 
         builder.Property(vc => vc.ExpirationDate)
             .IsRequired();
+
+        builder.HasOne<User>()
+            .WithMany(u => u.VerificationCodes)
+            .HasForeignKey(vc => vc.UserId);
     }
 }

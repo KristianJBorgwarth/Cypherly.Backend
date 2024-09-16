@@ -18,7 +18,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"), false);
-        user.SetVerificationCode();
+        user.AddVerificationCode();
         await Db.User.AddAsync(user);
         await Db.Claim.AddAsync(new Claim(Guid.NewGuid(), "user"));
         await Db.SaveChangesAsync();
@@ -26,7 +26,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         var req = new VerifyUserCommand()
         {
             UserId = user.Id,
-            VerificationCode = user.VerificationCode!.Code
+            VerificationCode = user.GetVerificationCode().Code
         };
 
         // Act
@@ -44,7 +44,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"), false);
-        user.SetVerificationCode();
+        user.AddVerificationCode();
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 

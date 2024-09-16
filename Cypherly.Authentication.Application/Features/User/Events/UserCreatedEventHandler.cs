@@ -22,7 +22,7 @@ public class UserCreatedEventHandler(
             throw new InvalidOperationException("User not found");
         }
 
-        var verificationCode = user!.VerificationCode;
+        var verificationCode = user.GetVerificationCode();
         if (verificationCode is null)
         {
             logger.LogError("Verification code for user with id {UserId} not found", notification.UserId);
@@ -30,7 +30,7 @@ public class UserCreatedEventHandler(
         }
 
         var emailMessage = new SendEmailMessage(user.Email.Address, "Welcome to Cypherly",
-            "Welcome to Cypherly! Below is your verification code: " + user.VerificationCode!.Code);
+            "Welcome to Cypherly! Below is your verification code: " + verificationCode.Code);
         await emailProducer.PublishMessageAsync(emailMessage, cancellationToken);
     }
 }

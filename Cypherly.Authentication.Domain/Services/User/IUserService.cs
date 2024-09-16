@@ -23,7 +23,7 @@ public class UserService : IUserService
 
         var user = new Aggregates.User(Guid.NewGuid(), emailResult.Value, pwResult.Value, isVerified: false);
 
-        user.SetVerificationCode();
+        user.AddVerificationCode();
         user.AddDomainEvent(new UserCreatedEvent(user.Id));
 
         return user;

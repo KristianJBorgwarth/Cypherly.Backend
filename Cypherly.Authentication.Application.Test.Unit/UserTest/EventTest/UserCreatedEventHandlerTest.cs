@@ -31,7 +31,7 @@ public class UserCreatedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test=??8239"), false);
-        user.SetVerificationCode();
+        user.AddVerificationCode();
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(user.Id)).Returns(user);
 
@@ -81,7 +81,7 @@ public class UserCreatedEventHandlerTest
 
 
         // Assert
-        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("Verification code not found");
+        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("This chat user does not have a verification code");
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(userEvent.UserId)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeEmailProducer.PublishMessageAsync(A<SendEmailMessage>._, A<CancellationToken>._))
@@ -93,7 +93,7 @@ public class UserCreatedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test=??8239"), false);
-        user.SetVerificationCode();
+        user.AddVerificationCode();
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(user.Id)).Returns(user);
 

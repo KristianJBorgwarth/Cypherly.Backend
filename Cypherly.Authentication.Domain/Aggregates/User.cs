@@ -12,10 +12,14 @@ public class User : AggregateRoot
     public Email Email { get; init; } = null!;
     public Password Password { get; private set; } = null!;
     public bool IsVerified { get; private set; }
-    public virtual VerificationCode? VerificationCode { get; private set; }
+
+    private readonly List<VerificationCode> _verificationCodes = [];
+    public virtual IReadOnlyCollection<VerificationCode> VerificationCodes => _verificationCodes;
     public virtual ICollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
 
-    public User() : base(Guid.Empty) {} // For EF Core
+    public User() : base(Guid.Empty)
+    {
+    } // For EF Core
 
     public User(Guid id, Email email, Password password, bool isVerified) : base(id)
     {
@@ -24,23 +28,40 @@ public class User : AggregateRoot
         IsVerified = isVerified;
     }
 
-    public void SetVerificationCode() => VerificationCode = new(id: Guid.NewGuid(), userId: Id);
+    public void AddVerificationCode()
+    {
+        _verificationCodes.Add(new(Guid.NewGuid(), userId: Id));
+    }
 
-    //TODO: retest thjis method to assert domain event is added
+    public VerificationCode? GetVerificationCode()
+    {
+        if (VerificationCodes.Count == 0)
+            throw new InvalidOperationException("This chat user does not have a verification code");
+
+        var code = VerificationCodes.Where(vc => vc.ExpirationDate > DateTime.UtcNow && !vc.IsUsed)
+            .MaxBy(vc => vc.ExpirationDate);
+
+        return code;
+    }
+
     public Result Verify(string verificationCode)
     {
-        if(VerificationCode is null)
-            return Result.Fail(Errors.General.UnspecifiedError("This chat user does not have a verification code"));
+        if (VerificationCodes.Count == 0)
+            throw new InvalidOperationException("This chat user does not have a verification code");
 
-        if(IsVerified)
-            return Result.Fail(Errors.General.UnspecifiedError("This chat user is already verified"));
+        if (IsVerified)
+            throw new InvalidOperationException("This chat user is already verified");
 
-        var verificationResult = VerificationCode.Verify(verificationCode);
+        var code = VerificationCodes.FirstOrDefault(c => c.Code == verificationCode);
+        if (code is null)
+            return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
+
+        var verificationResult = code.Verify(verificationCode);
 
         if (verificationResult.Success is false)
             return verificationResult;
 
-        VerificationCode.Use();
+        code.Use();
         IsVerified = true;
         AddDomainEvent(new UserVerifiedEvent(Id));
         return Result.Ok();

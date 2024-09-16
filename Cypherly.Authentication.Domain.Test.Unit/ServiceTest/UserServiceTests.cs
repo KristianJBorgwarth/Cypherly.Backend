@@ -1,10 +1,6 @@
 ﻿using Cypherly.Authentication.Domain.Services.User;
-using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Domain.Events.User;
-using Cypherly.Authentication.Domain.ValueObjects;
-using Cypherly.Domain.Common;
 using FluentAssertions;
-using Xunit;
 
 namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
 {
@@ -61,15 +57,15 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             result.Success.Should().BeTrue();
             result.Value.Email.Address.Should().Be(email);
             result.Value.IsVerified.Should().BeFalse();
-            result.Value.VerificationCode.Should().NotBeNull();
+            result.Value.VerificationCodes.Should().HaveCount(1);
         }
 
         [Fact]
         public void CreateUser_Should_Add_UserCreatedEvent()
         {
             // Arrange
-            string email = "test@mail.com";
-            string password = "Password123!";
+            var email = "test@mail.com";
+            var password = "Password123!";
 
             // Act
             var result = _userService.CreateUser(email, password);
@@ -77,28 +73,12 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             // Assert
             result.Success.Should().BeTrue();
             var user = result.Value;
-            
+
             user.DomainEvents.Should().ContainSingle(e => e is UserCreatedEvent);
-            
+
             var userCreatedEvent = user.DomainEvents.OfType<UserCreatedEvent>().FirstOrDefault();
             userCreatedEvent.Should().NotBeNull();
             userCreatedEvent!.UserId.Should().Be(user.Id);
-        }
-
-        [Fact]
-        public void CreateUser_Should_Set_VerificationCode_When_User_Is_Created()
-        {
-            // Arrange
-            string email = "test@mail.com";
-            string password = "Password123!";
-
-            // Act
-            var result = _userService.CreateUser(email, password);
-
-            // Assert
-            result.Success.Should().BeTrue();
-            result.Value.VerificationCode.Should().NotBeNull();
-            result.Value.VerificationCode.Code.Should().NotBeNullOrWhiteSpace();
         }
     }
 }

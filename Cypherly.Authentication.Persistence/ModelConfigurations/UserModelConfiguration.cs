@@ -27,9 +27,10 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
         });
         builder.Property(u => u.IsVerified).IsRequired();
 
-        builder.HasOne(u => u.VerificationCode)
+
+        builder.HasMany(u => u.VerificationCodes)
             .WithOne()
-            .HasForeignKey<VerificationCode>(vc => vc.UserId)
+            .HasForeignKey(vc => vc.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
