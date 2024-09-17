@@ -11,6 +11,8 @@ public interface IUserProfileService
     UserProfile CreateUserProfile(Guid userId, string username);
     Result CreateFriendship(UserProfile userProfile, UserProfile friendProfile);
     Result AcceptFriendship(UserProfile userProfile, string friendTag);
+    
+    Result DeleteFriendship(UserProfile userProfile, string friendTag);
 }
 public class UserProfileService : IUserProfileService
 {
@@ -44,5 +46,10 @@ public class UserProfileService : IUserProfileService
         friendship.AcceptFriendship();
         userProfile.AddDomainEvent(new FriendshipAcceptedEvent(friendship.UserProfile.Id, userProfile.UserTag.Tag));
         return Result.Ok();
+    }
+
+    public Result DeleteFriendship(UserProfile userProfile, string friendTag)
+    {
+        return userProfile.DeleteFriendship(friendTag);
     }
 }
