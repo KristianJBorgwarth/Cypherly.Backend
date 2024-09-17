@@ -1,4 +1,5 @@
 ﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
@@ -67,6 +68,15 @@ public class UserProfileController(ISender sender) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AcceptFriendship([FromBody] AcceptFriendshipCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
+    }
+    
+    [HttpDelete("friendship")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> RemoveFriendship([FromBody] DeleteFriendshipCommand command)
     {
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);

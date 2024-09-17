@@ -61,6 +61,33 @@ public partial class UserProfile : AggregateRoot
         return Result.Ok();
     }
 
+    public Result DeleteFriendship(string friendTag)
+    {
+        if (friendTag is null)
+            throw new InvalidOperationException("FriendTag cannot be null");
+
+        var friendshipInitiated = FriendshipsInitiated
+            .FirstOrDefault(f => f.FriendProfile.UserTag.Tag == friendTag);
+
+        if (friendshipInitiated is not null)
+        {
+            _friendshipsInitiated.Remove(friendshipInitiated);
+            return Result.Ok();
+        }
+
+        // Check received friendships
+        var friendshipReceived = FriendshipsReceived
+            .FirstOrDefault(f => f.UserProfile.UserTag.Tag == friendTag);
+
+        if (friendshipReceived is not null)
+        {
+            _friendshipsReceived.Remove(friendshipReceived);
+            return Result.Ok();
+        }
+
+        return Result.Fail(Errors.General.NotFound(nameof(friendTag)));
+    }
+    
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]
     private static partial System.Text.RegularExpressions.Regex DisplayNameRegex();
 }
