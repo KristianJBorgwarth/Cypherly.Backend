@@ -3,6 +3,7 @@ using Cypherly.UserManagement.Application.Contracts;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
 using Cypherly.UserManagement.Application.Test.Integration.Setup;
 using Cypherly.UserManagement.Domain.Aggregates;
+using Cypherly.UserManagement.Domain.Services;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Persistence.Context;
 using FluentAssertions;
@@ -19,8 +20,9 @@ public class DeleteFriendshipCommandHandlerTest : IntegrationTestBase
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        var userProfileService = scope.ServiceProvider.GetRequiredService<IUserProfileService>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<DeleteFriendshipCommandHandler>>();
-        _sut = new(repo, unitOfWork, logger);
+        _sut = new(repo, unitOfWork, userProfileService, logger);
     }
     
     [Fact]

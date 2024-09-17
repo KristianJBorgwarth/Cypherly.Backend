@@ -25,14 +25,15 @@ public class DeleteFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
         await Db.SaveChangesAsync();
         Db.Friendship.Should().HaveCount(1);
         
-        var cmd = new DeleteFriendshipCommand()
+        var cmd = new DeleteFriendshipCommand
         {
             UserProfileId = userProfile.Id,
             FriendTag = friendProfile.UserTag.Tag
         };
         
         // Act
-        var response = await Client.DeleteAsync($"api/userprofile/friendship?userProfileId={cmd.UserProfileId}&friendTag={cmd.FriendTag}");
+        var encodedFriendTag = Uri.EscapeDataString(cmd.FriendTag);
+        var response = await Client.DeleteAsync($"api/userprofile/friendship?userProfileId={cmd.UserProfileId}&friendTag={encodedFriendTag}");
         
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -42,6 +43,29 @@ public class DeleteFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
     [Fact]
     public async Task Given_Invalid_Request_Should_Return_400BadRequest()
     {
+        // Arrange
+        var userProfile = new UserProfile(Guid.NewGuid(), "TestUser",UserTag.Create("TestUser"));
         
+        var friendProfile = new UserProfile(Guid.NewGuid(), "FriendUser", UserTag.Create("FriendUser"));
+        
+        userProfile.AddFriendship(friendProfile);
+        Db.UserProfile.Add(userProfile);
+        Db.UserProfile.Add(friendProfile);
+        await Db.SaveChangesAsync();
+        Db.Friendship.Should().HaveCount(1);
+        
+        var cmd = new DeleteFriendshipCommand
+        {
+            UserProfileId = userProfile.Id,
+            FriendTag = "InvalidFriendTag"
+        };
+        
+        // Act
+        var encodedFriendTag = Uri.EscapeDataString(cmd.FriendTag);
+        var response = await Client.DeleteAsync($"api/userprofile/friendship?userProfileId={cmd.UserProfileId}&friendTag={encodedFriendTag}");
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        Db.Friendship.Should().HaveCount(1);
     }
 }

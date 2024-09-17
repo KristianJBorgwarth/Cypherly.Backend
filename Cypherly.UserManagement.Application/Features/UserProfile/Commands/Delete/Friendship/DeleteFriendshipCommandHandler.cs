@@ -2,6 +2,7 @@
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Domain.Common;
 using Cypherly.UserManagement.Application.Contracts;
+using Cypherly.UserManagement.Domain.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
@@ -9,6 +10,7 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Dele
 public sealed class DeleteFriendshipCommandHandler(
     IUserProfileRepository profileRepository, 
     IUnitOfWork unitOfWork,
+    IUserProfileService userProfileService,
     ILogger<DeleteFriendshipCommandHandler> logger)
     : ICommandHandler<DeleteFriendshipCommand>
 {
@@ -22,8 +24,8 @@ public sealed class DeleteFriendshipCommandHandler(
                 logger.LogError("UserProfile with id {UserProfileId} not found", request.UserProfileId);
                 return Result.Fail(Errors.General.NotFound(nameof(request.UserProfileId)));
             }
-            
-            var deleteResult = userProfile.DeleteFriendship(request.FriendTag);
+            //TODO: move to service class, so i can mock it in tests
+            var deleteResult = userProfileService.DeleteFriendship(userProfile, request.FriendTag);
             if (!deleteResult.Success)
             {
                 logger.LogError("Failed to delete friendship with FriendTag {FriendTag} for UserProfileId {UserProfileId}", request.FriendTag, request.UserProfileId);
