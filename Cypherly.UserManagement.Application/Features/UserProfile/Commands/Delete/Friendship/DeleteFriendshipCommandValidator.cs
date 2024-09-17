@@ -7,6 +7,7 @@ public class DeleteFriendshipCommandValidator : AbstractValidator<DeleteFriendsh
 {
     public DeleteFriendshipCommandValidator()
     {
+        RuleLevelCascadeMode = CascadeMode.Stop;
         RuleFor(x=> x.UserProfileId)
             .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(DeleteFriendshipCommand.UserProfileId)).Message)
             .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(DeleteFriendshipCommand.UserProfileId)).Message);
@@ -16,5 +17,6 @@ public class DeleteFriendshipCommandValidator : AbstractValidator<DeleteFriendsh
             .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(DeleteFriendshipCommand.FriendTag)).Message)
             .Must(x => x.Length <= 20)
             .WithMessage(Errors.General.ValueTooLarge(nameof(DeleteFriendshipCommand.FriendTag), 20).Message);
+        
     }
 }

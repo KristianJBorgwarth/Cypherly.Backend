@@ -76,7 +76,7 @@ public class UserProfileController(ISender sender) : BaseController
     [HttpDelete("friendship")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> RemoveFriendship([FromBody] DeleteFriendshipCommand command)
+    public async Task<IActionResult> RemoveFriendship([FromQuery] DeleteFriendshipCommand command)
     {
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);

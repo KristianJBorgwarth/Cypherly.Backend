@@ -85,7 +85,7 @@ public partial class UserProfile : AggregateRoot
             return Result.Ok();
         }
 
-        return Result.Fail(Errors.General.NotFound(nameof(friendTag)));
+        return Result.Fail(Errors.General.UnspecifiedError("Friendship not found"));
     }
     
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]
