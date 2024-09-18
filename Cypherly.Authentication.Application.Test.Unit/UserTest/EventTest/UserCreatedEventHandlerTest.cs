@@ -3,6 +3,7 @@ using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.User.Events;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using FakeItEasy;
@@ -31,7 +32,7 @@ public class UserCreatedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test=??8239"), false);
-        user.AddVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(user.Id)).Returns(user);
 
@@ -81,7 +82,7 @@ public class UserCreatedEventHandlerTest
 
 
         // Assert
-        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("This chat user does not have a verification code");
+        await act.Should().ThrowAsync<InvalidOperationException>().WithMessage("Verification code not found");
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(userEvent.UserId)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeEmailProducer.PublishMessageAsync(A<SendEmailMessage>._, A<CancellationToken>._))
@@ -93,7 +94,7 @@ public class UserCreatedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test=??8239"), false);
-        user.AddVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(user.Id)).Returns(user);
 

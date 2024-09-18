@@ -1,20 +1,24 @@
-﻿using Cypherly.Domain.Common;
+﻿using Cypherly.Authentication.Domain.Enums;
+using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Entities;
 
 public class VerificationCode : Entity
 {
     public Guid UserId { get; private set; }
-    public string Code { get; private set; } = null!;
-    public DateTime ExpirationDate { get; private set; }
+    public string Code { get; } = null!;
+    public VerificationCodeType CodeType { get; private set; }
+    public DateTime ExpirationDate { get; }
     public bool IsUsed { get; private set; }
 
     public VerificationCode() : base(Guid.Empty){ } // For EF Core
 
-    public VerificationCode(Guid id, Guid userId) : base(id)
+    public VerificationCode(Guid id, Guid userId, VerificationCodeType codeType) : base(id)
     {
         UserId = userId;
+        CodeType = codeType;
         Code = GenerateCode();
+        //TODO: set the expiration date based on the code type (e.g. email verification code expiration)
         ExpirationDate = DateTime.UtcNow.AddHours(1);
         IsUsed = false;
     }

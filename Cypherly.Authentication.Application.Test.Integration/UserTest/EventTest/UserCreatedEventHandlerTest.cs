@@ -4,6 +4,7 @@ using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.User.Events;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
@@ -30,7 +31,7 @@ public class UserCreatedEventHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("validPassword=?23"), false);
-        user.AddVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 

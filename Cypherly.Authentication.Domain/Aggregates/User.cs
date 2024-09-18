@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Cypherly.Authentication.Domain.Entities;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Domain.Common;
@@ -26,22 +27,44 @@ public class User : AggregateRoot
         IsVerified = isVerified;
     }
 
-    public void AddVerificationCode()
+    /// <summary>
+    /// Adds a verification code to the user for the specified code type.
+    /// <para>
+    /// Marks any existing codes of the same type as used.
+    /// </para>
+    /// </summary>
+    /// <param name="codeType"><see cref="VerificationCodeType"/></param>
+    public void AddVerificationCode(VerificationCodeType codeType)
     {
-        _verificationCodes.Add(new(Guid.NewGuid(), userId: Id));
+        var existingCodes = VerificationCodes.Where(vc => vc.CodeType == codeType && !vc.IsUsed);
+
+        foreach (var code in existingCodes)
+        {
+            code.Use();
+        }
+
+        _verificationCodes.Add(new(Guid.NewGuid(), userId: Id, codeType));
     }
 
-    public VerificationCode? GetVerificationCode()
+    /// <summary>
+    /// Returns the most recent active verification code of the specified type.
+    /// <para>
+    /// Returns null if no active codes are found.
+    /// </para>
+    /// </summary>
+    /// <param name="codeType"><see cref="VerificationCodeType"/></param>
+    /// <returns></returns>
+    public VerificationCode? GetActiveVerificationCode(VerificationCodeType codeType)
     {
-        if (VerificationCodes.Count == 0)
-            throw new InvalidOperationException("This chat user does not have a verification code");
-
-        var code = VerificationCodes.Where(vc => vc.ExpirationDate > DateTime.UtcNow && !vc.IsUsed)
-            .MaxBy(vc => vc.ExpirationDate);
-
-        return code;
+        return VerificationCodes.Where(vc => vc.CodeType == codeType && !vc.IsUsed && vc.ExpirationDate > DateTime.UtcNow).MaxBy(vc => vc.ExpirationDate);
     }
 
+    /// <summary>
+    /// Checks the count of the verification codes and verifies the user if the code is valid.
+    /// </summary>
+    /// <param name="verificationCode">Value representing the VerificationCode.Code <see cref="VerificationCode.Code"/></param>
+    /// <returns>Result representing the verification result</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     public Result Verify(string verificationCode)
     {
         if (VerificationCodes.Count == 0)
@@ -51,8 +74,7 @@ public class User : AggregateRoot
             throw new InvalidOperationException("This chat user is already verified");
 
         var code = VerificationCodes.FirstOrDefault(c => c.Code == verificationCode);
-        if (code is null)
-            return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
+        if (code is null) return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
 
         var verificationResult = code.Verify(verificationCode);
 

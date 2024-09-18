@@ -1,18 +1,21 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
+using Cypherly.Authentication.Domain.Enums;
+using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 
-public sealed class ResendVerificationCommandHandler(
+public sealed class ResendAccountVerificationCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
-    ILogger<ResendVerificationCommandHandler> logger)
-    : ICommandHandler<ResendVerificationCommand>
+    IUserService userService,
+    ILogger<ResendAccountVerificationCommandHandler> logger)
+    : ICommandHandler<ResendAccountVerificationCommand>
 {
-    public async Task<Result> Handle(ResendVerificationCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ResendAccountVerificationCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -23,13 +26,15 @@ public sealed class ResendVerificationCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.UserId));
             }
 
-            if(user.IsVerified is true)
+            if(user.IsVerified)
             {
                 logger.LogWarning("User {UserId} is already verified", request.UserId);
                 return Result.Fail(Errors.General.UnspecifiedError("User is already verified"));
             }
 
-            //TODO: refactor verification code relationship to list, so we dont have to manage single code
+            userService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification);
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
             return Result.Ok();
         }
         catch (Exception e)
