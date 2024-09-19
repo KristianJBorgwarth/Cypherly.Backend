@@ -20,7 +20,6 @@ public class User : AggregateRoot
     public virtual IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens;
     public virtual IReadOnlyCollection<VerificationCode> VerificationCodes => _verificationCodes;
     public virtual IReadOnlyCollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
-
     public User() : base(Guid.Empty) { } // For EF Core
 
     public User(Guid id, Email email, Password password, bool isVerified) : base(id)
@@ -90,8 +89,29 @@ public class User : AggregateRoot
         return Result.Ok();
     }
 
+    /// <summary>
+    /// Get the user claims for the user.
+    /// </summary>
+    /// <returns>list of <see cref="UserClaim"/></returns>
     public List<UserClaim> GetUserClaims()
     {
         return UserClaims.ToList();
+    }
+
+    /// <summary>
+    /// Adds a valid refresh token to the user.
+    /// </summary>
+    public void AddRefreshToken()
+    {
+        _refreshTokens.Add(new RefreshToken(Guid.NewGuid(), userId: Id));
+    }
+
+    /// <summary>
+    /// Returns the most recent active refresh token.
+    /// </summary>
+    /// <returns><see cref="RefreshToken"/></returns>
+    public RefreshToken? GetActiveRefreshToken()
+    {
+        return RefreshTokens.Where(rt=> rt.IsValid()).MaxBy(rt => rt.Expires);
     }
 }

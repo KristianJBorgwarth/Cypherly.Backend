@@ -1,7 +1,8 @@
-﻿using AutoMapper;
-using Cypherly.Application.Abstractions;
+﻿using Cypherly.Application.Abstractions;
+using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
@@ -10,8 +11,9 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Authenticat
 public class LoginCommandHandler(
     IUserRepository userRepository,
     IJwtService jwtService,
-    ILogger<LoginCommandHandler> logger,
-    IMapper mapper)
+    IUserService userService,
+    IUnitOfWork unitOfWork,
+    ILogger<LoginCommandHandler> logger)
     : ICommandHandler<LoginCommand, LoginDto>
 {
     public async Task<Result<LoginDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -28,7 +30,18 @@ public class LoginCommandHandler(
 
             var token = jwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims());
 
-            return Result.Ok(new LoginDto());
+            var refreshToken = userService.GenerateRefreshToken(user);
+
+            var dto = new LoginDto
+            {
+                JwtToken = token,
+                RefreshToken = refreshToken.Token,
+                RefreshTokenExpires = refreshToken.Expires
+            };
+
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result.Ok(dto);
         }
         catch (Exception ex)
         {

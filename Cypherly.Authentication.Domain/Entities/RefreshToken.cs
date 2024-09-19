@@ -1,4 +1,5 @@
-﻿using Cypherly.Authentication.Domain.Aggregates;
+﻿using System.Security.Cryptography;
+using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Entities;
@@ -11,18 +12,21 @@ public class RefreshToken : Entity
     public bool IsRevoked => Revoked.HasValue;
     public bool IsExpired => DateTime.UtcNow >= Expires;
     public Guid UserId { get; private set; }
-
     public virtual User User { get; private set; } = null!;
 
     public RefreshToken() : base(Guid.Empty) {} // For EF Core
 
-    public RefreshToken(Guid id, string token, DateTime expiryDate, Guid userId) : base(id)
+    public RefreshToken(Guid id, Guid userId) : base(id)
     {
-        Token = token;
-        Expires = expiryDate;
+        Token = GenerateToken();
+        Expires = DateTime.UtcNow.AddDays(7);
         UserId = userId;
     }
 
+    /// <summary>
+    /// Revoke the refresh token to prevent further use
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If Refresh token already is revoked</exception>
     public void Revoke()
     {
         if(IsRevoked)
@@ -33,5 +37,22 @@ public class RefreshToken : Entity
         Revoked = DateTime.UtcNow;
     }
 
+    /// <summary>
+    /// Check if the refresh token is valid
+    /// </summary>
+    /// <returns>true/false depending on validity</returns>
     public bool IsValid() => !IsRevoked && !IsExpired;
+
+
+    /// <summary>
+    /// Generate a random 32-byte token
+    /// </summary>
+    /// <returns></returns>
+    private static string GenerateToken()
+    {
+        using var randomNumberGenerator = RandomNumberGenerator.Create();
+        var randomNumber = new byte[32];
+        randomNumberGenerator.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
+    }
 }
