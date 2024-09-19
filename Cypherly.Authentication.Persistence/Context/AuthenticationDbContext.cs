@@ -13,6 +13,8 @@ public class AuthenticationDbContext(DbContextOptions options) : CypherlyBaseDbC
     public DbSet<Claim> Claim { get; private set; } = null!;
     public DbSet<UserClaim> UserClaim { get; private set; } = null!;
 
+    public DbSet<RefreshToken> RefreshToken { get; private set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserModelConfiguration());
