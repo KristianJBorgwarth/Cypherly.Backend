@@ -5,5 +5,5 @@ namespace Cypherly.Authentication.Application.Contracts;
 
 public interface IUserRepository : IRepository<User>
 {
-    Task<User?> GetUserByEmail(string email);
+    Task<User?> GetByEmailAsync(string email);
 }

@@ -11,4 +11,8 @@
       <ProjectReference Include="..\Cypherly.Authentication.Domain\Cypherly.Authentication.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.0.2" />
+    </ItemGroup>
+
 </Project>

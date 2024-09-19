@@ -16,7 +16,7 @@ public class User : AggregateRoot
 
     private readonly List<VerificationCode> _verificationCodes = [];
     public virtual IReadOnlyCollection<VerificationCode> VerificationCodes => _verificationCodes;
-    public virtual ICollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
+    public virtual IReadOnlyCollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
 
     public User() : base(Guid.Empty) { } // For EF Core
 
@@ -85,5 +85,10 @@ public class User : AggregateRoot
         IsVerified = true;
         AddDomainEvent(new UserVerifiedEvent(Id));
         return Result.Ok();
+    }
+
+    public List<UserClaim> GetUserClaims()
+    {
+        return UserClaims.ToList();
     }
 }
