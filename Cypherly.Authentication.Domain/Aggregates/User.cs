@@ -15,6 +15,9 @@ public class User : AggregateRoot
     public bool IsVerified { get; private set; }
 
     private readonly List<VerificationCode> _verificationCodes = [];
+
+    private readonly List<RefreshToken> _refreshTokens = [];
+    public virtual IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens;
     public virtual IReadOnlyCollection<VerificationCode> VerificationCodes => _verificationCodes;
     public virtual IReadOnlyCollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
 

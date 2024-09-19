@@ -8,10 +8,10 @@ namespace Cypherly.Authentication.Persistence.Context;
 
 public class AuthenticationDbContext(DbContextOptions options) : CypherlyBaseDbContext(options)
 {
-    public DbSet<User> User { get; set; } = null!;
-    public DbSet<VerificationCode> VerificationCode { get; set; } = null!;
-    public DbSet<Claim> Claim { get; set; } = null!;
-    public DbSet<UserClaim> UserClaim { get; set; } = null!;
+    public DbSet<User> User { get; private set; } = null!;
+    public DbSet<VerificationCode> VerificationCode { get; private set; } = null!;
+    public DbSet<Claim> Claim { get; private set; } = null!;
+    public DbSet<UserClaim> UserClaim { get; private set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +19,7 @@ public class AuthenticationDbContext(DbContextOptions options) : CypherlyBaseDbC
         modelBuilder.ApplyConfiguration(new VerificationCodeModelConfiguration());
         modelBuilder.ApplyConfiguration(new ClaimModelConfiguration());
         modelBuilder.ApplyConfiguration(new UserClaimModelConfiguration());
+        modelBuilder.ApplyConfiguration(new RefreshTokenModelConfiguration());
         base.OnModelCreating(modelBuilder);
     }
 }

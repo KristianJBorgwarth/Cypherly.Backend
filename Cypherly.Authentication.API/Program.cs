@@ -1,6 +1,7 @@
 using System.Reflection;
 using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
 using Cypherly.Authentication.Application.Configuration;
+using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
 using Cypherly.MassTransit.Messaging.Configuration;
@@ -43,6 +44,7 @@ builder.Services.AddAuthenticationDomain();
 
 #region Application Layer
 
+builder.Services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 builder.Services.AddAuthenticationApplication(Assembly.Load("Cypherly.Authentication.Application"));
 
 #endregion

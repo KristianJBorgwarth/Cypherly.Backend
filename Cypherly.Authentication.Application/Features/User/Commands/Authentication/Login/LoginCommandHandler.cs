@@ -28,9 +28,7 @@ public class LoginCommandHandler(
 
             var token = jwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims());
 
-
             return Result.Ok(new LoginDto());
-
         }
         catch (Exception ex)
         {
