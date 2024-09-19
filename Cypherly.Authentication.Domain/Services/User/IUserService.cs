@@ -1,4 +1,5 @@
-﻿using Cypherly.Authentication.Domain.Enums;
+﻿using Cypherly.Authentication.Domain.Entities;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Domain.Common;
@@ -9,6 +10,7 @@ public interface IUserService
 {
     Result<Aggregates.User> CreateUser(string email, string password);
     void GenerateVerificationCode(Aggregates.User user, VerificationCodeType codeType);
+    RefreshToken GenerateRefreshToken(Aggregates.User user);
 }
 
 public class UserService : IUserService
@@ -36,5 +38,11 @@ public class UserService : IUserService
     {
         user.AddVerificationCode(codeType);
         user.AddDomainEvent(new VerificationCodeGeneratedEvent(user.Id, codeType));
+    }
+
+    public RefreshToken GenerateRefreshToken(Aggregates.User user)
+    {
+        user.AddRefreshToken();
+        return user.GetActiveRefreshToken()!;
     }
 }

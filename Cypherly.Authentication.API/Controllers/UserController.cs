@@ -1,4 +1,5 @@
-﻿using Cypherly.Authentication.Application.Features.User.Commands.Create;
+﻿using Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
+using Cypherly.Authentication.Application.Features.User.Commands.Create;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
 using MediatR;
@@ -14,6 +15,16 @@ public class UserController(ISender sender) : BaseController
     [ProducesResponseType(typeof(CreateUserDto),StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody]CreateUserCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+    [HttpPost]
+    [Route("login")]
+    [ProducesResponseType(typeof(LoginDto),StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Login([FromBody] LoginCommand command)
     {
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);

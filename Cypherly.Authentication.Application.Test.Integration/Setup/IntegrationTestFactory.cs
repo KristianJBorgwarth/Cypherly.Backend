@@ -1,7 +1,12 @@
 ﻿using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
+using Cypherly.Authentication.Application.Services.Authentication;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using TestUtilities;
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -32,6 +37,26 @@ public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestF
                     await cxt.RespondAsync(new CreateUserProfileResponse());
                 });
             });
+
+            #endregion
+
+            #region Jwt Configuration
+
+            services.RemoveAll(typeof(IConfigureOptions<JwtSettings>));
+
+            var inMemorySettings = new Dictionary<string, string>()
+            {
+                { "Jwt:Secret", "SuperSecretJwtKeyForTestingOnly!@1234567890" },
+                { "Jwt:Issuer", "Cypherly.Authentication.Test" },
+                { "Jwt:Audience", "Test" },
+                { "Jwt:TokenLifeTimeInMinutes", "20" }
+            };
+
+            var configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
+
+            services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
             #endregion
         });

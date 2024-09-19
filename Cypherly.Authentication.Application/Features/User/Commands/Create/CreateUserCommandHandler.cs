@@ -52,7 +52,7 @@ public class CreateUserCommandHandler(
 
     private async Task<bool> DoesEmailExist(string email)
     {
-        var user = await userRepository.GetUserByEmail(email);
+        var user = await userRepository.GetByEmailAsync(email);
         return user is not null;
     }
 

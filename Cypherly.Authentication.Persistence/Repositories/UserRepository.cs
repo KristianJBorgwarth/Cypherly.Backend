@@ -28,7 +28,7 @@ public class UserRepository(AuthenticationDbContext context) : IUserRepository
         return Task.CompletedTask;
     }
 
-    public async Task<User?> GetUserByEmail(string email)
+    public async Task<User?> GetByEmailAsync(string email)
     {
         return await context.User.FirstOrDefaultAsync(c => c.Email.Address.Equals(email));
     }

@@ -17,6 +17,8 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
                 .HasColumnName("Email")
                 .IsRequired()
                 .HasMaxLength(255);
+
+            email.HasIndex(e => e.Address).IsUnique();
         });
         builder.OwnsOne(u=> u.Password, pw =>
         {
@@ -31,6 +33,11 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
         builder.HasMany(u => u.VerificationCodes)
             .WithOne()
             .HasForeignKey(vc => vc.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(u => u.RefreshTokens)
+            .WithOne(rt=> rt.User)
+            .HasForeignKey(rt => rt.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

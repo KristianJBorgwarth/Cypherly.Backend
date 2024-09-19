@@ -47,7 +47,7 @@ public class CreateUserCommandHandlerTests
 
         var user = new User(Guid.NewGuid(), Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified: false);
 
-        A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).Returns<User>(null);
+        A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).Returns<User>(null);
         A.CallTo(() => _fakeUserService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Ok(user));
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).DoesNothing();
@@ -72,7 +72,7 @@ public class CreateUserCommandHandlerTests
         result.Success.Should().BeTrue();
         result.Value.Email.Should().Be(cmd.Email);
 
-        A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustHaveHappenedOnceExactly();
@@ -95,7 +95,7 @@ public class CreateUserCommandHandlerTests
 
         var existingUser = new User(Guid.NewGuid(), Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified: false);
 
-        A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).Returns(existingUser);
+        A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).Returns(existingUser);
 
         // Act
         var result = await _sut.Handle(cmd, new CancellationToken());
@@ -104,7 +104,7 @@ public class CreateUserCommandHandlerTests
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("An account already exists with that email");
 
-        A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
@@ -124,7 +124,7 @@ public class CreateUserCommandHandlerTests
         };
 
 
-        A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).Returns<User>(null);
+        A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).Returns<User>(null);
         A.CallTo(() => _fakeUserService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Fail<User>(Errors.General.UnspecifiedError("error")));
 
         // Act
@@ -134,7 +134,7 @@ public class CreateUserCommandHandlerTests
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("error");
 
-        A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUserService.CreateUser(A<string>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustNotHaveHappened();
@@ -156,7 +156,7 @@ public class CreateUserCommandHandlerTests
 
 
         // Simulate an exception when calling the repository's GetUserByEmail method
-        A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).Throws(new Exception("Database connection failed"));
+        A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).Throws(new Exception("Database connection failed"));
 
         // Act
         var result = await _sut.Handle(cmd, new CancellationToken());
@@ -166,7 +166,7 @@ public class CreateUserCommandHandlerTests
         result.Error.Message.Should().Be("Exception occured while attempting to create a user. Check logs for more information");
 
         // Verify the exception was thrown and handled
-        A.CallTo(() => _fakeRepo.GetUserByEmail(cmd.Email)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();

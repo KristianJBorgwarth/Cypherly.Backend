@@ -1,0 +1,33 @@
+﻿using Cypherly.Authentication.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Cypherly.Authentication.Persistence.ModelConfigurations;
+
+public class RefreshTokenModelConfiguration : IEntityTypeConfiguration<RefreshToken>
+{
+    public void Configure(EntityTypeBuilder<RefreshToken> builder)
+    {
+        builder.ToTable("RefreshToken");
+
+        builder.HasKey(rt => rt.Id);
+
+        builder.Property(rt => rt.Id)
+            .ValueGeneratedNever();
+
+        builder.Property(rt => rt.Token)
+            .HasMaxLength(128)
+            .IsRequired();
+
+        builder.Property(rt => rt.Expires)
+            .IsRequired();
+
+        builder.Property(rt => rt.Revoked);
+
+        builder.Property(rt => rt.UserId)
+            .IsRequired();
+
+        builder.HasIndex(rt => rt.Token)
+            .IsUnique();
+    }
+}
