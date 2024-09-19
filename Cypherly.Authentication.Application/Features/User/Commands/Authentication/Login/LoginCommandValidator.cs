@@ -1,5 +1,4 @@
 ﻿using Cypherly.Domain.Common;
-using Cypherly.Domain.ValueObjects;
 using FluentValidation;
 
 namespace Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
