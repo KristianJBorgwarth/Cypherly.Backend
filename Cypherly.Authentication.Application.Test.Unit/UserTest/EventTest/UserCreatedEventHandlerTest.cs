@@ -3,6 +3,7 @@ using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.User.Events;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using FakeItEasy;
@@ -31,7 +32,7 @@ public class UserCreatedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test=??8239"), false);
-        user.SetVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(user.Id)).Returns(user);
 
@@ -93,7 +94,7 @@ public class UserCreatedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test=??8239"), false);
-        user.SetVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(user.Id)).Returns(user);
 

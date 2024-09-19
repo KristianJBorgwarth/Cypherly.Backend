@@ -3,6 +3,8 @@ using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Entities;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;
@@ -29,14 +31,14 @@ public class VerifyUserCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"),false);
-        user.SetVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 
         var command = new VerifyUserCommand()
         {
             UserId = user.Id,
-            VerificationCode = user.VerificationCode!.Code
+            VerificationCode = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification)!.Code
         };
 
         // Act
@@ -53,14 +55,14 @@ public class VerifyUserCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"),false);
-        user.SetVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 
         var command = new VerifyUserCommand()
         {
             UserId = Guid.NewGuid(),
-            VerificationCode = user.VerificationCode!.Code
+            VerificationCode = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification)!.Code
         };
 
         // Act
@@ -78,7 +80,7 @@ public class VerifyUserCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"),false);
-        user.SetVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 

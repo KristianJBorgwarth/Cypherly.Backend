@@ -1,10 +1,9 @@
-﻿using Cypherly.Authentication.Domain.Services.User;
-using Cypherly.Authentication.Domain.Aggregates;
+﻿using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
+using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
-using Cypherly.Domain.Common;
 using FluentAssertions;
-using Xunit;
 
 namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
 {
@@ -36,8 +35,8 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
         public void CreateUser_Should_Fail_When_Password_Is_Invalid()
         {
             // Arrange
-            string email = "test@mail.com";
-            string invalidPassword = "short"; // Assuming password should meet certain criteria
+            var email = "test@mail.com";
+            var invalidPassword = "short"; // Assuming password should meet certain criteria
 
             // Act
             var result = _userService.CreateUser(email, invalidPassword);
@@ -51,8 +50,8 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
         public void CreateUser_Should_Succeed_When_Valid_Email_And_Password_Are_Provided()
         {
             // Arrange
-            string email = "test@mail.com";
-            string password = "Password123!";
+            var email = "test@mail.com";
+            var password = "Password123!";
 
             // Act
             var result = _userService.CreateUser(email, password);
@@ -61,15 +60,15 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             result.Success.Should().BeTrue();
             result.Value.Email.Address.Should().Be(email);
             result.Value.IsVerified.Should().BeFalse();
-            result.Value.VerificationCode.Should().NotBeNull();
+            result.Value.VerificationCodes.Should().HaveCount(1);
         }
 
         [Fact]
         public void CreateUser_Should_Add_UserCreatedEvent()
         {
             // Arrange
-            string email = "test@mail.com";
-            string password = "Password123!";
+            var email = "test@mail.com";
+            var password = "Password123!";
 
             // Act
             var result = _userService.CreateUser(email, password);
@@ -77,28 +76,29 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             // Assert
             result.Success.Should().BeTrue();
             var user = result.Value;
-            
+
             user.DomainEvents.Should().ContainSingle(e => e is UserCreatedEvent);
-            
+
             var userCreatedEvent = user.DomainEvents.OfType<UserCreatedEvent>().FirstOrDefault();
             userCreatedEvent.Should().NotBeNull();
             userCreatedEvent!.UserId.Should().Be(user.Id);
         }
 
-        [Fact]
-        public void CreateUser_Should_Set_VerificationCode_When_User_Is_Created()
+        [Theory]
+        [InlineData(VerificationCodeType.EmailVerification)]
+        [InlineData(VerificationCodeType.PasswordReset)]
+        public void GenerateVerificationCode_Should_Add_VerificationCode_And_DomainEvent(VerificationCodeType codeType)
         {
             // Arrange
-            string email = "test@mail.com";
-            string password = "Password123!";
+            var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjshsdi9?A"), false);
 
             // Act
-            var result = _userService.CreateUser(email, password);
+            _userService.GenerateVerificationCode(user, codeType);
 
             // Assert
-            result.Success.Should().BeTrue();
-            result.Value.VerificationCode.Should().NotBeNull();
-            result.Value.VerificationCode.Code.Should().NotBeNullOrWhiteSpace();
+            user.VerificationCodes.Should().HaveCount(1);
+            user.VerificationCodes.First().CodeType.Should().Be(codeType);
+            user.DomainEvents.Should().ContainSingle(e => e is VerificationCodeGeneratedEvent);
         }
     }
 }

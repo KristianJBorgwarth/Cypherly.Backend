@@ -1,4 +1,5 @@
 ﻿using Cypherly.Authentication.Application.Features.User.Commands.Create;
+using Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,16 @@ public class UserController(ISender sender) : BaseController
     public async Task<IActionResult> Verify([FromBody]VerifyUserCommand command)
     {
         var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
+    }
+
+    [HttpPut]
+    [Route("resend-verification")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ResendVerification([FromBody]GenerateAccountVerificationCodeCommand codeCommand)
+    {
+        var result = await sender.Send(codeCommand);
         return result.Success ? Ok() : Error(result.Error);
     }
 }

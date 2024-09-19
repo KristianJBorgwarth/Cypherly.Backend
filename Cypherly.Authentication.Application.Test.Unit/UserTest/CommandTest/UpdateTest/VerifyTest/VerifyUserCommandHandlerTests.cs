@@ -7,6 +7,7 @@ using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
+using Cypherly.Authentication.Domain.Enums;
 
 namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.UpdateTest.VerifyTest
 {
@@ -34,7 +35,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.Upd
             var email = Email.Create("test@mail.com").Value;
             var password = Password.Create("Password123!").Value;
             var user = new User(Guid.NewGuid(),email, password, isVerified: false);
-            user.SetVerificationCode();  // Setting the verification code
+            user.AddVerificationCode(VerificationCodeType.EmailVerification);  // Setting the verification code
 
             A.CallTo(() => _fakeUserRepository.GetByIdAsync(userId)).Returns(user);
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();
@@ -42,7 +43,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.Upd
             var command = new VerifyUserCommand
             {
                 UserId = userId,
-                VerificationCode = user.VerificationCode!.Code
+                VerificationCode = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification)!.Code
             };
 
             // Act
@@ -85,7 +86,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.Upd
             var email = Email.Create("test@mail.com").Value;
             var password = Password.Create("Password123!").Value;
             var user = new User(Guid.NewGuid(),email, password, isVerified: false);
-            user.SetVerificationCode();  // Setting the verification code
+            user.AddVerificationCode(VerificationCodeType.EmailVerification);  // Setting the verification code
 
             A.CallTo(() => _fakeUserRepository.GetByIdAsync(userId)).Returns(user);
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();

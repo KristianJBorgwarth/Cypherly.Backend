@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;
@@ -18,7 +19,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"), false);
-        user.SetVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.Claim.AddAsync(new Claim(Guid.NewGuid(), "user"));
         await Db.SaveChangesAsync();
@@ -26,7 +27,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         var req = new VerifyUserCommand()
         {
             UserId = user.Id,
-            VerificationCode = user.VerificationCode!.Code
+            VerificationCode = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification)!.Code
         };
 
         // Act
@@ -44,7 +45,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"), false);
-        user.SetVerificationCode();
+        user.AddVerificationCode(VerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 

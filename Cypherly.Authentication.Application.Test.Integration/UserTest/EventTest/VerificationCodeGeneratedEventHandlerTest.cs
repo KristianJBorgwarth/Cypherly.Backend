@@ -14,44 +14,47 @@ using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Test.Integration.UserTest.EventTest;
 
-public class UserCreatedEventHandlerTest : IntegrationTestBase
+public class VerificationCodeGeneratedEventHandlerTest : IntegrationTestBase
 {
-    private readonly UserCreatedEventHandler _sut;
-    public UserCreatedEventHandlerTest(IntegrationTestFactory<Program, AuthenticationDbContext> factory) : base(factory)
+    private readonly VerificationCodeGeneratedEventHandler _sut;
+    public VerificationCodeGeneratedEventHandlerTest(IntegrationTestFactory<Program, AuthenticationDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
         var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
         var emailProducer = scope.ServiceProvider.GetRequiredService<IProducer<SendEmailMessage>>();
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<UserCreatedEventHandler>>();
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<VerificationCodeGeneratedEventHandler>>();
+
         _sut = new(userRepository, emailProducer, logger);
     }
 
     [Fact]
-    public async void Handle_Given_Valid_Event_Should_Send_Email()
+    public async Task Handle_Given_Valid_Notification_Should_Send_Email()
     {
         // Arrange
-        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("validPassword=?23"), false);
+        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("testPassword?923"), false);
         user.AddVerificationCode(VerificationCodeType.EmailVerification);
+
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 
-        var @event = new UserCreatedEvent(user.Id);
+        var notification = new VerificationCodeGeneratedEvent(user.Id, VerificationCodeType.EmailVerification);
 
         // Act
-        await _sut.Handle(@event, CancellationToken.None);
+        await _sut.Handle(notification, default);
 
         // Assert
-        Harness.Published.Select<SendEmailMessage>().FirstOrDefault(uc=>uc.Context.Message.To == user.Email.Address).Should().NotBeNull();
+        Harness.Published.Select<SendEmailMessage>().FirstOrDefault(uc => uc.Context.Message.To == user.Email.Address)
+            .Should().NotBeNull();
     }
 
     [Fact]
-    public async void Handle_Given_Invalid_Event_Should_Throw_Exception()
+    public async Task Handle_Given_Invalid_Notification_Should_Throw_Exception()
     {
         // Arrange
-        var @event = new UserCreatedEvent(Guid.NewGuid());
+        var notification = new VerificationCodeGeneratedEvent(Guid.NewGuid(), VerificationCodeType.EmailVerification);
 
         // Act
-        Func<Task> act = async () => await _sut.Handle(@event, CancellationToken.None);
+        Func<Task> act = async () => await _sut.Handle(notification, default);
 
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>();
