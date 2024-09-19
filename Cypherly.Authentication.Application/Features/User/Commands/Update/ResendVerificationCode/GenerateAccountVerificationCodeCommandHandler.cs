@@ -8,14 +8,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 
-public sealed class ResendAccountVerificationCommandHandler(
+public sealed class GenerateAccountVerificationCodeCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IUserService userService,
-    ILogger<ResendAccountVerificationCommandHandler> logger)
-    : ICommandHandler<ResendAccountVerificationCommand>
+    ILogger<GenerateAccountVerificationCodeCommandHandler> logger)
+    : ICommandHandler<GenerateAccountVerificationCodeCommand>
 {
-    public async Task<Result> Handle(ResendAccountVerificationCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(GenerateAccountVerificationCodeCommand request, CancellationToken cancellationToken)
     {
         try
         {

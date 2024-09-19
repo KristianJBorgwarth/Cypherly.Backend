@@ -11,27 +11,27 @@ using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.UpdateTest.ResendAccountVerificationCommand;
 
-public class ResendAccountVerificationCommandHandlerTest
+public class GenerateAccountVerificationCodeCommandHandlerTest
 {
     private readonly IUserRepository _fakeRepo;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly IUserService _fakeUserService;
-    private readonly ResendAccountVerificationCommandHandler _sut;
+    private readonly GenerateAccountVerificationCodeCommandHandler _sut;
 
-    public ResendAccountVerificationCommandHandlerTest()
+    public GenerateAccountVerificationCodeCommandHandlerTest()
     {
         _fakeRepo = A.Fake<IUserRepository>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         _fakeUserService = A.Fake<IUserService>();
-        var fakeLogger = A.Fake<ILogger<ResendAccountVerificationCommandHandler>>();
-        _sut = new ResendAccountVerificationCommandHandler(_fakeRepo, _fakeUnitOfWork, _fakeUserService, fakeLogger);
+        var fakeLogger = A.Fake<ILogger<GenerateAccountVerificationCodeCommandHandler>>();
+        _sut = new GenerateAccountVerificationCodeCommandHandler(_fakeRepo, _fakeUnitOfWork, _fakeUserService, fakeLogger);
     }
 
     [Fact]
     public async Task Handle_Command_With_Invalid_Id_Should_Return_Result_Fail()
     {
         // Arrange
-        var cmd = new Features.User.Commands.Update.ResendVerificationCode.ResendAccountVerificationCommand
+        var cmd = new Features.User.Commands.Update.ResendVerificationCode.GenerateAccountVerificationCodeCommand
         {
             UserId = Guid.NewGuid()
         };
@@ -49,7 +49,7 @@ public class ResendAccountVerificationCommandHandlerTest
     public async Task Handle_Command_With_User_Verified_Should_Return_Result_Fail()
     {
         var user = new User(Guid.NewGuid(), Email.Create("Test@mail.dk"), Password.Create("kjsKidh??923"), true);
-        var cmd = new Features.User.Commands.Update.ResendVerificationCode.ResendAccountVerificationCommand
+        var cmd = new Features.User.Commands.Update.ResendVerificationCode.GenerateAccountVerificationCodeCommand
         {
             UserId = user.Id
         };
@@ -68,7 +68,7 @@ public class ResendAccountVerificationCommandHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("Test@mail.dk"), Password.Create("kjsKidh??923"), false);
-        var cmd = new Features.User.Commands.Update.ResendVerificationCode.ResendAccountVerificationCommand
+        var cmd = new Features.User.Commands.Update.ResendVerificationCode.GenerateAccountVerificationCodeCommand
         {
             UserId = user.Id
         };
@@ -88,7 +88,7 @@ public class ResendAccountVerificationCommandHandlerTest
     {
 
         var user = new User(Guid.NewGuid(), Email.Create("Test@mail.dk"), Password.Create("kjsKidh??923"), false);
-        var cmd = new Features.User.Commands.Update.ResendVerificationCode.ResendAccountVerificationCommand
+        var cmd = new Features.User.Commands.Update.ResendVerificationCode.GenerateAccountVerificationCodeCommand
         {
             UserId = user.Id
         };

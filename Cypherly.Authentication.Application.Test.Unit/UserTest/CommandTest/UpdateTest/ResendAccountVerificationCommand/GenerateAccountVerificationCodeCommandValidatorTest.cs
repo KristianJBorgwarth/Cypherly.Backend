@@ -4,15 +4,15 @@ using Xunit;
 
 namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.UpdateTest.ResendAccountVerificationCommand
 {
-    public class ResendAccountVerificationCommandValidatorTest
+    public class GenerateAccountVerificationCodeCommandValidatorTest
     {
-        private readonly ResendAccountVerificationCommandValidator _sut = new();
+        private readonly GenerateAccountVerificationCodeCommandValidator _sut = new();
 
         [Fact]
         public void Validate_ShouldHaveError_WhenUserIdIsEmpty()
         {
             // Arrange
-            var command = new Features.User.Commands.Update.ResendVerificationCode.ResendAccountVerificationCommand
+            var command = new Features.User.Commands.Update.ResendVerificationCode.GenerateAccountVerificationCodeCommand
             {
                 UserId = Guid.Empty
             };
@@ -29,7 +29,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.Upd
         public void Validate_ShouldHaveNoErrors_WhenUserIdIsValid()
         {
             // Arrange
-            var command = new Features.User.Commands.Update.ResendVerificationCode.ResendAccountVerificationCommand
+            var command = new Features.User.Commands.Update.ResendVerificationCode.GenerateAccountVerificationCodeCommand
             {
                 UserId = Guid.NewGuid()
             };

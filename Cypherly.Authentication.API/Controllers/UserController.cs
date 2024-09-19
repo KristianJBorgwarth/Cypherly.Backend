@@ -33,9 +33,9 @@ public class UserController(ISender sender) : BaseController
     [Route("resend-verification")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ResendVerification([FromBody]ResendAccountVerificationCommand command)
+    public async Task<IActionResult> ResendVerification([FromBody]GenerateAccountVerificationCodeCommand codeCommand)
     {
-        var result = await sender.Send(command);
+        var result = await sender.Send(codeCommand);
         return result.Success ? Ok() : Error(result.Error);
     }
 }
