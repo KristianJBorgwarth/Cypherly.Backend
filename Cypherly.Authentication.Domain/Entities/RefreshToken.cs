@@ -16,10 +16,10 @@ public class RefreshToken : Entity
 
     public RefreshToken() : base(Guid.Empty) {} // For EF Core
 
-    public RefreshToken(Guid id, Guid userId) : base(id)
+    public RefreshToken(Guid id, Guid userId, DateTime? expires = null) : base(id)
     {
         Token = GenerateToken();
-        Expires = DateTime.UtcNow.AddDays(7);
+        Expires = expires ?? DateTime.UtcNow.AddDays(7);
         UserId = userId;
     }
 
