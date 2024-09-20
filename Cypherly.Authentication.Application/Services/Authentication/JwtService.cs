@@ -18,7 +18,7 @@ public class JwtService(IOptions<JwtSettings> jwtSettings) : IJwtService
             new(ClaimTypes.NameIdentifier, userId.ToString()),
         };
 
-        claims.AddRange(userClaims.Select(uc => new Claim(uc.Claim.ClaimType.ToString(), "true")));
+        claims.AddRange(userClaims.Select(uc => new Claim("role", uc.Claim.ClaimType.ToString())));
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Value.Secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

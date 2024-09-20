@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text;
 using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
 using Cypherly.Authentication.Application.Configuration;
 using Cypherly.Authentication.Application.Services.Authentication;
@@ -6,6 +7,8 @@ using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,6 +71,41 @@ builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authenticati
     .AddProducer<SendEmailMessage>();
 
 #endregion
+
+#region Authenticaion 
+var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
+
+// Add JWT Authentication
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings.Issuer ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {jwtSettings.Issuer}"),
+            ValidAudience = jwtSettings.Audience ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {jwtSettings.Audience}"),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+        };
+    });
+#endregion
+
+
+builder.Services.AddAuthorization(options =>
+{
+    // Policy based on a custom claim (e.g., "role" claim)
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("admin"));
+    
+    options.AddPolicy("User", policy => policy.RequireRole("user"));
+});
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
