@@ -43,10 +43,8 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
 
 
             // Mock out authentication and authorization for testing
-            services.AddAuthentication("Test") // Set "Test" as the default scheme
+            services.AddAuthentication("Test")
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
-
-            // Optional: if you need to bypass authorization, you can add default policies
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true));
