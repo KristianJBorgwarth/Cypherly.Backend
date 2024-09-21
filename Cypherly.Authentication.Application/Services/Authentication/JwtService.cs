@@ -18,7 +18,7 @@ public class JwtService(IOptions<JwtSettings> jwtSettings) : IJwtService
             new(ClaimTypes.NameIdentifier, userId.ToString()),
         };
 
-        claims.AddRange(userClaims.Select(uc => new Claim(uc.Claim.ClaimType.ToString(), "true")));
+        claims.AddRange(userClaims.Select(uc => new Claim(ClaimTypes.Role, uc.Claim.ClaimType.ToString())));
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Value.Secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -26,7 +26,7 @@ public class JwtService(IOptions<JwtSettings> jwtSettings) : IJwtService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new(claims),
-            Expires = DateTime.UtcNow.AddMinutes(jwtSettings.Value.TokenLifeTimeInMinutes),
+            Expires = DateTime.UtcNow.AddDays(jwtSettings.Value.TokenLifeTimeInMinutes),
             SigningCredentials = creds,
             Issuer = jwtSettings.Value.Issuer,
             Audience = jwtSettings.Value.Audience

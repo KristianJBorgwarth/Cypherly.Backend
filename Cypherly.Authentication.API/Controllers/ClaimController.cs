@@ -1,9 +1,12 @@
 ﻿using Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.Authentication.Controllers;
 
+[Authorize(Policy = "AdminOnly", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [Route("api/[controller]")]
 public class ClaimController(ISender sender) : BaseController
 {

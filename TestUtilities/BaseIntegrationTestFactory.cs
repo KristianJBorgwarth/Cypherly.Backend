@@ -1,10 +1,12 @@
 ﻿using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Testcontainers.PostgreSql;
+using TestUtilities.Authentication;
 
 namespace TestUtilities;
 
@@ -39,6 +41,15 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
 
             #endregion
 
+
+            // Mock out authentication and authorization for testing
+            services.AddAuthentication("Test")
+                .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true));
+                options.AddPolicy("User", policy => policy.RequireAssertion(_ => true));
+            });
 
         });
     }

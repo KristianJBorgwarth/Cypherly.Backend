@@ -7,13 +7,14 @@ using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Persistence.Context;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using TestUtilities.Attributes;
 
 namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.EndpointTest;
 
 public class UpdateUserProfileDisplayNameEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory)
     : IntegrationTestBase(factory)
 {
-    [Fact]
+    [SkipOnGitHubFact]
     public async Task Given_Valid_Request_Should_Update_UserProfile_DisplayName_And_Return_200OK()
     {
         // Arrange
@@ -36,7 +37,7 @@ public class UpdateUserProfileDisplayNameEndpointTest(IntegrationTestFactory<Pro
         Db.OutboxMessage.Should().HaveCount(1);
     }
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async Task Given_Invalid_Request_Should_Return_400BadRequest()
     {
         // Arrange

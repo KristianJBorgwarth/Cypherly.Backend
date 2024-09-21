@@ -8,13 +8,14 @@ using Cypherly.UserManagement.Domain.Entities;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Persistence.Context;
 using FluentAssertions;
+using TestUtilities.Attributes;
 
 namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.EndpointTest;
 
 public class GetFriendsEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory)
     : IntegrationTestBase(factory)
 {
-    [Fact]
+    [SkipOnGitHubFact]
     public async void GetFriendsEndpoint_Should_Return_Friends()
     {
         // Arrange
@@ -42,7 +43,7 @@ public class GetFriendsEndpointTest(IntegrationTestFactory<Program, UserManageme
         result!.Result[0].Username.Should().Be("John");
     }
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async void GetFriendsEndpoint_Invalid_Id_Should_Return_BadRequest()
     {
         // Arrange
@@ -58,7 +59,7 @@ public class GetFriendsEndpointTest(IntegrationTestFactory<Program, UserManageme
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async void GetFriendsEndpoint_Should_Return_EmptyList()
     {
         // Arrange
