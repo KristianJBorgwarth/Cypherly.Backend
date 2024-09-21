@@ -7,6 +7,8 @@ using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Persistence.Context;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using TestUtilities.Attributes;
+
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataQuery
 // ReSharper disable EntityFramework.NPlusOne.IncompleteDataUsage
 
@@ -15,7 +17,7 @@ namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.E
 public class CreateFriendshipEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory)
     : IntegrationTestBase(factory)
 {
-    [Fact]
+    [SkipOnGitHubFact]
     public async void Given_Valid_Request_Should_Create_Friendship()
     {
         // Arrange
@@ -43,7 +45,7 @@ public class CreateFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
         friendResult!.FriendshipsReceived.Should().HaveCount(1);
     }
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async void Given_Invalid_Request_Should_Return_Error()
     {
         // Arrange

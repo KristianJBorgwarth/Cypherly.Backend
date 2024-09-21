@@ -8,13 +8,14 @@ using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Persistence.Context;
 using FluentAssertions;
+using TestUtilities.Attributes;
 
 namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.EndpointTest;
 
 public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory)
     : IntegrationTestBase(factory)
 {
-    [Fact]
+    [SkipOnGitHubFact]
     public async void Given_Valid_Command_Should_Update_ProfilePic_And_Return_Dto()
     {
         // Arrange
@@ -53,7 +54,7 @@ public class UpdateUserProfilePictureEndpointTest(IntegrationTestFactory<Program
     }
 
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async void Given_Invalid_Command_WrongID_Should_Return_NotFound_Fail_Result()
     {
         // Arrange

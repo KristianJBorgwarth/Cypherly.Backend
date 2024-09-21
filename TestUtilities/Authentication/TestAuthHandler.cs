@@ -8,19 +8,15 @@ namespace TestUtilities.Authentication;
 
 public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
-    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
-        ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
-        : base(options, logger, encoder, clock)
-    {
-    }
+    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory loggerFactory, UrlEncoder encoder)
+        : base(options, loggerFactory, encoder) { }
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        // Create a fake identity with claims for testing
-        var claims = new[] {
-            new Claim(ClaimTypes.Name, "TestUser"),
-            new Claim(ClaimTypes.Role, "admin"),
-            new Claim(ClaimTypes.Role, "user")// or "user" based on your test
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, "test_user"),
+            new Claim(ClaimTypes.Role, "admin")
         };
         var identity = new ClaimsIdentity(claims, "Test");
         var principal = new ClaimsPrincipal(identity);

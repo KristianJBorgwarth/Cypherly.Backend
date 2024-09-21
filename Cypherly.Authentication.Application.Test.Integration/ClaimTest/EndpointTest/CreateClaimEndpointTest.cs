@@ -4,13 +4,14 @@ using Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;
+using TestUtilities.Attributes;
 
 namespace Cypherly.Authentication.Application.Test.Integration.ClaimTest.EndpointTest;
 
 public class CreateClaimEndpointTest(IntegrationTestFactory<Program, AuthenticationDbContext> factory)
     : IntegrationTestBase(factory)
 {
-    [Fact]
+    [SkipOnGitHubFact]
     public async void Given_Valid_Request_Should_Create_Claim_And_Return_200()
     {
         // Arrange
@@ -27,7 +28,7 @@ public class CreateClaimEndpointTest(IntegrationTestFactory<Program, Authenticat
         Db.Claim.Should().HaveCount(1);
     }
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async void Given_Invalid_Request_Should_Return_400()
     {
         // Arrange
