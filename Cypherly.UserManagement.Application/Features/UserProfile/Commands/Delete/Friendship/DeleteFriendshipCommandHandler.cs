@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
 
 public sealed class DeleteFriendshipCommandHandler(
-    IUserProfileRepository profileRepository, 
+    IUserProfileRepository profileRepository,
     IUnitOfWork unitOfWork,
     IUserProfileService userProfileService,
     ILogger<DeleteFriendshipCommandHandler> logger)
@@ -24,17 +24,16 @@ public sealed class DeleteFriendshipCommandHandler(
                 logger.LogError("UserProfile with id {UserProfileId} not found", request.UserProfileId);
                 return Result.Fail(Errors.General.NotFound(nameof(request.UserProfileId)));
             }
-            //TODO: move to service class, so i can mock it in tests
             var deleteResult = userProfileService.DeleteFriendship(userProfile, request.FriendTag);
             if (!deleteResult.Success)
             {
                 logger.LogError("Failed to delete friendship with FriendTag {FriendTag} for UserProfileId {UserProfileId}", request.FriendTag, request.UserProfileId);
                 return Result.Fail(deleteResult.Error);
             }
-            
+
             await profileRepository.UpdateAsync(userProfile);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            
+
             return Result.Ok();
         }
         catch (Exception e)
