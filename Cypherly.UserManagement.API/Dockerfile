@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Cypherly.UserManagement.API/Cypherly.UserManagement.API.csproj", "Cypherly.UserManagement.API/"]
-COPY ["Cypherly.Domain/Cypherly.Domain.csproj", "Cypherly.Domain/"]
+
 COPY ["Cypherly.UserManagement.Application/Cypherly.UserManagement.Application.csproj", "Cypherly.UserManagement.Application/"]
 COPY ["Cypherly.Application/Cypherly.Application.csproj", "Cypherly.Application/"]
 COPY ["Cypherly.UserManagement.Domain/Cypherly.UserManagement.Domain.csproj", "Cypherly.UserManagement.Domain/"]
