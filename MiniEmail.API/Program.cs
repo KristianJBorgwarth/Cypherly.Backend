@@ -57,8 +57,7 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "MinimalEmail API V1");
 });
 
-app.UseHttpsRedirection();
-
+#region Endpoints
 app.MapPost("send-email",
         async (SendEmailRequest request, IValidator<SendEmailRequest> validator, IEmailService emailService) =>
         {
@@ -71,6 +70,7 @@ app.MapPost("send-email",
         })
     .WithName("SendEmail")
     .WithOpenApi();
+#endregion
 
 app.Run();
 

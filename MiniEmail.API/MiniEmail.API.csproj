@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <RootNamespace>MinimalEmail.API</RootNamespace>
+        <OutputType>WinExe</OutputType>
     </PropertyGroup>
 
     <ItemGroup>
