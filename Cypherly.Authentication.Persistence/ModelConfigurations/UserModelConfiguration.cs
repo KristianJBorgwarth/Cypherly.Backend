@@ -16,6 +16,7 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
             email.Property(e => e.Address)
                 .HasColumnName("Email")
                 .IsRequired()
+                .HasColumnType("citext") // Ensure case-insensitive to prevent duplicate emails
                 .HasMaxLength(255);
 
             email.HasIndex(e => e.Address).IsUnique();

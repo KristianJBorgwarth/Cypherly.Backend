@@ -78,6 +78,8 @@ var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
 builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
     {
+        if(jwtSettings is null)
+            throw new NotImplementedException("MISSING JWT SETTINGS");
         options.TokenValidationParameters = new()
         {
             ValidateIssuer = true,
@@ -96,7 +98,20 @@ builder.Services.AddAuthorizationBuilder()
 
 #endregion
 
+#region  CORS
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowElectron", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .WithOrigins("http://localhost:8080");
+    });
+});
+
+#endregion
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -148,6 +163,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors("AllowElectron");
 app.Run();
 
 public partial class Program { }
