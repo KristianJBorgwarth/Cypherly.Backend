@@ -24,7 +24,8 @@ public class Email : ValueObject
         try
         {
             var mailAddress = new System.Net.Mail.MailAddress(address);
-            return Result.Ok(new Email(mailAddress.Address));
+            var lowerCaseAddress = mailAddress.Address.ToLowerInvariant();
+            return Result.Ok(new Email(lowerCaseAddress));
         }
         catch
         {
@@ -40,4 +41,6 @@ public class Email : ValueObject
     {
         return Address;
     }
+
+
 }
