@@ -1,6 +1,7 @@
 ﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.BlockUser;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
@@ -43,6 +44,15 @@ public class UserProfileController(ISender sender) : BaseController
     {
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+    
+    [HttpPut("block-user")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> BlockUser([FromBody] BlockUserCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
     }
 
     [HttpPost("friendship")]
