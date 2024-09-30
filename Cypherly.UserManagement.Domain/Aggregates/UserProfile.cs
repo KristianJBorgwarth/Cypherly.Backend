@@ -99,10 +99,10 @@ public partial class UserProfile : AggregateRoot
         if(blockedUserId == Id)
             throw new InvalidOperationException("Cannot block self");
         
-        if(_blockedUsers.Any(c=> c.BlockedUserId == blockedUserId))
+        if(_blockedUsers.Any(c=> c.BlockedUserProfileId == blockedUserId))
             throw new InvalidOperationException("User already blocked");
         
-        _blockedUsers.Add(new(Guid.NewGuid(), blockingUserId: Id, blockedUserId: blockedUserId));
+        _blockedUsers.Add(new(Guid.NewGuid(), blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
     }
     
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]

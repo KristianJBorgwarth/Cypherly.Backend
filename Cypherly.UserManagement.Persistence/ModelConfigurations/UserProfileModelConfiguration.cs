@@ -35,5 +35,10 @@ public class UserProfileModelConfiguration : IEntityTypeConfiguration<UserProfil
             .WithOne(x => x.FriendProfile)
             .HasForeignKey(x => x.FriendProfileId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasMany(x=> x.BlockedUsers)
+            .WithOne()
+            .HasForeignKey(x => x.BlockingUserProfileId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
