@@ -12,6 +12,9 @@ public partial class UserProfile : AggregateRoot
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
 
+    private readonly List<BlockedUser> _blockedUsers = [];
+    public virtual IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
+
     private readonly List<Friendship> _friendshipsReceived = [];
     public virtual IReadOnlyCollection<Friendship> FriendshipsReceived => _friendshipsReceived;
 
@@ -87,7 +90,22 @@ public partial class UserProfile : AggregateRoot
 
         return Result.Fail(Errors.General.UnspecifiedError("Friendship not found"));
     }
-    
+
+    public Result BlockUser(Guid blockedUserId)
+    {
+        if(blockedUserId == Guid.Empty)
+            return Result.Fail(Errors.General.ValueIsRequired(nameof(blockedUserId)));
+
+        if(blockedUserId == Id)
+            return Result.Fail(Errors.General.UnspecifiedError("Cannot block self"));
+
+        if (BlockedUsers.Any(b => b.BlockedUserId == blockedUserId))
+            return Result.Fail(Errors.General.UnspecifiedError("User already blocked"));
+
+        _blockedUsers.Add(new(Guid.NewGuid(), Id, blockedUserId));
+        return Result.Ok();
+    }
+
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]
     private static partial System.Text.RegularExpressions.Regex DisplayNameRegex();
 }
