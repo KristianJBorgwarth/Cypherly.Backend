@@ -1,4 +1,4 @@
-﻿using Cypherly.Domain.Common;
+using Cypherly.Domain.Common;
 using Cypherly.UserManagement.Domain.Entities;
 using Cypherly.UserManagement.Domain.Events.UserProfile;
 using Cypherly.UserManagement.Domain.ValueObjects;
@@ -14,7 +14,7 @@ public partial class UserProfile : AggregateRoot
 
     private readonly List<BlockedUser> _blockedUsers = [];
     public virtual IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
-
+    
     private readonly List<Friendship> _friendshipsReceived = [];
     public virtual IReadOnlyCollection<Friendship> FriendshipsReceived => _friendshipsReceived;
 
@@ -91,21 +91,20 @@ public partial class UserProfile : AggregateRoot
         return Result.Fail(Errors.General.UnspecifiedError("Friendship not found"));
     }
 
-    public Result BlockUser(Guid blockedUserId)
+    public void BlockUser(Guid blockedUserId)
     {
         if(blockedUserId == Guid.Empty)
-            return Result.Fail(Errors.General.ValueIsRequired(nameof(blockedUserId)));
-
+            throw new InvalidOperationException("BlockedUserId cannot be empty");
+        
         if(blockedUserId == Id)
-            return Result.Fail(Errors.General.UnspecifiedError("Cannot block self"));
-
-        if (BlockedUsers.Any(b => b.BlockedUserId == blockedUserId))
-            return Result.Fail(Errors.General.UnspecifiedError("User already blocked"));
-
-        _blockedUsers.Add(new(Guid.NewGuid(), Id, blockedUserId));
-        return Result.Ok();
+            throw new InvalidOperationException("Cannot block self");
+        
+        if(_blockedUsers.Any(c=> c.BlockedUserProfileId == blockedUserId))
+            throw new InvalidOperationException("User already blocked");
+        
+        _blockedUsers.Add(new(Guid.NewGuid(), blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
     }
-
+    
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]
     private static partial System.Text.RegularExpressions.Regex DisplayNameRegex();
 }

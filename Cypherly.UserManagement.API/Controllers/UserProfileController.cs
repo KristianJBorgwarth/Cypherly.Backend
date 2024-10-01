@@ -45,6 +45,15 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
+    
+    [HttpPut("block-user")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> BlockUser([FromBody] BlockUserCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
+    }
 
     [HttpPut("block-user")]
     [ProducesResponseType(StatusCodes.Status200OK)]
