@@ -14,8 +14,35 @@ public class BlockUserCommandHandler(
     ILogger<BlockUserCommandHandler> logger)
     : ICommandHandler<BlockUserCommand>
 {
-    public Task<Result> Handle(BlockUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(BlockUserCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var userProfile = await userProfileRepository.GetByIdAsync(request.UserId);
+            if (userProfile is null)
+            {
+                logger.LogError("User profile not found for user id {UserId}", request.UserId);
+                return Result.Fail(Errors.General.NotFound(request.UserId));
+            }
+
+            var blockedUserProfile = await userProfileRepository.GetByUserTag(request.BlockedUserTag);
+            if (blockedUserProfile is null)
+            {
+                logger.LogError("User profile not found for user id {UserId}", request.BlockedUserTag);
+                return Result.Fail(Errors.General.NotFound(request.BlockedUserTag));
+            }
+
+            userProfileService.BlockUser(userProfile, blockedUserProfile);
+            await uow.SaveChangesAsync(cancellationToken);
+
+            return Result.Ok();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error blocking user {UserId} for user {BlockedUserTag}", request.UserId,
+                request.BlockedUserTag);
+            return Result.Fail(Errors.General.UnspecifiedError(
+                "Exception occured whilte attempting to block user. Please Check logs for more details"));
+        }
     }
 }

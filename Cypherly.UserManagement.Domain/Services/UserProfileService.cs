@@ -11,8 +11,9 @@ public interface IUserProfileService
     UserProfile CreateUserProfile(Guid userId, string username);
     Result CreateFriendship(UserProfile userProfile, UserProfile friendProfile);
     Result AcceptFriendship(UserProfile userProfile, string friendTag);
-    
+
     Result DeleteFriendship(UserProfile userProfile, string friendTag);
+    void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile);
 }
 public class UserProfileService : IUserProfileService
 {
@@ -51,5 +52,10 @@ public class UserProfileService : IUserProfileService
     public Result DeleteFriendship(UserProfile userProfile, string friendTag)
     {
         return userProfile.DeleteFriendship(friendTag);
+    }
+
+    public void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile)
+    {
+        userProfile.BlockUser(blockedUserProfile.Id);
     }
 }

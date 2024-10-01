@@ -14,7 +14,7 @@ public partial class UserProfile : AggregateRoot
 
     private readonly List<BlockedUser> _blockedUsers = [];
     public virtual IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
-    
+
     private readonly List<Friendship> _friendshipsReceived = [];
     public virtual IReadOnlyCollection<Friendship> FriendshipsReceived => _friendshipsReceived;
 
@@ -95,16 +95,17 @@ public partial class UserProfile : AggregateRoot
     {
         if(blockedUserId == Guid.Empty)
             throw new InvalidOperationException("BlockedUserId cannot be empty");
-        
+
         if(blockedUserId == Id)
             throw new InvalidOperationException("Cannot block self");
-        
+
         if(_blockedUsers.Any(c=> c.BlockedUserProfileId == blockedUserId))
             throw new InvalidOperationException("User already blocked");
-        
+
         _blockedUsers.Add(new(Guid.NewGuid(), blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
+        AddDomainEvent(new UserBlockedEvent(Id, blockedUserId));
     }
-    
+
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]
     private static partial System.Text.RegularExpressions.Regex DisplayNameRegex();
 }
