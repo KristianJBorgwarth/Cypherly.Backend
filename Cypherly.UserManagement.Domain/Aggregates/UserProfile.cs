@@ -49,6 +49,7 @@ public partial class UserProfile : AggregateRoot
         return Result.Ok();
     }
 
+	//TODO: should probably just throw exceptions instead of result, like in delete friendship 
     public Result AddFriendship(UserProfile userProfile)
     {
         if(Id == userProfile.Id)
@@ -64,10 +65,14 @@ public partial class UserProfile : AggregateRoot
         return Result.Ok();
     }
 
+    //TODO: should probaly not return Result, but just throw exceptions
     public Result DeleteFriendship(string friendTag)
     {
         if (friendTag is null)
             throw new InvalidOperationException("FriendTag cannot be null");
+
+        if(friendTag == UserTag.Tag)
+            throw new InvalidOperationException("Cannot delete self as friend");
 
         var friendshipInitiated = FriendshipsInitiated
             .FirstOrDefault(f => f.FriendProfile.UserTag.Tag == friendTag);

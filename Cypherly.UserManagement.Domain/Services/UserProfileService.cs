@@ -57,5 +57,8 @@ public class UserProfileService : IUserProfileService
     public void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile)
     {
         userProfile.BlockUser(blockedUserProfile.Id);
+        userProfile.DeleteFriendship(blockedUserProfile.UserTag.Tag);
+        blockedUserProfile.DeleteFriendship(userProfile.UserTag.Tag);
+        userProfile.AddDomainEvent(new UserBlockedEvent(userProfile.Id, blockedUserProfile.Id));
     }
 }
