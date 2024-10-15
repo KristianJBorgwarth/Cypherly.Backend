@@ -13,9 +13,9 @@ public class JwtService(IOptions<JwtSettings> jwtSettings) : IJwtService
     {
         var claims = new List<Claim>
         {
-            new("sub", userEmail),
-            new("jti", Guid.NewGuid().ToString()),
             new(ClaimTypes.NameIdentifier, userId.ToString()),
+            new("sub", userEmail),
+            new("jti", Guid.NewGuid().ToString())
         };
 
         claims.AddRange(userClaims.Select(uc => new Claim(ClaimTypes.Role, uc.Claim.ClaimType.ToString())));

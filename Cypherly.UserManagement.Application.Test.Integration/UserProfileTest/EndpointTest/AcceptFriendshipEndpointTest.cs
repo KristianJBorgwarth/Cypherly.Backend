@@ -34,7 +34,7 @@ public class AcceptFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = userProfile.UserTag.Tag,
-            UserId = friendProfile.Id
+            Id = friendProfile.Id
         };
 
         // Act
@@ -55,7 +55,7 @@ public class AcceptFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "eric",
-            UserId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         // Act

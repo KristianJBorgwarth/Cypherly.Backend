@@ -15,7 +15,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new CreateFriendshipCommand
             {
-                UserId = Guid.Empty, // Invalid UserId
+                Id = Guid.Empty, // Invalid UserId
                 FriendTag = "ValidTag"
             };
 
@@ -23,8 +23,8 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             var result = _validator.TestValidate(command);
 
             // Assert
-            result.ShouldHaveValidationErrorFor(x => x.UserId)
-                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.UserId)).Message);
+            result.ShouldHaveValidationErrorFor(x => x.Id)
+                .WithErrorMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.Id)).Message);
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new CreateFriendshipCommand
             {
-                UserId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = null // Null FriendTag
             };
 
@@ -51,7 +51,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new CreateFriendshipCommand
             {
-                UserId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = "" // Empty FriendTag
             };
 
@@ -69,7 +69,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new CreateFriendshipCommand
             {
-                UserId = Guid.NewGuid(), // Valid UserId
+                Id = Guid.NewGuid(), // Valid UserId
                 FriendTag = "ValidTag"   // Valid FriendTag
             };
 
@@ -77,7 +77,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             var result = _validator.TestValidate(command);
 
             // Assert
-            result.ShouldNotHaveValidationErrorFor(x => x.UserId);
+            result.ShouldNotHaveValidationErrorFor(x => x.Id);
             result.ShouldNotHaveValidationErrorFor(x => x.FriendTag);
         }
     }

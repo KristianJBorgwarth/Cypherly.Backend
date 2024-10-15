@@ -25,7 +25,7 @@ public class UpdateUserProfileDisplayNameEndpointTest(IntegrationTestFactory<Pro
         var command = new UpdateUserProfileDisplayNameCommand()
         {
             DisplayName = "test",
-            UserProfileId = userprofile.Id
+            Id = userprofile.Id
         };
 
         // Act
@@ -48,7 +48,7 @@ public class UpdateUserProfileDisplayNameEndpointTest(IntegrationTestFactory<Pro
         var command = new UpdateUserProfileDisplayNameCommand()
         {
             DisplayName = "",
-            UserProfileId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         // Act

@@ -4,6 +4,6 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Upda
 
 public sealed record AcceptFriendshipCommand : ICommand
 {
-    public required Guid UserId { get; init; }
+    public required Guid Id { get; init; }
     public required string FriendTag { get; init; }
 }

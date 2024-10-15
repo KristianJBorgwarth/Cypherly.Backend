@@ -7,8 +7,8 @@ public class CreateFriendshipCommandValidator : AbstractValidator<CreateFriendsh
 {
     public CreateFriendshipCommandValidator()
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.UserId)).Message);
+        RuleFor(x => x.Id)
+            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(CreateFriendshipCommand.Id)).Message);
 
         RuleFor(x => x.FriendTag)
             .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(CreateFriendshipCommand.FriendTag)).Message)

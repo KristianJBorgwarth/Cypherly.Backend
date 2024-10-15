@@ -37,10 +37,10 @@ public class DeleteFriendshipCommandHandlerTest
         var command = new DeleteFriendshipCommand()
         {
             FriendTag = "validTag",
-            UserProfileId = userProfile.Id
+            Id = userProfile.Id
         };
         
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.UserProfileId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).Returns(Result.Ok());
         A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).DoesNothing();
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).DoesNothing();
@@ -50,7 +50,7 @@ public class DeleteFriendshipCommandHandlerTest
         
         // Assert
         result.Success.Should().BeTrue();
-        A.CallTo(()=> _fakeRepo.GetByIdAsync(command.UserProfileId)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustHaveHappenedOnceExactly();
@@ -63,17 +63,17 @@ public class DeleteFriendshipCommandHandlerTest
         var command = new DeleteFriendshipCommand()
         {
             FriendTag = "validTag",
-            UserProfileId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
         
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.UserProfileId)).Returns((UserProfile)null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns((UserProfile)null);
         
         // Act
         var result = await _sut.Handle(command, default);
         
         // Assert
         result.Success.Should().BeFalse();
-        A.CallTo(()=> _fakeRepo.GetByIdAsync(command.UserProfileId)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeService.DeleteFriendship(A<UserProfile>._, A<string>._)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.UpdateAsync(A<UserProfile>._)).MustNotHaveHappened();
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
@@ -89,10 +89,10 @@ public class DeleteFriendshipCommandHandlerTest
         var command = new DeleteFriendshipCommand()
         {
             FriendTag = "validTag",
-            UserProfileId = userProfile.Id
+            Id = userProfile.Id
         };
         
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.UserProfileId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).Returns(Result.Fail(Errors.General.UnspecifiedError("whoops")));
         
         // Act
@@ -101,7 +101,7 @@ public class DeleteFriendshipCommandHandlerTest
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("whoops");
-        A.CallTo(()=> _fakeRepo.GetByIdAsync(command.UserProfileId)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).MustNotHaveHappened();
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
@@ -116,10 +116,10 @@ public class DeleteFriendshipCommandHandlerTest
         var command = new DeleteFriendshipCommand()
         {
             FriendTag = "validTag",
-            UserProfileId = userProfile.Id
+            Id = userProfile.Id
         };
         
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.UserProfileId)).Returns(userProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).Returns(Result.Ok());
         A.CallTo(()=> _fakeUow.SaveChangesAsync(default)).Throws<Exception>();
         
@@ -129,7 +129,7 @@ public class DeleteFriendshipCommandHandlerTest
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("An exception occured while attempting to delete a friendship.");
-        A.CallTo(()=> _fakeRepo.GetByIdAsync(command.UserProfileId)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustHaveHappenedOnceExactly();

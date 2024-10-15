@@ -35,10 +35,10 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
         var cmd = new UpdateUserProfileDisplayNameCommand
         {
             DisplayName = "validDisplayName",
-            UserProfileId = testProfile.Id
+            Id = testProfile.Id
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.UserProfileId)).Returns(testProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.Id)).Returns(testProfile);
         A.CallTo(()=> _fakeRepo.UpdateAsync(testProfile)).DoesNothing();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).DoesNothing();
         A.CallTo(()=> _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(testProfile)).Returns(new()
@@ -52,7 +52,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
         // Assert
         result.Success.Should().BeTrue();
         result.Value.DisplayName.Should().Be(cmd.DisplayName);
-        A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.UserProfileId)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.Id)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeRepo.UpdateAsync(testProfile)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(testProfile)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustHaveHappenedOnceExactly();
@@ -65,17 +65,17 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
         var cmd = new UpdateUserProfileDisplayNameCommand
         {
             DisplayName = "validDisplayName",
-            UserProfileId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.UserProfileId)).Returns((UserProfile)null);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.Id)).Returns((UserProfile)null);
 
         // Act
         var result = await _sut.Handle(cmd, default);
 
         // Assert
         result.Success.Should().BeFalse();
-        A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.UserProfileId)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.Id)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeRepo.UpdateAsync(A<UserProfile>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
         A.CallTo(()=> _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(A<UserProfile>._)).MustNotHaveHappened();
@@ -89,17 +89,17 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
         var cmd = new UpdateUserProfileDisplayNameCommand
         {
             DisplayName = "", // invalid
-            UserProfileId = testProfile.Id
+            Id = testProfile.Id
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.UserProfileId)).Returns(testProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.Id)).Returns(testProfile);
 
         // Act
         var result = await _sut.Handle(cmd, default);
 
         // Assert
         result.Success.Should().BeFalse();
-        A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.UserProfileId)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.Id)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeRepo.UpdateAsync(A<UserProfile>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
         A.CallTo(()=> _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(A<UserProfile>._)).MustNotHaveHappened();
@@ -113,10 +113,10 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
         var cmd = new UpdateUserProfileDisplayNameCommand
         {
             DisplayName = "validDisplayName",
-            UserProfileId = testProfile.Id
+            Id = testProfile.Id
         };
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.UserProfileId)).Returns(testProfile);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.Id)).Returns(testProfile);
         A.CallTo(()=> _fakeRepo.UpdateAsync(testProfile)).Throws<Exception>();
 
         // Act
@@ -124,7 +124,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest
 
         // Assert
         result.Success.Should().BeFalse();
-        A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.UserProfileId)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.Id)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeRepo.UpdateAsync(testProfile)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
         A.CallTo(()=> _fakeMapper.Map<UpdateUserProfileDisplayNameDto>(A<UserProfile>._)).MustNotHaveHappened();

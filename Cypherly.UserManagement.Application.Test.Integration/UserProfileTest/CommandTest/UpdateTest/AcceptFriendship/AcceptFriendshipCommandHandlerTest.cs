@@ -45,7 +45,7 @@ public class AcceptFriendshipCommandHandlerTest : IntegrationTestBase
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = userProfile.UserTag.Tag,
-            UserId = friendProfile.Id
+            Id = friendProfile.Id
         };
 
         // Act
@@ -66,7 +66,7 @@ public class AcceptFriendshipCommandHandlerTest : IntegrationTestBase
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "eric",
-            UserId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         // Act
@@ -91,7 +91,7 @@ public class AcceptFriendshipCommandHandlerTest : IntegrationTestBase
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "invalid",
-            UserId = friendProfile.Id
+            Id = friendProfile.Id
         };
 
         // Act

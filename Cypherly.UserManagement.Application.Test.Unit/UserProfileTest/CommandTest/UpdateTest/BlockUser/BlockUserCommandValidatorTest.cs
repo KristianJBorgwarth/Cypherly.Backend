@@ -12,20 +12,20 @@ public class BlockUserCommandValidatorTest
     public void ShouldHaveErrorWhenUserIdIsEmpty()
     {
         // Arrange 
-        var command = new BlockUserCommand { UserId = Guid.Empty, BlockedUserTag = "test" };
+        var command = new BlockUserCommand { Id = Guid.Empty, BlockedUserTag = "test" };
         
         // Act
         var result = _sut.TestValidate(command);
         
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.UserId);
+        result.ShouldHaveValidationErrorFor(x => x.Id);
     }
     
     [Fact]
     public void ShouldHaveErrorWhenBlockedUserTagIsEmpty()
     {
         // Arrange
-        var command = new BlockUserCommand { UserId = Guid.NewGuid(), BlockedUserTag = "" };
+        var command = new BlockUserCommand { Id = Guid.NewGuid(), BlockedUserTag = "" };
         
         // Act
         var result = _sut.TestValidate(command);
@@ -38,7 +38,7 @@ public class BlockUserCommandValidatorTest
     public void ShouldNotHaveErrorWhenCommandIsValid()
     {
         // Arrange
-        var command = new BlockUserCommand { UserId = Guid.NewGuid(), BlockedUserTag = "test" };
+        var command = new BlockUserCommand { Id = Guid.NewGuid(), BlockedUserTag = "test" };
         
         // Act
         var result = _sut.TestValidate(command);

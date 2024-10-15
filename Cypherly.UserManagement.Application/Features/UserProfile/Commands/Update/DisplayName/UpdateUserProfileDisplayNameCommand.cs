@@ -4,6 +4,6 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Upda
 
 public sealed record UpdateUserProfileDisplayNameCommand : ICommand<UpdateUserProfileDisplayNameDto>
 {
-    public required Guid UserProfileId { get; init; }
+    public required Guid Id { get; init; }
     public required string DisplayName { get; init; }
 }

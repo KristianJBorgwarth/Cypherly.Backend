@@ -4,6 +4,6 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Dele
 
 public sealed record DeleteFriendshipCommand : ICommand
 {
-    public required Guid UserProfileId { get; init; }
+    public required Guid Id { get; init; }
     public required string FriendTag { get; init; }
 }

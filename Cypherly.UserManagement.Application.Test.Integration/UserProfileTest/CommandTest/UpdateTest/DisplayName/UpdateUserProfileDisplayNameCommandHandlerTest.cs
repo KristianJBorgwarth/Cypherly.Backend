@@ -38,7 +38,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest : IntegrationTestBas
         var command = new UpdateUserProfileDisplayNameCommand()
         {
             DisplayName = "test",
-            UserProfileId = userprofile.Id
+            Id = userprofile.Id
         };
 
         // Act
@@ -58,7 +58,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest : IntegrationTestBas
         var command = new UpdateUserProfileDisplayNameCommand()
         {
             DisplayName = "test",
-            UserProfileId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         // Act
@@ -80,7 +80,7 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest : IntegrationTestBas
         var command = new UpdateUserProfileDisplayNameCommand()
         {
             DisplayName = "",
-            UserProfileId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         // Act

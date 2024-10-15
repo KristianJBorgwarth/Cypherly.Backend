@@ -1,4 +1,6 @@
 ﻿using System.Net;
+using System.Net.Http.Json;
+using Cypherly.Authentication.API.Utilities;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
 using Cypherly.UserManagement.Application.Test.Integration.Setup;
 using Cypherly.UserManagement.Domain.Aggregates;
@@ -28,15 +30,17 @@ public class DeleteFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
 
         var cmd = new DeleteFriendshipCommand
         {
-            UserProfileId = userProfile.Id,
+            Id = userProfile.Id,
             FriendTag = friendProfile.UserTag.Tag
         };
 
         // Act
         var encodedFriendTag = Uri.EscapeDataString(cmd.FriendTag);
-        var response = await Client.DeleteAsync($"api/userprofile/friendship?userProfileId={cmd.UserProfileId}&friendTag={encodedFriendTag}");
+        var response = await Client.DeleteAsync($"api/userprofile/friendship?Id={cmd.Id}&friendTag={encodedFriendTag}");
 
         // Assert
+        var result = await response.Content.ReadFromJsonAsync<Envelope>();
+        result.Should().NotBeNull();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         Db.Friendship.Should().HaveCount(0);
     }
@@ -57,13 +61,13 @@ public class DeleteFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
 
         var cmd = new DeleteFriendshipCommand
         {
-            UserProfileId = userProfile.Id,
+            Id = userProfile.Id,
             FriendTag = "InvalidFriendTag"
         };
 
         // Act
         var encodedFriendTag = Uri.EscapeDataString(cmd.FriendTag);
-        var response = await Client.DeleteAsync($"api/userprofile/friendship?userProfileId={cmd.UserProfileId}&friendTag={encodedFriendTag}");
+        var response = await Client.DeleteAsync($"api/userprofile/friendship?Id={cmd.Id}&friendTag={encodedFriendTag}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
