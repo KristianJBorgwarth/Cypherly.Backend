@@ -31,6 +31,6 @@ public class UserProfileRepository(UserManagementDbContext context) : IUserProfi
 
     public async Task<UserProfile?> GetByUserTag(string userTag)
     {
-        return await context.UserProfile.FirstOrDefaultAsync(x => x.UserTag.Tag.Equals(userTag));
+        return await context.UserProfile.FirstOrDefaultAsync(x => x.UserTag.Tag == userTag);
     }
 }
