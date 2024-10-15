@@ -54,6 +54,11 @@ public class UserProfileService : IUserProfileService
         return userProfile.DeleteFriendship(friendTag);
     }
 
+    /// <summary>
+    /// Block a user by adding their id to the blocked users list and removing the friendship
+    /// </summary>
+    /// <param name="userProfile">The blocking UserProfile <see cref="UserProfile"/></param>
+    /// <param name="blockedUserProfile">The user that will be blocked <see cref="UserProfile"/></param>
     public void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile)
     {
         userProfile.BlockUser(blockedUserProfile.Id);

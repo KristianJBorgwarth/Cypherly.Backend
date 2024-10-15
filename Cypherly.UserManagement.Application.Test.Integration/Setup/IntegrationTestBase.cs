@@ -24,6 +24,8 @@ public class IntegrationTestBase : IDisposable
 
     public void Dispose()
     {
+        Db.Friendship.ExecuteDelete();
+        Db.BlockedUser.ExecuteDelete();
         Db.UserProfile.ExecuteDelete();
         Db.OutboxMessage.ExecuteDelete();
     }
