@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Cypherly.Authentication.API.Utilities;
 using Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;

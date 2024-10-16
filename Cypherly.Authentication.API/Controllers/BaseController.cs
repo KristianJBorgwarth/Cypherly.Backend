@@ -1,4 +1,4 @@
-﻿using Cypherly.Authentication.API.Utilities;
+﻿using Cypherly.API.Responses;
 using Cypherly.Domain.Common;
 using Cypherly.Domain.ValueObjects;
 using FluentValidation.Results;
