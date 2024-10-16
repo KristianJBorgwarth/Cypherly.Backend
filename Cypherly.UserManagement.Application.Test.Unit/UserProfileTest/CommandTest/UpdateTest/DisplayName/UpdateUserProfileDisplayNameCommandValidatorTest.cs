@@ -15,7 +15,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                UserProfileId = Guid.Empty,
+                Id = Guid.Empty,
                 DisplayName = "ValidDisplayName"
             };
 
@@ -25,7 +25,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors[0].ErrorMessage.Should()
-                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.UserProfileId)).Message);
+                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.Id)).Message);
         }
 
         [Fact]
@@ -34,7 +34,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                UserProfileId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 DisplayName = null
             };
 
@@ -53,7 +53,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                UserProfileId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 DisplayName = "ValidDisplayName"
             };
 
@@ -70,7 +70,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                UserProfileId = Guid.Empty,
+                Id = Guid.Empty,
                 DisplayName = "ValidDisplayName"
             };
 
@@ -80,7 +80,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Assert
             result.IsValid.Should().BeFalse();
             result.Errors[0].ErrorMessage.Should()
-                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.UserProfileId)).Message);
+                .Be(Errors.General.ValueIsEmpty(nameof(UpdateUserProfileDisplayNameCommand.Id)).Message);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new UpdateUserProfileDisplayNameCommand
             {
-                UserProfileId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 DisplayName = ""
             };
 

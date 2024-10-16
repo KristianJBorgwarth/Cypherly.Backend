@@ -8,9 +8,9 @@ public class DeleteFriendshipCommandValidator : AbstractValidator<DeleteFriendsh
     public DeleteFriendshipCommandValidator()
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
-        RuleFor(x=> x.UserProfileId)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(DeleteFriendshipCommand.UserProfileId)).Message)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(DeleteFriendshipCommand.UserProfileId)).Message);
+        RuleFor(x=> x.Id)
+            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(DeleteFriendshipCommand.Id)).Message)
+            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(DeleteFriendshipCommand.Id)).Message);
 
         RuleFor(x => x.FriendTag)
             .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(DeleteFriendshipCommand.FriendTag)).Message)

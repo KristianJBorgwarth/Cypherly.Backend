@@ -18,10 +18,10 @@ public class UpdateUserProfileDisplayNameCommandHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.UserProfileId);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
             if (userProfile is null)
             {
-                logger.LogWarning("User profile with id: {Id} not found.", request.UserProfileId);
+                logger.LogWarning("User profile with id: {Id} not found.", request.Id);
                 return Result.Fail<UpdateUserProfileDisplayNameDto>(Errors.General.NotFound("User profile not found."));
             }
 
@@ -36,7 +36,7 @@ public class UpdateUserProfileDisplayNameCommandHandler(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error in {Command} for UserProfile with id: {Id}", nameof(UpdateUserProfileDisplayNameCommand), request.UserProfileId);
+            logger.LogError(ex, "Error in {Command} for UserProfile with id: {Id}", nameof(UpdateUserProfileDisplayNameCommand), request.Id);
             return Result.Fail<UpdateUserProfileDisplayNameDto>(Errors.General.UnspecifiedError("An exception occurred while updating the user profile display name."));
         }
     }

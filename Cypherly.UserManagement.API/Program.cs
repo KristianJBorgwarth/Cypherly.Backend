@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using Cypherly.API.Filters;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
@@ -92,6 +93,7 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("AdminOnly", policy => policy.RequireRole("admin"))
     .AddPolicy("User", policy => policy.RequireRole("user"));
 
+builder.Services.AddScoped<IValidateUserIdFilter, ValidateUserIdIdFilter>();
 
 #endregion
 

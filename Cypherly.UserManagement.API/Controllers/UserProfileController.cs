@@ -1,4 +1,5 @@
-﻿using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
+﻿using Cypherly.API.Filters;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Create.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Delete.Friendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.BlockUser;
@@ -14,9 +15,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Cypherly.UserManagement.API.Controllers;
 
 [Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[ServiceFilter(typeof(IValidateUserIdFilter))]
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
 {
+    
     [HttpGet("")]
     [ProducesResponseType(typeof(GetUserProfileDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -25,8 +28,7 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(query);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
-
-
+    
     [HttpPut("profile-picture")]
     [ProducesResponseType(typeof(UpdateUserProfilePictureDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -35,7 +37,6 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
-
 
     [HttpPut("displayname")]
     [ProducesResponseType(typeof(UpdateUserProfileDisplayNameDto), StatusCodes.Status200OK)]

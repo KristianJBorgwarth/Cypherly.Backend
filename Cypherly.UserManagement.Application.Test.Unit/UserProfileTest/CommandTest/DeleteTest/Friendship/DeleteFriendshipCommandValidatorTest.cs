@@ -14,7 +14,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                UserProfileId = Guid.Empty,
+                Id = Guid.Empty,
                 FriendTag = "ValidTag"
             };
 
@@ -22,7 +22,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             var result = _validator.Validate(command);
 
             // Assert
-            result.Errors.Should().Contain(x => x.PropertyName == nameof(DeleteFriendshipCommand.UserProfileId));
+            result.Errors.Should().Contain(x => x.PropertyName == nameof(DeleteFriendshipCommand.Id));
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                UserProfileId = Guid.Empty,
+                Id = Guid.Empty,
                 FriendTag = "ValidTag"
             };
 
@@ -39,7 +39,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             var result = _validator.Validate(command);
 
             // Assert
-            result.Errors.Should().Contain(x => x.PropertyName == nameof(DeleteFriendshipCommand.UserProfileId));
+            result.Errors.Should().Contain(x => x.PropertyName == nameof(DeleteFriendshipCommand.Id));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                UserProfileId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = null
             };
 
@@ -65,7 +65,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                UserProfileId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = string.Empty
             };
 
@@ -82,7 +82,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                UserProfileId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = new string('A', 21) // 21 characters long
             };
 
@@ -99,7 +99,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new DeleteFriendshipCommand
             {
-                UserProfileId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = "ValidTag"
             };
 

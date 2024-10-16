@@ -18,17 +18,17 @@ public class AcceptFriendshipCommandHandler(
     {
         try
         {
-            var userProfile = await userProfileRepository.GetByIdAsync(request.UserId);
+            var userProfile = await userProfileRepository.GetByIdAsync(request.Id);
             if(userProfile is null)
             {
-                logger.LogWarning("User not found: {UserId}", request.UserId);
-                return Result.Fail(Errors.General.NotFound(request.UserId));
+                logger.LogWarning("User not found: {UserId}", request.Id);
+                return Result.Fail(Errors.General.NotFound(request.Id));
             }
 
             var result = userProfileService.AcceptFriendship(userProfile, request.FriendTag);
             if(result.Success is false)
             {
-                logger.LogWarning("Error accepting friendship: {Error} {UserId} {FriendTag}",result.Error, request.UserId, request.FriendTag);
+                logger.LogWarning("Error accepting friendship: {Error} {UserId} {FriendTag}",result.Error, request.Id, request.FriendTag);
                 return Result.Fail(result.Error);
             }
 
@@ -39,7 +39,7 @@ public class AcceptFriendshipCommandHandler(
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Error accepting friendship: {UserId} {FriendTag}", request.UserId, request.FriendTag);
+            logger.LogError(e, "Error accepting friendship: {UserId} {FriendTag}", request.Id, request.FriendTag);
             return Result.Fail(Errors.General.UnspecifiedError("An exception occured while accepting friendship"));
         }
     }

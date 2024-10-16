@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
-using Cypherly.Authentication.API.Utilities;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.AcceptFriendship;
 using Cypherly.UserManagement.Application.Test.Integration.Setup;
 using Cypherly.UserManagement.Domain.Aggregates;
@@ -34,7 +32,7 @@ public class AcceptFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = userProfile.UserTag.Tag,
-            UserId = friendProfile.Id
+            Id = friendProfile.Id
         };
 
         // Act
@@ -55,7 +53,7 @@ public class AcceptFriendshipEndpointTest(IntegrationTestFactory<Program, UserMa
         var command = new AcceptFriendshipCommand()
         {
             FriendTag = "eric",
-            UserId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         // Act

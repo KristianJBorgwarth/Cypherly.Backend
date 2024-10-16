@@ -18,16 +18,16 @@ public sealed class DeleteFriendshipCommandHandler(
     {
         try
         {
-            var userProfile = await profileRepository.GetByIdAsync(request.UserProfileId);
+            var userProfile = await profileRepository.GetByIdAsync(request.Id);
             if (userProfile is null)
             {
-                logger.LogError("UserProfile with id {UserProfileId} not found", request.UserProfileId);
-                return Result.Fail(Errors.General.NotFound(nameof(request.UserProfileId)));
+                logger.LogError("UserProfile with id {UserProfileId} not found", request.Id);
+                return Result.Fail(Errors.General.NotFound(nameof(request.Id)));
             }
             var deleteResult = userProfileService.DeleteFriendship(userProfile, request.FriendTag);
             if (!deleteResult.Success)
             {
-                logger.LogError("Failed to delete friendship with FriendTag {FriendTag} for UserProfileId {UserProfileId}", request.FriendTag, request.UserProfileId);
+                logger.LogError("Failed to delete friendship with FriendTag {FriendTag} for UserProfileId {UserProfileId}", request.FriendTag, request.Id);
                 return Result.Fail(deleteResult.Error);
             }
 
@@ -38,7 +38,7 @@ public sealed class DeleteFriendshipCommandHandler(
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Exception occurred in DeleteFriendshipCommandHandler for command with UserProfileId {UserProfileId} and FriendTag {FriendTag}", request.UserProfileId, request.FriendTag);
+            logger.LogError(e, "Exception occurred in DeleteFriendshipCommandHandler for command with UserProfileId {UserProfileId} and FriendTag {FriendTag}", request.Id, request.FriendTag);
             return Result.Fail(Errors.General.UnspecifiedError("An exception occured while attempting to delete a friendship."));
         }
     }

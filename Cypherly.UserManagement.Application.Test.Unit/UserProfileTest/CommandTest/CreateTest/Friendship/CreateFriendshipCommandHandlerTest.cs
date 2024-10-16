@@ -35,7 +35,7 @@ public class CreateFriendshipCommandHandlerTest
         var command = new CreateFriendshipCommand()
         {
             FriendTag = "tag",
-            UserId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
         A.CallTo(() => _fakeRepo.GetByUserTag(command.FriendTag))!.Returns<UserProfile>(null!);
 
@@ -54,12 +54,12 @@ public class CreateFriendshipCommandHandlerTest
         var command = new CreateFriendshipCommand()
         {
             FriendTag = "tag",
-            UserId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         A.CallTo(() => _fakeRepo.GetByUserTag(A<string>._)).Returns(new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric")));
 
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.UserId))!.Returns<UserProfile>(null!);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id))!.Returns<UserProfile>(null!);
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
@@ -76,14 +76,14 @@ public class CreateFriendshipCommandHandlerTest
         var command = new CreateFriendshipCommand()
         {
             FriendTag = "tag",
-            UserId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
         var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create("friend"));
 
         A.CallTo(() => _fakeRepo.GetByUserTag(A<string>._)).Returns(friend);
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.UserId)).Returns(user);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(user);
         A.CallTo(() => _fakeService.CreateFriendship(user, friend)).Returns(Result.Fail(Errors.General.UnspecifiedError("error")));
 
         // Act
@@ -101,14 +101,14 @@ public class CreateFriendshipCommandHandlerTest
         var command = new CreateFriendshipCommand()
         {
             FriendTag = "tag",
-            UserId = Guid.NewGuid()
+            Id = Guid.NewGuid()
         };
 
         var user = new UserProfile(Guid.NewGuid(), "eric", UserTag.Create("eric"));
         var friend = new UserProfile(Guid.NewGuid(), "friend", UserTag.Create("friend"));
 
         A.CallTo(() => _fakeRepo.GetByUserTag(A<string>._)).Returns(friend);
-        A.CallTo(() => _fakeRepo.GetByIdAsync(command.UserId)).Returns(user);
+        A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(user);
         A.CallTo(() => _fakeService.CreateFriendship(user, friend)).Returns(Result.Ok());
 
         // Act

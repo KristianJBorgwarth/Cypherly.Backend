@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Cypherly.API\Cypherly.API.csproj" />
       <ProjectReference Include="..\Cypherly.Domain\Cypherly.Domain.csproj" />
       <ProjectReference Include="..\Cypherly.MassTransit.Messaging\Cypherly.MassTransit.Messaging.csproj" />
       <ProjectReference Include="..\Cypherly.Outboxing.Messaging\Cypherly.Outboxing.Messaging.csproj" />

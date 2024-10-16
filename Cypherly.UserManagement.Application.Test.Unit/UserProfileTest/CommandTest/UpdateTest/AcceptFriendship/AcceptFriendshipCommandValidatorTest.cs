@@ -16,7 +16,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new AcceptFriendshipCommand
             {
-                UserId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = "ValidFriendTag"
             };
 
@@ -33,7 +33,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new AcceptFriendshipCommand
             {
-                UserId = Guid.Empty, // Invalid UserId
+                Id = Guid.Empty, // Invalid UserId
                 FriendTag = "ValidFriendTag"
             };
 
@@ -42,7 +42,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
 
             // Assert
             result.IsValid.Should().BeFalse();
-            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.UserId) && e.ErrorMessage == Errors.General.ValueIsEmpty(nameof(AcceptFriendshipCommand.UserId)).Message);
+            result.Errors.Should().ContainSingle(e => e.PropertyName == nameof(AcceptFriendshipCommand.Id) && e.ErrorMessage == Errors.General.ValueIsEmpty(nameof(AcceptFriendshipCommand.Id)).Message);
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new AcceptFriendshipCommand
             {
-                UserId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = null // Invalid FriendTag
             };
 
@@ -69,7 +69,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
             // Arrange
             var command = new AcceptFriendshipCommand
             {
-                UserId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 FriendTag = "" // Invalid FriendTag
             };
 

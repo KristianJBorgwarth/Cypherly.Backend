@@ -1,7 +1,9 @@
-﻿using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
+﻿using Cypherly.API.Filters;
+using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -50,7 +52,19 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
                 options.AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true));
                 options.AddPolicy("User", policy => policy.RequireAssertion(_ => true));
             });
+            
+            // Mock out ValidateUserIdFilter
+            // Remove the existing ValidateUserIdFilter registration
+            var actionFilterDescriptor = services.SingleOrDefault(
+                d => d.ServiceType == typeof(IValidateUserIdFilter));
 
+            if (actionFilterDescriptor != null)
+            {
+                services.Remove(actionFilterDescriptor);
+            }
+
+            // Replace with a mock or NoOp implementation
+            services.AddScoped<IValidateUserIdFilter, MockValidateUserIdIdFilter>();
         });
     }
 

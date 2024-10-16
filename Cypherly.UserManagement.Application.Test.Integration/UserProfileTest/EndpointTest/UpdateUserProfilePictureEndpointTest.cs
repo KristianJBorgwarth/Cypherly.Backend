@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
-using Cypherly.Authentication.API.Utilities;
+using Cypherly.API.Responses;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Application.Test.Integration.Setup;
 using Cypherly.UserManagement.Application.Test.Integration.Setup.Helpers;

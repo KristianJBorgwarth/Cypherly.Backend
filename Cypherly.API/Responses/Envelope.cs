@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Cypherly.Authentication.API.Utilities;
+namespace Cypherly.API.Responses;
 
 /// <summary>
 /// The responsibility for the envelope is to wrap any result to create a consistent resultset to the clients.
