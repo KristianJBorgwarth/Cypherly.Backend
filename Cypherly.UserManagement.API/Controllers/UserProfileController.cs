@@ -7,6 +7,7 @@ using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.D
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
+using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileByTag;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +20,7 @@ namespace Cypherly.UserManagement.API.Controllers;
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
 {
-    
+
     [HttpGet("")]
     [ProducesResponseType(typeof(GetUserProfileDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -28,7 +29,17 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(query);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
-    
+
+    [HttpGet("tag")]
+    [ProducesResponseType(typeof(GetUserProfileByTagDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> GetUserProfileByTag([FromQuery] GetUserProfileByTagQuery query)
+    {
+        var result = await sender.Send(query);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
     [HttpPut("profile-picture")]
     [ProducesResponseType(typeof(UpdateUserProfilePictureDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
