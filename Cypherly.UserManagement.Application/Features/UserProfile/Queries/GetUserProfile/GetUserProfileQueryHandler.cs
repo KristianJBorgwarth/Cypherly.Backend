@@ -28,7 +28,7 @@ public class GetUserProfileQueryHandler(
             {
                 var presignedUrlResult =
                     await profilePictureService.GetPresignedProfilePictureUrlAsync(userprofile.ProfilePictureUrl);
-                if (presignedUrlResult.Failure)
+                if (presignedUrlResult.Success is false)
                 {
                     logger.LogWarning("Failed to get presigned url for profile picture with key {Key}",
                         userprofile.ProfilePictureUrl);

@@ -5,12 +5,9 @@ namespace Cypherly.Domain.Common;
 public class Result
 {
     public bool Success { get; private set; }
-    public Error Error { get; private set; }
+    public Error? Error { get; private set; }
 
-    public bool Failure
-    {
-        get { return !Success; }
-    }
+    public bool Failure => !Success;
 
     protected Result(bool success, Error error)
     {
@@ -33,14 +30,15 @@ public class Result
         return new Result(true, null);
     }
 
-    public static Result<T> Ok<T>(T value)
+    public static Result<T> Ok<T>(T? value = default)
     {
         return new Result<T>(value, true, null);
     }
+    
 
     public static Result Combine(params Result[] results)
     {
-        foreach (Result result in results)
+        foreach (var result in results)
         {
             if (result.Failure)
                 return result;
@@ -54,9 +52,9 @@ public class Result
 
 public class Result<T> : Result
 {
-    private T _value;
+    private readonly T? _value;
 
-    public T Value
+    public T? Value
     {
         get
         {
@@ -65,14 +63,12 @@ public class Result<T> : Result
             return _value;
         }
 
-        private set { _value = value; }
+        private init => _value = value;
     }
 
-    protected internal Result(T value, bool success, Error error)
+    protected internal Result(T? value, bool success, Error error)
         : base(success, error)
     {
-        if (value == null && success) throw new InvalidOperationException("Pass a value if result is successful");
-
         Value = value;
     }
 

@@ -26,7 +26,8 @@ public class LoginCommandHandler(
             var pwResult = user.Password.Verify(request.Password);
             if(!pwResult) return Result.Fail<LoginDto>(Errors.General.UnspecifiedError("Invalid Credentials"));
 
-            if(user.IsVerified == false) return Result.Fail<LoginDto>(Errors.General.UnspecifiedError("User is not verified"));
+            if(user.IsVerified == false) 
+                return Result.Fail<LoginDto>(Errors.General.UnspecifiedError("User is not verified"));
 
             var token = jwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims());
 
