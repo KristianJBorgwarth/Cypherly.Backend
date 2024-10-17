@@ -12,7 +12,7 @@ public class GetUserProfileByTagQueryHandler(
     IUserProfileService userProfileService,
     IProfilePictureService profilePictureService,
     IMapper mapper,
-    ILogger<GetUserProfileByTagDto> logger)
+    ILogger<GetUserProfileByTagQueryHandler> logger)
     : IQueryHandler<GetUserProfileByTagQuery, GetUserProfileByTagDto>
 {
     public async Task<Result<GetUserProfileByTagDto>> Handle(GetUserProfileByTagQuery request, CancellationToken cancellationToken)

@@ -37,7 +37,9 @@ public class UserProfileController(ISender sender) : BaseController
     public async Task<IActionResult> GetUserProfileByTag([FromQuery] GetUserProfileByTagQuery query)
     {
         var result = await sender.Send(query);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
+        if (result.Success is false) return Error(result.Error);
+
+        return result.Value is not null ? Ok(result.Value) : NoContent();
     }
 
     [HttpPut("profile-picture")]

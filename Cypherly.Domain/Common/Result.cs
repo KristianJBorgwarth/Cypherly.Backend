@@ -5,7 +5,7 @@ namespace Cypherly.Domain.Common;
 public class Result
 {
     public bool Success { get; private set; }
-    public Error? Error { get; private set; }
+    public Error Error { get; private set; }
 
     public bool Failure => !Success;
 
