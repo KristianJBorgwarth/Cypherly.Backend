@@ -11,8 +11,8 @@ public interface IUserProfileService
     UserProfile CreateUserProfile(Guid userId, string username);
     Result CreateFriendship(UserProfile userProfile, UserProfile friendProfile);
     Result AcceptFriendship(UserProfile userProfile, string friendTag);
-
     Result DeleteFriendship(UserProfile userProfile, string friendTag);
+    bool IsUserBloccked(UserProfile userProfile, UserProfile checkUserProfile);
     void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile);
 }
 public class UserProfileService : IUserProfileService
@@ -52,6 +52,18 @@ public class UserProfileService : IUserProfileService
     public Result DeleteFriendship(UserProfile userProfile, string friendTag)
     {
         return userProfile.DeleteFriendship(friendTag);
+    }
+
+    /// <summary>
+    /// Checks whether the user is blocked by the checkUserProfile or vice versa
+    /// </summary>
+    /// <param name="userProfile"></param>
+    /// <param name="checkUserProfile"></param>
+    /// <returns></returns>
+    public bool IsUserBloccked(UserProfile userProfile, UserProfile checkUserProfile)
+    {
+        return userProfile.BlockedUsers.Any(b => b.BlockedUserProfileId == checkUserProfile.Id)  
+               || checkUserProfile.BlockedUsers.Any(b => b.BlockedUserProfileId == userProfile.Id);
     }
 
     /// <summary>
