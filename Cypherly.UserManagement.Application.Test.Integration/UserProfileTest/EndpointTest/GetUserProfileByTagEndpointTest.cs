@@ -7,14 +7,18 @@ using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.ValueObjects;
 using Cypherly.UserManagement.Persistence.Context;
 using FluentAssertions;
+using TestUtilities.Attributes;
 
 namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.EndpointTest;
 
 public class GetUserProfileByTagEndpointTest : IntegrationTestBase
 {
-    public GetUserProfileByTagEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory) { }
+    public GetUserProfileByTagEndpointTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) :
+        base(factory)
+    {
+    }
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async Task Handle_Valid_Request_Should_Return_UserProfile()
     {
         // Arrange
@@ -28,18 +32,20 @@ public class GetUserProfileByTagEndpointTest : IntegrationTestBase
             Id = requestingUser.Id,
             Tag = userProfile.UserTag.Tag
         };
-        
+
         var encodedFriendTag = Uri.EscapeDataString(query.Tag);
-        
+
         //Act 
-        var response = await Client.GetFromJsonAsync<Envelope<GetUserProfileByTagDto>>($"api/userprofile/tag?Id={query.Id}&Tag={encodedFriendTag}");
+        var response =
+            await Client.GetFromJsonAsync<Envelope<GetUserProfileByTagDto>>(
+                $"api/userprofile/tag?Id={query.Id}&Tag={encodedFriendTag}");
 
         response.Should().NotBeNull();
         response.Result.Should().NotBeNull();
         response.Result.UserTag.Should().Be(userProfile.UserTag.Tag);
     }
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async Task Handle_Invalid_Request_Should_Retur_BadRequest()
     {
         // Arrange
@@ -52,17 +58,17 @@ public class GetUserProfileByTagEndpointTest : IntegrationTestBase
             Id = Guid.NewGuid(),
             Tag = userProfile.UserTag.Tag
         };
-        
+
         var encodedFriendTag = Uri.EscapeDataString(query.Tag);
-        
+
         // Act
         var response = await Client.GetAsync($"api/UserProfile/tag?Id={query.Id}&Tag={encodedFriendTag}");
-        
+
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
-    [Fact]
+    [SkipOnGitHubFact]
     public async Task Handle_Valid_Request_No_Data_Should_Return_NoContent()
     {
         // Arrange
