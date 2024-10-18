@@ -14,6 +14,7 @@ public interface IUserProfileService
     Result DeleteFriendship(UserProfile userProfile, string friendTag);
     bool IsUserBloccked(UserProfile userProfile, UserProfile checkUserProfile);
     void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile);
+    void UnblockUser(UserProfile userProfile, UserProfile unblockedUserProfile);
 }
 public class UserProfileService : IUserProfileService
 {
@@ -77,5 +78,10 @@ public class UserProfileService : IUserProfileService
         userProfile.DeleteFriendship(blockedUserProfile.UserTag.Tag);
         blockedUserProfile.DeleteFriendship(userProfile.UserTag.Tag);
         userProfile.AddDomainEvent(new UserBlockedEvent(userProfile.Id, blockedUserProfile.Id));
+    }
+    
+    public void UnblockUser(UserProfile userProfile, UserProfile unblockedUserProfile)
+    {
+        userProfile.UnblockUser(unblockedUserProfile.Id);
     }
 }
