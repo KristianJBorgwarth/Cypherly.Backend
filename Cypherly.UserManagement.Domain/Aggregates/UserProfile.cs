@@ -119,7 +119,8 @@ public partial class UserProfile : AggregateRoot
         if(unblockedUserId == Id)
             throw new InvalidOperationException("Cannot unblock self");
 
-        var blockedUser = _blockedUsers.FirstOrDefault(c=> c.BlockedUserProfileId == unblockedUserId);
+        
+        var blockedUser = BlockedUsers.FirstOrDefault(c=> c.BlockedUserProfileId == unblockedUserId);
         if(blockedUser is null)
             throw new InvalidOperationException("User not blocked");
 
