@@ -5,6 +5,7 @@ using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.A
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.BlockUser;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.UnblockUser;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileByTag;
@@ -64,6 +65,15 @@ public class UserProfileController(ISender sender) : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> BlockUser([FromBody] BlockUserCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
+    }
+    
+    [HttpPut("unblock-user")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UnblockUser([FromBody] UnblockUserCommand command)
     {
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);

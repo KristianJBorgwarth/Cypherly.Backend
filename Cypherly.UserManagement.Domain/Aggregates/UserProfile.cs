@@ -110,6 +110,22 @@ public partial class UserProfile : AggregateRoot
         _blockedUsers.Add(new(Guid.NewGuid(), blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
         AddDomainEvent(new UserBlockedEvent(Id, blockedUserId));
     }
+    
+    public void UnblockUser(Guid unblockedUserId)
+    {
+        if(unblockedUserId == Guid.Empty)
+            throw new InvalidOperationException("UnblockedUserId cannot be empty");
+
+        if(unblockedUserId == Id)
+            throw new InvalidOperationException("Cannot unblock self");
+
+        
+        var blockedUser = BlockedUsers.FirstOrDefault(c=> c.BlockedUserProfileId == unblockedUserId);
+        if(blockedUser is null)
+            throw new InvalidOperationException("User not blocked");
+
+        _blockedUsers.Remove(blockedUser);
+    }
 
     [System.Text.RegularExpressions.GeneratedRegex(@"^[a-zA-Z0-9]*$")]
     private static partial System.Text.RegularExpressions.Regex DisplayNameRegex();
