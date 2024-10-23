@@ -127,9 +127,9 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         var result = await _sut.Handle(command, CancellationToken.None);
 
         // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Should().NotBeNull();
-        result.Error.Message.Should().Be("User is not verified");
+        result.Success.Should().BeTrue();
+        result.Value.Should().NotBeNull();
+        result.Value.IsVerified.Should().BeFalse();
         Db.RefreshToken.Should().HaveCount(0);
     }
 }

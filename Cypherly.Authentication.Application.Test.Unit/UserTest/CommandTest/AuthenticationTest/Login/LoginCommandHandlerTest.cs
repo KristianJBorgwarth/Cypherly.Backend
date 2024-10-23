@@ -123,9 +123,12 @@ public class LoginCommandHandlerTest
         var result = await _sut.Handle(cmd, CancellationToken.None);
 
         // Assert
-        result.Success.Should().BeFalse();
-        result.Error.Should().NotBeNull();
-        result.Error.Message.Should().Be("User is not verified");
+        result.Success.Should().BeTrue();
+        result.Value.Should().NotBeNull();
+        result.Value.IsVerified.Should().BeFalse();
+        result.Value.JwtToken.Should().BeNull();
+        result.Value.RefreshToken.Should().BeNull();
+        result.Value.RefreshTokenExpires.Should().BeNull();
         A.CallTo(()=>_fakeJwtService.GenerateToken(A<Guid>._, A<string>._, new())).MustNotHaveHappened();
         A.CallTo(()=>_fakeUserService.GenerateRefreshToken(A<User>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustNotHaveHappened();

@@ -2,7 +2,9 @@
 
 public sealed record LoginDto
 {
-    public string JwtToken { get; init; } = null!;
-    public string RefreshToken { get; init; } = null!;
-    public DateTime RefreshTokenExpires { get; init; }
+    public Guid Id { get; init; } 
+    public bool IsVerified { get; init; }
+    public string? JwtToken { get; init; }
+    public string? RefreshToken { get; init; }
+    public DateTime? RefreshTokenExpires { get; init; }
 }
