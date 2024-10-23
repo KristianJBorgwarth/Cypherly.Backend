@@ -39,7 +39,7 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
     public async Task Given_Invalid_Login_Request_Should_Return_400()
     {
         // Arrange
-        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("TestPassword?123"), false); // Unverified user
+        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("TestPassword?123"), true);
 
         Db.User.Add(user);
         await Db.SaveChangesAsync();
@@ -47,7 +47,7 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         var command = new LoginCommand
         {
             Email = user.Email.Address,
-            Password = "TestPassword?123"
+            Password = "TestPassword?12323123" // Invalid password
         };
 
         // Act
