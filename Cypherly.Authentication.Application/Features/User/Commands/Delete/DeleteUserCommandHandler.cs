@@ -1,6 +1,7 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
+using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
@@ -9,6 +10,7 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Delete;
 public class DeleteUserCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
+    IUserService  userService,
     ILogger<DeleteUserCommandHandler> logger) 
     : ICommandHandler<DeleteUserCommand>
 {
@@ -23,6 +25,7 @@ public class DeleteUserCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.Id));
             }
             
+            userService.DeleteUser(user);
             await userRepository.DeleteAsync(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
             
