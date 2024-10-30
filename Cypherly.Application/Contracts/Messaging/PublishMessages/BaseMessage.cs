@@ -1,6 +1,6 @@
 ﻿namespace Cypherly.Application.Contracts.Messaging.PublishMessages;
 
-public abstract class BaseMessage(Guid? correlationId = null, Guid? causationId = null)
+public abstract class BaseMessage(Guid correlationId, Guid? causationId = null)
 {
     /// <summary>
     /// The time that the message was created.
@@ -16,7 +16,7 @@ public abstract class BaseMessage(Guid? correlationId = null, Guid? causationId 
     /// Should be the same for all messages that are part of the same logical operation.
     /// Set by the originating message.
     /// </summary>
-    public Guid? CorrelationId { get; private set; } = correlationId;
+    public Guid CorrelationId { get; private set; } = correlationId;
 
     /// <summary>
     /// Should match the ID of the message that caused this message to be created.

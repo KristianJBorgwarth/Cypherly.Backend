@@ -30,8 +30,8 @@ public class UserCreatedEventHandler(
             throw new InvalidOperationException("Verification code not found");
         }
 
-        var emailMessage = new SendEmailMessage(user.Email.Address, "Welcome to Cypherly",
-            "Welcome to Cypherly! Below is your verification code: " + verificationCode.Code);
+        var emailMessage = new SendEmailMessage( user.Email.Address, "Welcome to Cypherly",
+            "Welcome to Cypherly! Below is your verification code: " + verificationCode.Code, Guid.NewGuid());
         await emailProducer.PublishMessageAsync(emailMessage, cancellationToken);
     }
 }

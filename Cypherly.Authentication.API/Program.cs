@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text;
 using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
+using Cypherly.Application.Contracts.Messaging.PublishMessages.User;
 using Cypherly.Authentication.Application.Configuration;
 using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Configuration;
@@ -69,7 +70,7 @@ builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.Authentication.A
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
 builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"))
-    .AddProducer<SendEmailMessage>();
+    .AddProducer<SendEmailMessage>().AddProducer<UserDeletedMessage>();
 
 #endregion
 

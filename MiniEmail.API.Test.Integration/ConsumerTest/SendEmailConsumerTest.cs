@@ -25,7 +25,7 @@ public class SendEmailConsumerTest : IntegrationTestBase
     public async void Consume_Given_Valid_Message_Should_Send_Email()
     {
         // Arrange
-        var msg = new SendEmailMessage("test@mail.dk", "Test subject", "Test body");
+        var msg = new SendEmailMessage("test@mail.dk", "Test subject", "Test body", Guid.NewGuid());
 
         var fakeConsumeContext = A.Fake<ConsumeContext<SendEmailMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(msg);

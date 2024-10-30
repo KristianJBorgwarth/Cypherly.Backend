@@ -28,7 +28,7 @@ try
         .UseSerilog()
         .ConfigureServices((ctx, services) =>
         {
-            services.AddDbContext<SagaDbContext>(options =>
+            services.AddDbContext<OrchestratorDbContext>(options =>
             {
                 options.UseNpgsql(configuration.GetConnectionString("SagaOrchestratorDbConnectionString")!, b=> b.MigrationsAssembly(typeof(OrchestratorDbContext).Assembly.FullName));
             });
@@ -37,7 +37,7 @@ try
             {
                 x.AddSagaStateMachine<UserDeleteSaga, UserDeleteSagaState>().EntityFrameworkRepository(r =>
                 {
-                    r.ExistingDbContext<SagaDbContext>();
+                    r.ExistingDbContext<OrchestratorDbContext>();
                     r.UsePostgres();
                 });
             });
@@ -50,6 +50,7 @@ try
 catch (Exception ex)
 {
     Log.Fatal(ex, "Application start-up failed");
+    Console.WriteLine(ex);
 }
 finally
 {

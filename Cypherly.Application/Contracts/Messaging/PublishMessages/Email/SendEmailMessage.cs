@@ -7,7 +7,7 @@ public sealed class SendEmailMessage : BaseMessage
     public string Body { get; private set; }
 
     /// <inheritdoc />
-    public SendEmailMessage(string to, string subject, string body, Guid? correlationId = null, Guid? causationId = null) : base(correlationId, causationId)
+    public SendEmailMessage(string to, string subject, string body, Guid correlationId, Guid? causationId = null) : base(correlationId, causationId)
     {
         To = to;
         Subject = subject;
