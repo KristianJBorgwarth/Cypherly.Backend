@@ -2,7 +2,7 @@
 
 namespace Cypherly.SagaOrchestrator.Messaging.Saga.User.Delete;
 
-internal sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteState>
+public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState>
 {
 
 }
