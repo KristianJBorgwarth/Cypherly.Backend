@@ -8,7 +8,16 @@ namespace Cypherly.MassTransit.Messaging.Configuration;
 
 public static class MassTransitConfiguration
 {
-    public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services, Assembly consumerAssembly)
+    /// <summary>
+    /// Configures Masstransit with RabbitMQ, including retry and circut breaker policies.
+    /// Optionally allows configuring sagas or aditinal components
+    /// </summary>
+    /// <param name="services">The service collection to add Masstransit to</param>
+    /// <param name="consumerAssembly">The assembly containing consumers to register</param>
+    /// <param name="configureAddtional">Optional configuration for adding sagas or additional MassTransit Components</param>
+    /// <returns>The ServiceCollection <see cref="ServiceCollection"/></returns>
+    /// <exception cref="InvalidOperationException">Exception thrown if RabbitMq <see cref="RabbitMqSettings"/> settings aren't configured; resulting in missing values for connection</exception>
+    public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services, Assembly consumerAssembly, Action<IBusRegistrationConfigurator>? configureAddtional = null)
     {
         services.AddMassTransit(x =>
         {
