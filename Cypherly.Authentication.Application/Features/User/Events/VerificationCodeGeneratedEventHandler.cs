@@ -1,8 +1,8 @@
 ﻿using Cypherly.Application.Abstractions;
-using Cypherly.Application.Contracts.Messaging.PublishMessages;
-using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Domain.Events.User;
+using Cypherly.Common.Messaging.Messages.PublishMessages;
+using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.User.Events;

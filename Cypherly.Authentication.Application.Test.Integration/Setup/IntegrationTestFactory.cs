@@ -1,5 +1,5 @@
-﻿using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
-using Cypherly.Authentication.Application.Services.Authentication;
+﻿using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

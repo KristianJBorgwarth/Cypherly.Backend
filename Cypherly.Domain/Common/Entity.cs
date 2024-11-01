@@ -7,15 +7,15 @@ public abstract class Entity(Guid id)
     public DateTime LastModified { get; protected set; }
     public DateTime Created { get; protected set; }
 
-    public void SetCreated()
-    {
-        Created = DateTime.UtcNow;
-    }
+    public DateTime? DeletedAt { get; protected set; }
 
-    public void SetLastModified()
-    {
-        LastModified = DateTime.UtcNow;
-    }
+    public void SetCreated() => Created = DateTime.UtcNow;
+
+    public void SetLastModified() => LastModified = DateTime.UtcNow;
+
+    public void SetDelete() => DeletedAt = DateTime.UtcNow;
+
+    public void RevertDelete() => DeletedAt = null;
 
     public override bool Equals(object obj)
     {

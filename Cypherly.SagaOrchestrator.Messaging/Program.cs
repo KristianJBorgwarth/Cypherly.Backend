@@ -3,7 +3,6 @@ using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.SagaOrchestrator.Messaging.Data.Context;
 using Cypherly.SagaOrchestrator.Messaging.Saga.User.Delete;
 using MassTransit;
-using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

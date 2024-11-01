@@ -1,7 +1,7 @@
 ﻿using Cypherly.Application.Abstractions;
-using Cypherly.Application.Contracts.Messaging.PublishMessages;
-using Cypherly.Application.Contracts.Messaging.PublishMessages.User;
 using Cypherly.Authentication.Domain.Events.User;
+using Cypherly.Common.Messaging.Messages.PublishMessages;
+using Cypherly.Common.Messaging.Messages.PublishMessages.User.Delete;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.User.Events;
@@ -11,8 +11,10 @@ public class UserDeletedEventHandler(
     ILogger<UserDeletedEventHandler> logger)
     : IDomainEventHandler<UserDeletedEvent>
 {
-    public Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        logger.LogInformation("User with id {UserId} and email {Email} has been deleted", notification.UserId, notification.Email);
+        var message = new UserDeletedMessage(notification.UserId, notification.Email, notification.UserId);
+        await producer.PublishMessageAsync(message, cancellationToken);
     }
 }

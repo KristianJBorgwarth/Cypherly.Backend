@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Cypherly.Application\Cypherly.Application.csproj" />
       <ProjectReference Include="..\Cypherly.Authentication.Domain\Cypherly.Authentication.Domain.csproj" />
+      <ProjectReference Include="..\Cypherly.Common.Messaging\Cypherly.Common.Messaging.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
 using Cypherly.Authentication.Application.Features.User.Commands.Create;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Persistence.Context;
+using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 using FluentAssertions;
 
 namespace Cypherly.Authentication.Application.Test.Integration.UserTest.EndpointTest;

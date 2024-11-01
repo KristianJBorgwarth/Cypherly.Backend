@@ -1,5 +1,5 @@
-﻿using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
-using Cypherly.Application.Contracts.Repository;
+﻿using Cypherly.Application.Contracts.Repository;
+using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 using Cypherly.UserManagement.Application.Contracts;
 using Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
 using Cypherly.UserManagement.Application.Test.Integration.Setup;

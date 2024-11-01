@@ -1,4 +1,4 @@
-﻿namespace Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
+﻿namespace Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 
 public sealed class CreateUserProfileRequest(Guid userId, string username) : RequestMessage
 {

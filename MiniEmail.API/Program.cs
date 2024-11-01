@@ -1,4 +1,5 @@
 using System.Reflection;
+using Cypherly.Common.Messaging.Messages.PublishMessages;
 using Cypherly.MassTransit.Messaging.Configuration;
 using FluentValidation;
 using MinimalEmail.API.Email;
@@ -27,7 +28,7 @@ if (env.IsDevelopment())
 #region MassTransit
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-builder.Services.AddMassTransitWithRabbitMq(Assembly.GetExecutingAssembly());
+builder.Services.AddMassTransitWithRabbitMq(Assembly.GetExecutingAssembly()).AddProducer<OperationSuccededMessage>();
 
 #endregion
 

@@ -1,4 +1,4 @@
-﻿namespace Cypherly.Application.Contracts.Messaging.PublishMessages;
+﻿namespace Cypherly.Common.Messaging.Messages.PublishMessages;
 
 public abstract class BaseMessage(Guid correlationId, Guid? causationId = null)
 {

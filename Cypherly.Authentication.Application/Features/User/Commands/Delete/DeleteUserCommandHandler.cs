@@ -11,7 +11,7 @@ public class DeleteUserCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IUserService  userService,
-    ILogger<DeleteUserCommandHandler> logger) 
+    ILogger<DeleteUserCommandHandler> logger)
     : ICommandHandler<DeleteUserCommand>
 {
     public async Task<Result> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
@@ -24,11 +24,10 @@ public class DeleteUserCommandHandler(
                 logger.LogError("User not found with id {Id} during delete process", request.Id);
                 return Result.Fail(Errors.General.NotFound(request.Id));
             }
-            
-            userService.DeleteUser(user);
-            await userRepository.DeleteAsync(user);
+
+            userService.SoftDelete(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            
+
             return Result.Ok();
         }
         catch (Exception e)

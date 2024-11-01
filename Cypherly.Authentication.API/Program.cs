@@ -1,14 +1,14 @@
 using System.Reflection;
 using System.Text;
-using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
-using Cypherly.Application.Contracts.Messaging.PublishMessages.User;
 using Cypherly.Authentication.Application.Configuration;
 using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
+using Cypherly.Common.Messaging.Messages.PublishMessages;
+using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
+using Cypherly.Common.Messaging.Messages.PublishMessages.User.Delete;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -70,7 +70,9 @@ builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.Authentication.A
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
 builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"))
-    .AddProducer<SendEmailMessage>().AddProducer<UserDeletedMessage>();
+    .AddProducer<SendEmailMessage>()
+    .AddProducer<UserDeletedMessage>()
+    .AddProducer<OperationSuccededMessage>();
 
 #endregion
 

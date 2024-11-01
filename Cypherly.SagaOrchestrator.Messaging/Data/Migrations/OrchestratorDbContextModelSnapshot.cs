@@ -35,7 +35,9 @@ namespace Cypherly.SagaOrchestrator.Messaging.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Error")
                         .HasColumnType("text");
 
                     b.Property<Guid>("UserId")

@@ -1,5 +1,5 @@
-﻿using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
-using Cypherly.Application.Contracts.Repository;
+﻿using Cypherly.Application.Contracts.Repository;
+using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 using Cypherly.Domain.Common;
 using Cypherly.UserManagement.Application.Contracts;
 using Cypherly.UserManagement.Domain.Services;
@@ -32,7 +32,7 @@ public class CreateUserProfileConsumer(
         catch (Exception ex)
         {
             logger.LogError(ex, "An Exception occured while attempting to create a user profile");
-            await context.RespondAsync(new CreateUserProfileResponse(false, Errors.General.UnspecifiedError("An Exception occured while attempting to create a user profile")));
+            await context.RespondAsync(new CreateUserProfileResponse(false, Errors.General.UnspecifiedError("An Exception occured while attempting to create a user profile").Message));
             throw;
         }
     }

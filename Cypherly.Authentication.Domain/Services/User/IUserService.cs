@@ -9,7 +9,8 @@ namespace Cypherly.Authentication.Domain.Services.User;
 public interface IUserService
 {
     Result<Aggregates.User> CreateUser(string email, string password);
-    void DeleteUser(Aggregates.User user);
+    void SoftDelete(Aggregates.User user);
+    void RevertSoftDelete(Aggregates.User user);
     void GenerateVerificationCode(Aggregates.User user, VerificationCodeType codeType);
     RefreshToken GenerateRefreshToken(Aggregates.User user);
 }
@@ -26,7 +27,7 @@ public class UserService : IUserService
         if (pwResult.Success is false)
             return Result.Fail<Aggregates.User>(pwResult.Error);
 
-        var user = new Aggregates.User(Guid.NewGuid(), emailResult.Value, pwResult.Value, isVerified: false);
+        var user = new Aggregates.User(Guid.NewGuid(), emailResult.Value!, pwResult.Value!, isVerified: false);
 
         //TODO: consider moving this to GenerateVerificationCode method and implement some generic email event
         user.AddVerificationCode(VerificationCodeType.EmailVerification);
@@ -35,9 +36,15 @@ public class UserService : IUserService
         return user;
     }
 
-    public void DeleteUser(Aggregates.User user)
+    public void SoftDelete(Aggregates.User user)
     {
-        user.AddDomainEvent(new UserDeletedEvent(user.Id));
+        user.SetDelete();
+        user.AddDomainEvent(new UserDeletedEvent(user.Id, user.Email.Address));
+    }
+
+    public void RevertSoftDelete(Aggregates.User user)
+    {
+        user.RevertDelete();
     }
 
     public void GenerateVerificationCode(Aggregates.User user, VerificationCodeType codeType)

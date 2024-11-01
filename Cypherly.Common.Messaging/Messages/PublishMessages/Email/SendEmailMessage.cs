@@ -1,4 +1,4 @@
-﻿namespace Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
+﻿namespace Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 
 public sealed class SendEmailMessage : BaseMessage
 {
