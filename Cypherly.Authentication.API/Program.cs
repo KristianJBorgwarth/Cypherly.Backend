@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text;
 using Cypherly.Authentication.Application.Configuration;
+using Cypherly.Authentication.Application.Features.User.Consumers;
 using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
@@ -9,6 +10,7 @@ using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using Cypherly.Common.Messaging.Messages.PublishMessages.User.Delete;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
+using MassTransit;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -69,7 +71,13 @@ builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.Authentication.A
 #region MassTransit
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"))
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"), null, (cfg, context)=> 
+    {
+        cfg.ReceiveEndpoint("authentication_fail_queue", e=> 
+        {
+            e.Consumer<UserDeleteFailedConsumer>(context);
+        });
+    })
     .AddProducer<SendEmailMessage>()
     .AddProducer<UserDeletedMessage>()
     .AddProducer<OperationSuccededMessage>();

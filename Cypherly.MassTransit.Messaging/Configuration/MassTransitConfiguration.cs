@@ -17,7 +17,7 @@ public static class MassTransitConfiguration
     /// <param name="configureAddtional">Optional configuration for adding sagas or additional MassTransit Components</param>
     /// <returns>The ServiceCollection <see cref="ServiceCollection"/></returns>
     /// <exception cref="InvalidOperationException">Exception thrown if RabbitMq <see cref="RabbitMqSettings"/> settings aren't configured; resulting in missing values for connection</exception>
-    public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services, Assembly consumerAssembly, Action<IBusRegistrationConfigurator>? configureAddtional = null)
+    public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services, Assembly consumerAssembly, Action<IBusRegistrationConfigurator>? configureAddtional = null, Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext>? configureRabbitMqAdditional = null)
     {
         services.AddMassTransit(x =>
         {
@@ -45,8 +45,8 @@ public static class MassTransitConfiguration
                     cb.ActiveThreshold = 10;
                     cb.ResetInterval = TimeSpan.FromMinutes(5);
                 });
-
                 cfg.ConfigureEndpoints(context);
+                configureRabbitMqAdditional?.Invoke(cfg, context);
             });
         });
         return services;
