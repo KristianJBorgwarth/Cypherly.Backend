@@ -26,7 +26,7 @@ public class RollbackUserProfileDeleteConsumerTest : IntegrationTestBase
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-        var userProfileService = scope.ServiceProvider.GetRequiredService<IUserProfileService>();
+        var userProfileService = scope.ServiceProvider.GetRequiredService<IUserProfileLifecycleService>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<RollbackUserProfileDeleteConsumer>>();
         _sut = new(userProfileRepository, userProfileService, unitOfWork, logger);
     }

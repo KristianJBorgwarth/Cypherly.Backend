@@ -20,9 +20,9 @@ public class UnblockUserCommandHandlerTest : IntegrationTestBase
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-        var service = scope.ServiceProvider.GetRequiredService<IUserProfileService>();
+        var service = scope.ServiceProvider.GetRequiredService<IUserBlockingService>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<UnblockUserCommandHandler>>();
-        
+
         _sut = new UnblockUserCommandHandler(repo, unitOfWork, service, logger);
     }
 
@@ -31,49 +31,49 @@ public class UnblockUserCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var command = new UnblockUserCommand { Id = Guid.NewGuid(), Tag = "tag" };
-        
+
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
-        
+
         // Assert
         result.Success.Should().BeFalse();
     }
-    
+
     [Fact]
     public async void Handle_WhenUserToUnblockNotFound_Returns_Fail_NotFound()
     {
-        // Arrange 
+        // Arrange
         var userProfile = new UserProfile(Guid.NewGuid(), "Dave", UserTag.Create("Dave"));
         await Db.AddAsync(userProfile);
         await Db.SaveChangesAsync();
-        
+
         var command = new UnblockUserCommand { Id = userProfile.Id, Tag = "tag" };
-        
+
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
-        
+
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Contain("tag");
     }
-    
+
     [Fact]
     public async void Handle_WhenUserUnblocked_Returns_Ok()
     {
-        // Arrange 
+        // Arrange
         var userProfile = new UserProfile(Guid.NewGuid(), "Dave", UserTag.Create("Dave"));
         var userToUnblock = new UserProfile(Guid.NewGuid(), "Blocked", UserTag.Create("Blocked"));
-        
+
         userProfile.BlockUser(userToUnblock.Id);
         await Db.AddAsync(userProfile);
         await Db.AddAsync(userToUnblock);
         await Db.SaveChangesAsync();
-        
+
         var command = new UnblockUserCommand { Id = userProfile.Id, Tag = userToUnblock.UserTag.Tag };
-        
+
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);
-        
+
         // Assert
         result.Success.Should().BeTrue();
         Db.BlockedUser.Should().HaveCount(0);

@@ -9,7 +9,7 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Upda
 
 public class BlockUserCommandHandler(
     IUserProfileRepository userProfileRepository,
-    IUserProfileService userProfileService,
+    IUserBlockingService userBlockingService,
     IUnitOfWork uow,
     ILogger<BlockUserCommandHandler> logger)
     : ICommandHandler<BlockUserCommand>
@@ -32,7 +32,7 @@ public class BlockUserCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.BlockedUserTag));
             }
 
-            userProfileService.BlockUser(userProfile, blockedUserProfile);
+            userBlockingService.BlockUser(userProfile, blockedUserProfile);
             await uow.SaveChangesAsync(cancellationToken);
 
             return Result.Ok();

@@ -1,26 +1,17 @@
 ﻿using Cypherly.UserManagement.Domain.Aggregates;
 using Cypherly.UserManagement.Domain.Events.UserProfile;
-using Cypherly.UserManagement.Domain.ValueObjects;
 
 namespace Cypherly.UserManagement.Domain.Services;
 
-public interface IUserProfileService
+public interface IUserBlockingService
 {
-    UserProfile CreateUserProfile(Guid userId, string username);
     bool IsUserBloccked(UserProfile userProfile, UserProfile checkUserProfile);
     void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile);
     void UnblockUser(UserProfile userProfile, UserProfile unblockedUserProfile);
-    void SoftDelete(UserProfile userProfile);
-    void RevertSoftDelete(UserProfile userProfile);
-}
-public class UserProfileService : IUserProfileService
-{
-    public UserProfile CreateUserProfile(Guid userId, string username)
-    {
-        var tag = UserTag.Create(username);
-        return new(userId, username, tag);
-    }
 
+}
+public class UserBlockingService : IUserBlockingService
+{
     /// <summary>
     /// Checks whether the user is blocked by the checkUserProfile or vice versa
     /// </summary>
@@ -49,15 +40,5 @@ public class UserProfileService : IUserProfileService
     public void UnblockUser(UserProfile userProfile, UserProfile unblockedUserProfile)
     {
         userProfile.UnblockUser(unblockedUserProfile.Id);
-    }
-
-    public void SoftDelete(UserProfile userProfile)
-    {
-        userProfile.SetDelete();
-    }
-
-    public void RevertSoftDelete(UserProfile userProfile)
-    {
-        userProfile.RevertDelete();
     }
 }

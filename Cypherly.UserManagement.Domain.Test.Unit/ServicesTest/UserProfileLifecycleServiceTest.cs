@@ -4,9 +4,9 @@ using Xunit;
 
 namespace Cypherly.UserManagement.Domain.Test.Unit.ServicesTest
 {
-    public class UserProfileServiceTest
+    public class UserProfileLifecycleLifecycleServiceTest
     {
-        private readonly IUserProfileService _sut = new UserProfileService();
+        private readonly IUserProfileLifecycleService _sut = new UserProfileLifecycleLifecycleService();
 
         [Fact]
         public void CreateUserProfile_ShouldReturnValidUserProfile_WhenCalledWithValidInput()

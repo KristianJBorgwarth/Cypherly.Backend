@@ -8,7 +8,7 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.ServicesTest;
 
 public class FriendshipServiceTest
 {
-    private readonly IUserProfileService _profileService = new UserProfileService();
+    private readonly IUserProfileLifecycleService _profileLifecycleService = new UserProfileLifecycleLifecycleService();
     private readonly IFriendshipService _sut = new FriendshipService();
 
         [Fact]
@@ -17,8 +17,8 @@ public class FriendshipServiceTest
             // Arrange
             var userId = Guid.NewGuid();
             var friendId = Guid.NewGuid();
-            var userProfile = _profileService.CreateUserProfile(userId, "User1");
-            var friendProfile = _profileService.CreateUserProfile(friendId, "User2");
+            var userProfile = _profileLifecycleService.CreateUserProfile(userId, "User1");
+            var friendProfile = _profileLifecycleService.CreateUserProfile(friendId, "User2");
 
             // Act
             var result = _sut.CreateFriendship(userProfile, friendProfile);
@@ -34,8 +34,8 @@ public class FriendshipServiceTest
             // Arrange
             var userId = Guid.NewGuid();
             var friendId = Guid.NewGuid();
-            var userProfile = _profileService.CreateUserProfile(userId, "User1");
-            var friendProfile = _profileService.CreateUserProfile(friendId, "User2");
+            var userProfile = _profileLifecycleService.CreateUserProfile(userId, "User1");
+            var friendProfile = _profileLifecycleService.CreateUserProfile(friendId, "User2");
 
             _sut.CreateFriendship(userProfile, friendProfile); // Create the friendship initially
 
@@ -53,8 +53,8 @@ public class FriendshipServiceTest
             // Arrange
             var userId = Guid.NewGuid();
             var friendId = Guid.NewGuid();
-            var userProfile = _profileService.CreateUserProfile(userId, "User1");
-            var friendProfile = _profileService.CreateUserProfile(friendId, "User2");
+            var userProfile = _profileLifecycleService.CreateUserProfile(userId, "User1");
+            var friendProfile = _profileLifecycleService.CreateUserProfile(friendId, "User2");
 
             _sut.CreateFriendship(friendProfile, userProfile); // Friend initiates friendship
             _sut.CreateFriendship(userProfile, friendProfile);
@@ -73,7 +73,7 @@ public class FriendshipServiceTest
         {
             // Arrange
             var userId = Guid.NewGuid();
-            var userProfile = _profileService.CreateUserProfile(userId, "User1");
+            var userProfile = _profileLifecycleService.CreateUserProfile(userId, "User1");
 
             // Act
             var result = _sut.AcceptFriendship(userProfile, "NonExistentTag");

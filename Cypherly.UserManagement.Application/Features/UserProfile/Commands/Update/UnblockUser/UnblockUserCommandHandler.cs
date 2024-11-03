@@ -10,8 +10,8 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Upda
 public class UnblockUserCommandHandler(
     IUserProfileRepository userProfileRepository,
     IUnitOfWork unitOfWork,
-    IUserProfileService userProfileService,
-    ILogger<UnblockUserCommandHandler> logger) 
+    IUserBlockingService userBlockingService,
+    ILogger<UnblockUserCommandHandler> logger)
     : ICommandHandler<UnblockUserCommand>
 {
     public async Task<Result> Handle(UnblockUserCommand request, CancellationToken cancellationToken)
@@ -24,17 +24,17 @@ public class UnblockUserCommandHandler(
                 logger.LogCritical("User with {ID} not found", request.Id);
                 return Result.Fail(Errors.General.NotFound(request.Id));
             }
-            
+
             var userToUnblock = await userProfileRepository.GetByUserTag(request.Tag);
             if (userToUnblock is null)
             {
                 logger.LogCritical("User with tag {Tag} not found", request.Tag);
                 return Result.Fail(Errors.General.NotFound(request.Tag));
             }
-            
-            userProfileService.UnblockUser(userProfile, userToUnblock);
+
+            userBlockingService.UnblockUser(userProfile, userToUnblock);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            
+
             return Result.Ok();
         }
         catch (Exception e)

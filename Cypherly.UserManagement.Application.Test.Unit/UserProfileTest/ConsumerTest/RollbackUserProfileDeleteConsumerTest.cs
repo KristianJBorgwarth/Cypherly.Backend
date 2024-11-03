@@ -17,16 +17,16 @@ public class RollbackUserProfileDeleteConsumerTest
 {
     private readonly IUserProfileRepository _fakeRepo;
     private readonly IUnitOfWork _fakeUow;
-    private readonly IUserProfileService _fakeService;
+    private readonly IUserProfileLifecycleService _fakeLifecycleService;
     private readonly RollbackUserProfileDeleteConsumer _sut;
 
     public RollbackUserProfileDeleteConsumerTest()
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
         _fakeUow = A.Fake<IUnitOfWork>();
-        _fakeService = A.Fake<IUserProfileService>();
+        _fakeLifecycleService = A.Fake<IUserProfileLifecycleService>();
         var fakeLogger = A.Fake<ILogger<RollbackUserProfileDeleteConsumer>>();
-        _sut = new RollbackUserProfileDeleteConsumer(_fakeRepo, _fakeService, _fakeUow, fakeLogger);
+        _sut = new RollbackUserProfileDeleteConsumer(_fakeRepo, _fakeLifecycleService, _fakeUow, fakeLogger);
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class RollbackUserProfileDeleteConsumerTest
 
         // Assert
         A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserId)).MustHaveHappenedOnceExactly();
-        A.CallTo(()=> _fakeService.RevertSoftDelete(A<UserProfile>.Ignored)).MustNotHaveHappened();
+        A.CallTo(()=> _fakeLifecycleService.RevertSoftDelete(A<UserProfile>.Ignored)).MustNotHaveHappened();
     }
 
     [Fact]
@@ -65,7 +65,7 @@ public class RollbackUserProfileDeleteConsumerTest
 
         // Assert
         A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeService.RevertSoftDelete(user)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeLifecycleService.RevertSoftDelete(user)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
@@ -84,7 +84,7 @@ public class RollbackUserProfileDeleteConsumerTest
 
         // Assert
         A.CallTo(() => _fakeRepo.GetByIdAsync(A<Guid>._)).MustNotHaveHappened();
-        A.CallTo(() => _fakeService.RevertSoftDelete(A<UserProfile>.Ignored)).MustNotHaveHappened();
+        A.CallTo(() => _fakeLifecycleService.RevertSoftDelete(A<UserProfile>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeUow.SaveChangesAsync(A<CancellationToken>._)).MustNotHaveHappened();
     }
 }

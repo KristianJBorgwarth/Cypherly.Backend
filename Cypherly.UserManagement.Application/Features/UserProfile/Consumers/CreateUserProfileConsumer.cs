@@ -11,7 +11,7 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
 public class CreateUserProfileConsumer(
     IUserProfileRepository userProfileRepository,
     IUnitOfWork unitOfWork,
-    IUserProfileService userProfileService,
+    IUserProfileLifecycleService userProfileLifecycleService,
     ILogger<CreateUserProfileConsumer> logger)
     : IConsumer<CreateUserProfileRequest>
 {
@@ -21,7 +21,7 @@ public class CreateUserProfileConsumer(
         {
             var message = context.Message;
 
-            var profile = userProfileService.CreateUserProfile(message.UserId, message.Username);
+            var profile = userProfileLifecycleService.CreateUserProfile(message.UserId, message.Username);
 
             await userProfileRepository.CreateAsync(profile);
 

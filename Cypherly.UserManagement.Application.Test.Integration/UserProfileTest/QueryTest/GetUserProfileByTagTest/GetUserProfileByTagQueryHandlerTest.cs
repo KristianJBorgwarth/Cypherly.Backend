@@ -22,8 +22,8 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<GetUserProfileByTagQueryHandler>>();
         var profilePictureService = scope.ServiceProvider.GetRequiredService<IProfilePictureService>();
-        var userProfileService = scope.ServiceProvider.GetRequiredService<IUserProfileService>();
-        
+        var userProfileService = scope.ServiceProvider.GetRequiredService<IUserBlockingService>();
+
         _sut = new(repo, userProfileService, profilePictureService, mapper, logger);
     }
 
@@ -35,18 +35,18 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create("userProfile"));
         await Db.AddRangeAsync(requestingUser, userProfile);
         await Db.SaveChangesAsync();
-        
+
         var query = new GetUserProfileByTagQuery() {Id = requestingUser.Id, Tag = userProfile.UserTag.Tag};
-        
+
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
-        
+
         // Assert
         result.Success.Should().BeTrue();
         result.Value!.Username.Should().Be(userProfile.Username);
         result.Value.UserTag.Should().Be(userProfile.UserTag.Tag);
     }
-    
+
     [Fact]
     public async Task Handle_Query_When_User_Does_Not_Exist_Should_Return_NotFound()
     {
@@ -54,18 +54,18 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create("userProfile"));
         await Db.AddAsync(userProfile);
         await Db.SaveChangesAsync();
-        
+
         var query = new GetUserProfileByTagQuery() {Id = Guid.NewGuid(), Tag = userProfile.UserTag.Tag};
-        
+
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
-        
-        
+
+
         // Assert
         result.Success.Should().BeFalse();
         result.Error!.Code.Should().Contain("entity.not.found");
     }
-    
+
     [Fact]
     public async Task Handle_Query_When_UserProfile_Does_Not_Exist_Should_Return_EmptyDto()
     {
@@ -73,17 +73,17 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create("requestingUser"));
         await Db.AddAsync(requestingUser);
         await Db.SaveChangesAsync();
-        
+
         var query = new GetUserProfileByTagQuery() {Id = requestingUser.Id, Tag = "userProfile"};
-        
+
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
-        
+
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().Be(null);
     }
-    
+
     [Fact]
     public async Task Handle_Query_When_User_Is_Blocked_Should_Return_EmptyDto()
     {
@@ -92,15 +92,15 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         requestingUser.BlockUser(userProfile.Id);
         await Db.AddRangeAsync(requestingUser, userProfile);
         await Db.SaveChangesAsync();
-        
+
         var query = new GetUserProfileByTagQuery() {Id = requestingUser.Id, Tag = userProfile.UserTag.Tag};
-        
+
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
-        
+
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().Be(null);
     }
-    
+
 }

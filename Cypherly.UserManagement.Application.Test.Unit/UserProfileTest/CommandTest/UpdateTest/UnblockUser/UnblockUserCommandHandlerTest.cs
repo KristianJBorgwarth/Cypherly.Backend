@@ -15,14 +15,14 @@ public class UnblockUserCommandHandlerTest
 {
     private readonly IUserProfileRepository _fakeRepo;
     private readonly IUnitOfWork _fakeUow;
-    private readonly IUserProfileService _fakeProfileService;
+    private readonly IUserBlockingService _fakeProfileService;
     private readonly UnblockUserCommandHandler _sut;
 
     public UnblockUserCommandHandlerTest()
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
         _fakeUow = A.Fake<IUnitOfWork>();
-        _fakeProfileService = A.Fake<IUserProfileService>();
+        _fakeProfileService = A.Fake<IUserBlockingService>();
         var fakeLogger = A.Fake<ILogger<UnblockUserCommandHandler>>();
         _sut = new(_fakeRepo, _fakeUow, _fakeProfileService, fakeLogger);
     }
