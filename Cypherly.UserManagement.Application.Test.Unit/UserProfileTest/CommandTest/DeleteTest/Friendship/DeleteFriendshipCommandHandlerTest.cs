@@ -16,18 +16,18 @@ public class DeleteFriendshipCommandHandlerTest
 {
     private readonly IUserProfileRepository _fakeRepo;
     private readonly IUnitOfWork _fakeUow;
-    private readonly IUserProfileService _fakeService;
+    private readonly IFriendshipService _fakeService;
     private readonly DeleteFriendshipCommandHandler _sut;
-    
+
     public DeleteFriendshipCommandHandlerTest()
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
         _fakeUow = A.Fake<IUnitOfWork>();
-        _fakeService = A.Fake<IUserProfileService>();
+        _fakeService = A.Fake<IFriendshipService>();
         var fakeLogger = A.Fake<ILogger<DeleteFriendshipCommandHandler>>();
         _sut = new(_fakeRepo, _fakeUow,_fakeService, fakeLogger);
     }
-    
+
     [Fact]
     public async Task Handle_Given_Valid_Command_Should_Return_Success()
     {
@@ -39,15 +39,15 @@ public class DeleteFriendshipCommandHandlerTest
             FriendTag = "validTag",
             Id = userProfile.Id
         };
-        
+
         A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).Returns(Result.Ok());
         A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).DoesNothing();
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).DoesNothing();
-        
+
         // Act
         var result = await _sut.Handle(command, default);
-        
+
         // Assert
         result.Success.Should().BeTrue();
         A.CallTo(()=> _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
@@ -65,12 +65,12 @@ public class DeleteFriendshipCommandHandlerTest
             FriendTag = "validTag",
             Id = Guid.NewGuid()
         };
-        
+
         A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns((UserProfile)null);
-        
+
         // Act
         var result = await _sut.Handle(command, default);
-        
+
         // Assert
         result.Success.Should().BeFalse();
         A.CallTo(()=> _fakeRepo.GetByIdAsync(command.Id)).MustHaveHappenedOnceExactly();
@@ -91,13 +91,13 @@ public class DeleteFriendshipCommandHandlerTest
             FriendTag = "validTag",
             Id = userProfile.Id
         };
-        
+
         A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).Returns(Result.Fail(Errors.General.UnspecifiedError("whoops")));
-        
+
         // Act
         var result = await _sut.Handle(command, default);
-        
+
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("whoops");
@@ -106,26 +106,26 @@ public class DeleteFriendshipCommandHandlerTest
         A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).MustNotHaveHappened();
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustNotHaveHappened();
     }
-    
+
     [Fact]
     public async Task Handle_Given_Uow_Throws_Exception_Should_Return_Fail()
     {
         // Arrange
         var userProfile = new UserProfile(Guid.NewGuid(), "TestUser", UserTag.Create("testUser"));
-        
+
         var command = new DeleteFriendshipCommand()
         {
             FriendTag = "validTag",
             Id = userProfile.Id
         };
-        
+
         A.CallTo(() => _fakeRepo.GetByIdAsync(command.Id)).Returns(userProfile);
         A.CallTo(()=> _fakeService.DeleteFriendship(userProfile, command.FriendTag)).Returns(Result.Ok());
         A.CallTo(()=> _fakeUow.SaveChangesAsync(default)).Throws<Exception>();
-        
+
         // Act
         var result = await _sut.Handle(command, default);
-        
+
         // Assert
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Be("An exception occured while attempting to delete a friendship.");
@@ -134,5 +134,5 @@ public class DeleteFriendshipCommandHandlerTest
         A.CallTo(() => _fakeRepo.UpdateAsync(userProfile)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUow.SaveChangesAsync(default)).MustHaveHappenedOnceExactly();
     }
-    
+
 }

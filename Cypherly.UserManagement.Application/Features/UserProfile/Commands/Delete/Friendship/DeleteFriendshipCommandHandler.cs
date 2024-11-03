@@ -10,7 +10,7 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Dele
 public sealed class DeleteFriendshipCommandHandler(
     IUserProfileRepository profileRepository,
     IUnitOfWork unitOfWork,
-    IUserProfileService userProfileService,
+    IFriendshipService friendshipService,
     ILogger<DeleteFriendshipCommandHandler> logger)
     : ICommandHandler<DeleteFriendshipCommand>
 {
@@ -24,7 +24,7 @@ public sealed class DeleteFriendshipCommandHandler(
                 logger.LogError("UserProfile with id {UserProfileId} not found", request.Id);
                 return Result.Fail(Errors.General.NotFound(nameof(request.Id)));
             }
-            var deleteResult = userProfileService.DeleteFriendship(userProfile, request.FriendTag);
+            var deleteResult = friendshipService.DeleteFriendship(userProfile, request.FriendTag);
             if (!deleteResult.Success)
             {
                 logger.LogError("Failed to delete friendship with FriendTag {FriendTag} for UserProfileId {UserProfileId}", request.FriendTag, request.Id);

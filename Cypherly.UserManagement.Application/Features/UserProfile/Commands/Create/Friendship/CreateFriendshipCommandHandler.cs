@@ -9,7 +9,7 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Crea
 
 public class CreateFriendshipCommandHandler(
     IUserProfileRepository userProfileRepository,
-    IUserProfileService userProfileService,
+    IFriendshipService friendshipService,
     IUnitOfWork unitOfWork,
     ILogger<CreateFriendshipCommandHandler> logger)
     : ICommandHandler<CreateFriendshipCommand>
@@ -32,7 +32,7 @@ public class CreateFriendshipCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.Id));
             }
 
-            var result = userProfileService.CreateFriendship(userProfile, friend);
+            var result = friendshipService.CreateFriendship(userProfile, friend);
             if (result.Success is false)
             {
                 logger.LogWarning("Error creating friendship between {UserId} and {FriendId}", request.Id, friend.Id);

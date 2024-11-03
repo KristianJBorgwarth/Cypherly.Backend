@@ -24,7 +24,7 @@ public class AcceptFriendshipCommandHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
-        var service = scope.ServiceProvider.GetRequiredService<IUserProfileService>();
+        var service = scope.ServiceProvider.GetRequiredService<IFriendshipService>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<AcceptFriendshipCommandHandler>>();
 
