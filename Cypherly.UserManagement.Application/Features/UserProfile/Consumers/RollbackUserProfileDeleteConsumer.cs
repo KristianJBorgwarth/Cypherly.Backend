@@ -8,11 +8,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
 
-public class UserDeleteFailedConsumer(
+public class RollbackUserProfileDeleteConsumer(
     IUserProfileRepository userProfileRepository,
     IUserProfileService userProfileService,
     IUnitOfWork unitOfWork,
-    ILogger<UserDeleteFailedConsumer> logger) : IConsumer<UserDeleteFailedMessage>
+    ILogger<RollbackUserProfileDeleteConsumer> logger) : IConsumer<UserDeleteFailedMessage>
 {
     public async Task Consume(ConsumeContext<UserDeleteFailedMessage> context)
     {

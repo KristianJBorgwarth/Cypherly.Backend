@@ -75,7 +75,7 @@ builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.UserManageme
         {
             cfg.ReceiveEndpoint("user_management_fail_queue", e =>
             {
-                e.Consumer<UserDeleteFailedConsumer>(context);
+                e.Consumer<RollbackUserProfileDeleteConsumer>(context);
             });
 
             cfg.ReceiveEndpoint("delete_user_profile", e =>
