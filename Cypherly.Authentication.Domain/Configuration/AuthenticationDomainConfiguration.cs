@@ -8,7 +8,7 @@ public static class AuthenticationDomainConfiguration
 {
     public static void AddAuthenticationDomain(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddScoped<IUserService, UserService>();
+        serviceCollection.AddScoped<IUserLifeCycleService, UserLifeCycleService>();
         serviceCollection.AddScoped<IClaimService, ClaimService>();
     }
 }

@@ -18,7 +18,7 @@ public class CreateUserCommandHandlerTests
 {
     private readonly IUserRepository _fakeRepo;
     private readonly IMapper _fakeMapper;
-    private readonly IUserService _fakeUserService;
+    private readonly IUserLifeCycleService _fakeUserLifeCycleService;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly IRequestClient<CreateUserProfileRequest> _fakeRequestClient;
     private readonly CreateUserCommandHandler _sut;
@@ -27,11 +27,11 @@ public class CreateUserCommandHandlerTests
     {
         _fakeRepo = A.Fake<IUserRepository>();
         _fakeMapper = A.Fake<IMapper>();
-        _fakeUserService = A.Fake<IUserService>();
+        _fakeUserLifeCycleService = A.Fake<IUserLifeCycleService>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         _fakeRequestClient = A.Fake<IRequestClient<CreateUserProfileRequest>>();
         var fakeLogger = A.Fake<ILogger<CreateUserCommandHandler>>();
-        _sut = new(_fakeRepo, _fakeMapper, _fakeUserService, _fakeUnitOfWork, _fakeRequestClient, fakeLogger);
+        _sut = new(_fakeRepo, _fakeMapper, _fakeUserLifeCycleService, _fakeUnitOfWork, _fakeRequestClient, fakeLogger);
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class CreateUserCommandHandlerTests
         var user = new User(Guid.NewGuid(), Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified: false);
 
         A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).Returns<User>(null);
-        A.CallTo(() => _fakeUserService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Ok(user));
+        A.CallTo(() => _fakeUserLifeCycleService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Ok(user));
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).DoesNothing();
         A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).Returns(new CreateUserDto { Email = cmd.Email, Id = default });
@@ -125,7 +125,7 @@ public class CreateUserCommandHandlerTests
 
 
         A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).Returns<User>(null);
-        A.CallTo(() => _fakeUserService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Fail<User>(Errors.General.UnspecifiedError("error")));
+        A.CallTo(() => _fakeUserLifeCycleService.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Fail<User>(Errors.General.UnspecifiedError("error")));
 
         // Act
         var result = await _sut.Handle(cmd, new CancellationToken());
@@ -135,7 +135,7 @@ public class CreateUserCommandHandlerTests
         result.Error.Message.Should().Be("error");
 
         A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeUserService.CreateUser(A<string>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeUserLifeCycleService.CreateUser(A<string>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();

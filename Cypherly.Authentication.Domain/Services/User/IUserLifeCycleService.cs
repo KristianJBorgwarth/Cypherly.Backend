@@ -6,7 +6,7 @@ using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Services.User;
 
-public interface IUserService
+public interface IUserLifeCycleService
 {
     Result<Aggregates.User> CreateUser(string email, string password);
     void SoftDelete(Aggregates.User user);
@@ -15,7 +15,7 @@ public interface IUserService
     RefreshToken GenerateRefreshToken(Aggregates.User user);
 }
 
-public class UserService : IUserService
+public class UserLifeCycleService : IUserLifeCycleService
 {
     public Result<Aggregates.User> CreateUser(string email, string password)
     {
