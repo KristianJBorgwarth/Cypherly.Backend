@@ -37,6 +37,11 @@ public class UserBlockingService : IUserBlockingService
         userProfile.AddDomainEvent(new UserBlockedEvent(userProfile.Id, blockedUserProfile.Id));
     }
 
+    /// <summary>
+    ///  Unblock a user by removing their id from the blocked users list
+    /// </summary>
+    /// <param name="userProfile">The unblocking UserProfile <see cref="UserProfile"/></param>
+    /// <param name="unblockedUserProfile">The user that will be unblocked <see cref="UserProfile"/></param>
     public void UnblockUser(UserProfile userProfile, UserProfile unblockedUserProfile)
     {
         userProfile.UnblockUser(unblockedUserProfile.Id);
