@@ -59,8 +59,7 @@ public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState
                         context.Message.Message.Id,
                         ServiceType.AuthenticationService));
                 })
-                .TransitionTo(Failed)
-                .Finalize(),
+                .TransitionTo(Failed),
             When(OperationSuccededReceived)
                 .If(context => context.Message.OperationType == OperationType.UserProfileDelete, binder =>
                     binder.ThenAsync(
@@ -100,7 +99,7 @@ public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState
                         logger.LogInformation("SendEmail succeded, finalizing saga with ID: {ID}.",
                             context.Saga.CorrelationId);
                     }))
-                .TransitionTo(Finished)
+                .TransitionTo(Final)
                 .Finalize());
 
         SetCompletedWhenFinalized();
