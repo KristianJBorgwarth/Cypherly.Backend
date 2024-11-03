@@ -18,8 +18,6 @@ public class SendEmailConsumer(
         {
             var message = context.Message;
 
-            throw new Exception("This is a test exception");
-
             logger.LogInformation("Sending email to {To} with subject {Subject}",
                 message.To,
                 message.Subject);

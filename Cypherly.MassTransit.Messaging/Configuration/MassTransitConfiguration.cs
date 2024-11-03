@@ -10,18 +10,22 @@ public static class MassTransitConfiguration
 {
     /// <summary>
     /// Configures Masstransit with RabbitMQ, including retry and circut breaker policies.
-    /// Optionally allows configuring sagas or aditinal components
+    /// Optionally allows configuring sagas or MassTransit components.
+    /// Not providing a RabbitMqConfig will default to using the default endpoint configuration/>
     /// </summary>
     /// <param name="services">The service collection to add Masstransit to</param>
     /// <param name="consumerAssembly">The assembly containing consumers to register</param>
-    /// <param name="configureAddtional">Optional configuration for adding sagas or additional MassTransit Components</param>
+    /// <param name="masstransitConfig">Optional configuration for adding sagas or additional MassTransit Components</param>
+    /// <param name="rabbitMqConfig">Additional RabbitMq Configuration(Endpoints, consumers[...])</param>
     /// <returns>The ServiceCollection <see cref="ServiceCollection"/></returns>
     /// <exception cref="InvalidOperationException">Exception thrown if RabbitMq <see cref="RabbitMqSettings"/> settings aren't configured; resulting in missing values for connection</exception>
-    public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services, Assembly consumerAssembly, Action<IBusRegistrationConfigurator>? configureAddtional = null, Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext>? configureRabbitMqAdditional = null)
+    public static IServiceCollection AddMassTransitWithRabbitMq(this IServiceCollection services,
+        Assembly consumerAssembly, Action<IBusRegistrationConfigurator>? masstransitConfig = null,
+        Action<IRabbitMqBusFactoryConfigurator, IBusRegistrationContext>? rabbitMqConfig = null)
     {
         services.AddMassTransit(x =>
         {
-            configureAddtional?.Invoke(x);
+            masstransitConfig?.Invoke(x);
 
             x.AddConsumers(consumerAssembly);
 
@@ -31,12 +35,14 @@ public static class MassTransitConfiguration
 
                 cfg.Host(rabbitMqSettings.Host, "/", h =>
                 {
-                    h.Username(rabbitMqSettings.Username ?? throw new InvalidOperationException("Cannot initialize RabbitMQ without a username"));
-                    h.Password(rabbitMqSettings.Password ?? throw new InvalidOperationException("Cannot initialize RabbitMQ without a password"));
+                    h.Username(rabbitMqSettings.Username ??
+                               throw new InvalidOperationException("Cannot initialize RabbitMQ without a username"));
+                    h.Password(rabbitMqSettings.Password ??
+                               throw new InvalidOperationException("Cannot initialize RabbitMQ without a password"));
                 });
 
 
-                cfg.UseMessageRetry(r=> r.Interval(5, TimeSpan.FromSeconds(5)));
+                cfg.UseMessageRetry(r => r.Interval(5, TimeSpan.FromSeconds(5)));
 
                 cfg.UseCircuitBreaker(cb =>
                 {
@@ -45,8 +51,15 @@ public static class MassTransitConfiguration
                     cb.ActiveThreshold = 10;
                     cb.ResetInterval = TimeSpan.FromMinutes(5);
                 });
-                cfg.ConfigureEndpoints(context);
-                configureRabbitMqAdditional?.Invoke(cfg, context);
+
+                if (rabbitMqConfig != null)
+                {
+                    rabbitMqConfig.Invoke(cfg, context);
+                }
+                else
+                {
+                    cfg.ConfigureEndpoints(context);
+                }
             });
         });
         return services;
@@ -58,7 +71,8 @@ public static class MassTransitConfiguration
     /// <param name="services">the collection producer will be added to</param>
     /// <typeparam name="TMessage">the type the producer will handle. TMessage type should be of type <see cref="BaseMessage"/></typeparam>
     /// <returns><see cref="IServiceCollection"/></returns>
-    public static IServiceCollection AddProducer<TMessage>(this IServiceCollection services) where TMessage : BaseMessage
+    public static IServiceCollection AddProducer<TMessage>(this IServiceCollection services)
+        where TMessage : BaseMessage
     {
         services.AddScoped<IProducer<TMessage>, Producer<TMessage>>();
         return services;

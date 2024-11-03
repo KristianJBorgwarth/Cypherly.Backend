@@ -4,6 +4,7 @@ using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using Cypherly.Common.Messaging.Messages.PublishMessages.User.Delete;
 using MassTransit;
 using Microsoft.Extensions.Logging;
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
 namespace Cypherly.SagaOrchestrator.Messaging.Saga.User.Delete;
 
@@ -47,8 +48,11 @@ public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState
             When(UserProfileDeleteFault)
                 .ThenAsync(async context =>
                 {
-                    logger.LogError("UserProfileDelete faulted, rolling back, and failing saga with {ID}.",
+                    logger.LogError("UserProfileDelete faulted, rolling back, and failing saga with ID: {ID}.",
                         context.Saga.CorrelationId);
+
+                    context.Saga.SetError(context.Message.Exceptions);
+
                     await context.Publish(new UserDeleteFailedMessage(
                         context.Saga.UserId,
                         context.Saga.CorrelationId,
@@ -76,8 +80,11 @@ public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState
             When(SendEmailFault)
                 .ThenAsync(async context =>
                 {
-                    logger.LogError("SendEmail faulted, rolling back, and failing saga with {ID}.",
+                    logger.LogError("SendEmail faulted, rolling back, and failing saga with ID: {ID}.",
                         context.Saga.CorrelationId);
+
+                    context.Saga.SetError(context.Message.Exceptions);
+
                     await context.Publish(new UserDeleteFailedMessage(
                         context.Saga.UserId,
                         context.Saga.CorrelationId,
@@ -85,13 +92,12 @@ public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState
                         ServiceType.AuthenticationService,
                         ServiceType.UserManagementService));
                 })
-                .TransitionTo(Failed)
-                .Finalize(),
+                .TransitionTo(Failed),
             When(OperationSuccededReceived)
                 .If(context => context.Message.OperationType == OperationType.SendEmail, binder =>
                     binder.Then(context =>
                     {
-                        logger.LogInformation("SendEmail succeded, finalizing saga with {ID}.",
+                        logger.LogInformation("SendEmail succeded, finalizing saga with ID: {ID}.",
                             context.Saga.CorrelationId);
                     }))
                 .TransitionTo(Finished)
