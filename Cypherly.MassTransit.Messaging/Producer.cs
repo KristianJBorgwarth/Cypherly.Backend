@@ -1,4 +1,4 @@
-﻿using Cypherly.Application.Contracts.Messaging.PublishMessages;
+﻿using Cypherly.Common.Messaging.Messages.PublishMessages;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 

@@ -1,8 +1,8 @@
 ﻿using Cypherly.Application.Abstractions;
-using Cypherly.Application.Contracts.Messaging.PublishMessages;
-using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Domain.Events.User;
+using Cypherly.Common.Messaging.Messages.PublishMessages;
+using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.User.Events;
@@ -30,7 +30,7 @@ public class VerificationCodeGeneratedEventHandler(
             throw new InvalidOperationException("Verification code not found");
         }
 
-        var emailMessage = new SendEmailMessage(user.Email.Address, "Cypherly Verification", "Here is your verification code: " + verificationCode.Code);
+        var emailMessage = new SendEmailMessage(user.Email.Address, "Cypherly Verification", "Here is your verification code: " + verificationCode.Code, Guid.NewGuid());
 
         await emailProducer.PublishMessageAsync(emailMessage, cancellationToken);
     }

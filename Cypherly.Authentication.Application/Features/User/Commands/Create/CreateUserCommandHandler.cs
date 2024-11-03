@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Cypherly.Application.Abstractions;
-using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Domain.Services.User;
+using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 using Cypherly.Domain.Common;
 using MassTransit;
 using Microsoft.Extensions.Logging;
@@ -65,7 +65,7 @@ public class CreateUserCommandHandler(
             return Result.Ok();
 
         logger.LogError("Failed to create user profile");
-        return Result.Fail(Errors.General.UnspecifiedError(response.Message.Error!.Message));
+        return Result.Fail(Errors.General.UnspecifiedError(response.Message.Error!));
 
     }
 }

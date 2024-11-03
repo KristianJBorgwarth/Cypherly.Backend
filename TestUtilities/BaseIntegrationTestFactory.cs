@@ -1,5 +1,4 @@
 ﻿using Cypherly.API.Filters;
-using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;

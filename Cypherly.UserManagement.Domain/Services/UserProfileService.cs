@@ -15,6 +15,8 @@ public interface IUserProfileService
     bool IsUserBloccked(UserProfile userProfile, UserProfile checkUserProfile);
     void BlockUser(UserProfile userProfile, UserProfile blockedUserProfile);
     void UnblockUser(UserProfile userProfile, UserProfile unblockedUserProfile);
+    void SoftDelete(UserProfile userProfile);
+    void RevertSoftDelete(UserProfile userProfile);
 }
 public class UserProfileService : IUserProfileService
 {
@@ -63,7 +65,7 @@ public class UserProfileService : IUserProfileService
     /// <returns></returns>
     public bool IsUserBloccked(UserProfile userProfile, UserProfile checkUserProfile)
     {
-        return userProfile.BlockedUsers.Any(b => b.BlockedUserProfileId == checkUserProfile.Id)  
+        return userProfile.BlockedUsers.Any(b => b.BlockedUserProfileId == checkUserProfile.Id)
                || checkUserProfile.BlockedUsers.Any(b => b.BlockedUserProfileId == userProfile.Id);
     }
 
@@ -79,9 +81,19 @@ public class UserProfileService : IUserProfileService
         blockedUserProfile.DeleteFriendship(userProfile.UserTag.Tag);
         userProfile.AddDomainEvent(new UserBlockedEvent(userProfile.Id, blockedUserProfile.Id));
     }
-    
+
     public void UnblockUser(UserProfile userProfile, UserProfile unblockedUserProfile)
     {
         userProfile.UnblockUser(unblockedUserProfile.Id);
+    }
+
+    public void SoftDelete(UserProfile userProfile)
+    {
+        userProfile.SetDelete();
+    }
+
+    public void RevertSoftDelete(UserProfile userProfile)
+    {
+        userProfile.RevertDelete();
     }
 }

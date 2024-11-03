@@ -1,6 +1,4 @@
-﻿using Cypherly.Application.Contracts.Messaging.PublishMessages;
-using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
-using Cypherly.Authentication.Application.Contracts;
+﻿using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.User.Events;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
@@ -8,6 +6,8 @@ using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
+using Cypherly.Common.Messaging.Messages.PublishMessages;
+using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

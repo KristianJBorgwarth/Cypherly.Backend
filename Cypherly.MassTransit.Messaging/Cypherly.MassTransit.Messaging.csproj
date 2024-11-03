@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Cypherly.Application\Cypherly.Application.csproj" />
+      <ProjectReference Include="..\Cypherly.Common.Messaging\Cypherly.Common.Messaging.csproj" />
     </ItemGroup>
 
 </Project>

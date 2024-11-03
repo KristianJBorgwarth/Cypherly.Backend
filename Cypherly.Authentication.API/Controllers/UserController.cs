@@ -1,5 +1,6 @@
 ﻿using Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
 using Cypherly.Authentication.Application.Features.User.Commands.Create;
+using Cypherly.Authentication.Application.Features.User.Commands.Delete;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
 using MediatR;
@@ -18,6 +19,16 @@ public class UserController(ISender sender) : BaseController
     {
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+    
+    [HttpDelete]
+    [Route("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete([FromQuery]DeleteUserCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
     }
 
     [HttpPost]

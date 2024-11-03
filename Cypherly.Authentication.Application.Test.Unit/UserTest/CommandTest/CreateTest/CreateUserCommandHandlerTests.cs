@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Cypherly.Application.Contracts.Messaging.RequestMessages.User.Create;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.User.Commands.Create;
 using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Authentication.Domain.ValueObjects;
+using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 using Cypherly.Domain.Common;
 using FakeItEasy;
 using FluentAssertions;

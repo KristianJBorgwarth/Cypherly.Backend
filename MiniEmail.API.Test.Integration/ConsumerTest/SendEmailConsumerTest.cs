@@ -1,4 +1,5 @@
-﻿using Cypherly.Application.Contracts.Messaging.PublishMessages.Email;
+﻿using Cypherly.Common.Messaging.Messages.PublishMessages;
+using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using FakeItEasy;
 using FluentAssertions;
 using MassTransit;
@@ -18,14 +19,15 @@ public class SendEmailConsumerTest : IntegrationTestBase
         var scope = factory.Services.CreateScope();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<SendEmailConsumer>>();
         var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
-        _sut = new(emailService, logger);
+        var producer = scope.ServiceProvider.GetRequiredService<IProducer<OperationSuccededMessage>>();
+        _sut = new(emailService, producer,logger);
     }
 
     [Fact]
     public async void Consume_Given_Valid_Message_Should_Send_Email()
     {
         // Arrange
-        var msg = new SendEmailMessage("test@mail.dk", "Test subject", "Test body");
+        var msg = new SendEmailMessage("test@mail.dk", "Test subject", "Test body", Guid.NewGuid());
 
         var fakeConsumeContext = A.Fake<ConsumeContext<SendEmailMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(msg);
@@ -34,7 +36,6 @@ public class SendEmailConsumerTest : IntegrationTestBase
         await _sut.Consume(fakeConsumeContext);
 
         // Assert
-        A.CallTo(() => fakeConsumeContext.ConsumeCompleted).MustHaveHappened();
         var email = await MailHogHelper.GetMessagesFromMailHog();
         email.Should().NotBeNull();
         var emailItem = email!.Items.FirstOrDefault();

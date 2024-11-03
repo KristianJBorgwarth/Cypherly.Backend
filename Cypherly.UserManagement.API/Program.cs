@@ -1,13 +1,15 @@
 using System.Reflection;
 using System.Text;
 using Cypherly.API.Filters;
+using Cypherly.Common.Messaging.Messages.PublishMessages;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
+using Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
 using Cypherly.UserManagement.Domain.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;
 using Cypherly.UserManagement.Storage.Configuration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using MassTransit;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -68,7 +70,25 @@ builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.UserManagement.A
 #region MassTransit
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.UserManagement.Application"));
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.UserManagement.Application"), null,
+        (cfg, context) =>
+        {
+            cfg.ReceiveEndpoint("user_management_fail_queue", e =>
+            {
+                e.Consumer<RollbackUserProfileDeleteConsumer>(context);
+            });
+
+            cfg.ReceiveEndpoint("delete_user_profile", e =>
+            {
+                e.Consumer<DeleteUserProfileConsumer>(context);
+            });
+
+            cfg.ReceiveEndpoint("create_user_profile", e =>
+            {
+                e.Consumer<CreateUserProfileConsumer>(context);
+            });
+        })
+    .AddProducer<OperationSuccededMessage>();
 
 #endregion
 
