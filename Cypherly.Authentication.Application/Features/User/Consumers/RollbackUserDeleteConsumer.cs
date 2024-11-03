@@ -8,11 +8,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.User.Consumers;
 
-public class UserDeleteFailedConsumer(
+public class RollbackUserDeleteConsumer(
     IUserRepository userRepository,
     IUserService userService,
     IUnitOfWork unitOfWork,
-    ILogger<UserDeleteFailedConsumer> logger)
+    ILogger<RollbackUserDeleteConsumer> logger)
     : IConsumer<UserDeleteFailedMessage>
 {
 
@@ -28,7 +28,7 @@ public class UserDeleteFailedConsumer(
             if (user is null)
             {
                 logger.LogError("User with id {UserId} not found", message.UserId);
-                return;
+                throw new KeyNotFoundException($"User with id {message.UserId} not found.");
             }
 
             logger.LogInformation("Reverting soft delete for user with id {UserId}", message.UserId);

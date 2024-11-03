@@ -75,7 +75,7 @@ builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authenticati
     {
         cfg.ReceiveEndpoint("authentication_fail_queue", e=> 
         {
-            e.Consumer<UserDeleteFailedConsumer>(context);
+            e.Consumer<RollbackUserDeleteConsumer>(context);
         });
     })
     .AddProducer<SendEmailMessage>()

@@ -8,6 +8,7 @@ using Cypherly.UserManagement.Domain.Services;
 using FakeItEasy;
 using FluentAssertions;
 using MassTransit;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.ConsumerTest;
@@ -26,7 +27,8 @@ public class DeleteUserProfileConsumerTest
         _fakeUow = A.Fake<IUnitOfWork>();
         _fakeProducer = A.Fake<IProducer<OperationSuccededMessage>>();
         _fakeService = A.Fake<IUserProfileService>();
-        _sut = new DeleteUserProfileConsumer(_fakeRepo, _fakeService, _fakeUow, _fakeProducer);
+        var logger = A.Fake<ILogger<DeleteUserProfileConsumer>>();
+        _sut = new DeleteUserProfileConsumer(_fakeRepo, _fakeService, _fakeUow, _fakeProducer, logger);
     }
 
     [Fact]

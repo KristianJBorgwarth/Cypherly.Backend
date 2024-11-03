@@ -13,12 +13,13 @@ using FluentAssertions;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Cypherly.UserManagement.Application.Test.Integration.UserProfileTest.ConsumerTest;
 
 public class DeleteUserProfileConsumerTest : IntegrationTestBase
 {
-    private DeleteUserProfileConsumer _sut;
+    private readonly DeleteUserProfileConsumer _sut;
     public DeleteUserProfileConsumerTest(IntegrationTestFactory<Program, UserManagementDbContext> factory) : base(factory)
     {
         var scope = factory.Services.CreateScope();
@@ -26,8 +27,8 @@ public class DeleteUserProfileConsumerTest : IntegrationTestBase
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var userProfileService = scope.ServiceProvider.GetRequiredService<IUserProfileService>();
         var producer = scope.ServiceProvider.GetRequiredService<IProducer<OperationSuccededMessage>>();
-
-        _sut = new DeleteUserProfileConsumer(userProfileRepository, userProfileService, unitOfWork, producer);
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<DeleteUserProfileConsumer>>();
+        _sut = new DeleteUserProfileConsumer(userProfileRepository, userProfileService, unitOfWork, producer, logger);
     }
 
     [Fact]
