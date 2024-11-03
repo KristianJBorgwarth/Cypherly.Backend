@@ -25,7 +25,7 @@ public class DeleteUserProfileConsumerTest : IntegrationTestBase
         var scope = factory.Services.CreateScope();
         var userProfileRepository = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-        var userProfileService = scope.ServiceProvider.GetRequiredService<IUserProfileService>();
+        var userProfileService = scope.ServiceProvider.GetRequiredService<IUserProfileLifecycleService>();
         var producer = scope.ServiceProvider.GetRequiredService<IProducer<OperationSuccededMessage>>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<DeleteUserProfileConsumer>>();
         _sut = new DeleteUserProfileConsumer(userProfileRepository, userProfileService, unitOfWork, producer, logger);

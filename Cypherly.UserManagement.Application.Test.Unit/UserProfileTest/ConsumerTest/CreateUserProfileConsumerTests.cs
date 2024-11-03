@@ -16,16 +16,16 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.Consumer
     {
         private readonly IUserProfileRepository _fakeUserProfileRepo;
         private readonly IUnitOfWork _fakeUnitOfWork;
-        private readonly IUserProfileService _fakeUserProfileService;
+        private readonly IUserProfileLifecycleService _fakeUserProfileLifecycleService;
         private readonly CreateUserProfileConsumer _sut;
 
         public CreateUserProfileConsumerTest()
         {
             _fakeUserProfileRepo = A.Fake<IUserProfileRepository>();
             _fakeUnitOfWork = A.Fake<IUnitOfWork>();
-            _fakeUserProfileService = A.Fake<IUserProfileService>();
+            _fakeUserProfileLifecycleService = A.Fake<IUserProfileLifecycleService>();
             var fakeLogger = A.Fake<ILogger<CreateUserProfileConsumer>>();
-            _sut = new(_fakeUserProfileRepo, _fakeUnitOfWork, _fakeUserProfileService, fakeLogger);
+            _sut = new(_fakeUserProfileRepo, _fakeUnitOfWork, _fakeUserProfileLifecycleService, fakeLogger);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.Consumer
 
             var profile = new UserProfile(message.UserId, message.Username, UserTag.Create(message.Username));
 
-            A.CallTo(() => _fakeUserProfileService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
 
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile)).Returns(Task.CompletedTask);
 
@@ -49,7 +49,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.Consumer
             await _sut.Consume(fakeConsumeContext);
 
             // Assert
-            A.CallTo(() => _fakeUserProfileService.CreateUserProfile(message.UserId, message.Username)).MustHaveHappenedOnceExactly();
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).MustHaveHappenedOnceExactly();
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile)).MustHaveHappenedOnceExactly();
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustHaveHappenedOnceExactly();
         }
@@ -63,7 +63,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.Consumer
             var fakeConsumeContext = A.Fake<ConsumeContext<CreateUserProfileRequest>>();
             A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
-            A.CallTo(() => _fakeUserProfileService.CreateUserProfile(message.UserId, message.Username))
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username))
                 .Throws(new Exception("Service exception"));
 
             // Act
@@ -83,7 +83,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.Consumer
             var fakeConsumeContext = A.Fake<ConsumeContext<CreateUserProfileRequest>>();
             A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
-            A.CallTo(() => _fakeUserProfileService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile)).Throws(new Exception("Repository exception"));
 
             // Act
@@ -103,7 +103,7 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.Consumer
             var fakeConsumeContext = A.Fake<ConsumeContext<CreateUserProfileRequest>>();
             A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
-            A.CallTo(() => _fakeUserProfileService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
+            A.CallTo(() => _fakeUserProfileLifecycleService.CreateUserProfile(message.UserId, message.Username)).Returns(profile);
             A.CallTo(() => _fakeUserProfileRepo.CreateAsync(profile)).Returns(Task.CompletedTask);
             A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).Throws(new Exception("UnitOfWork exception"));
 

@@ -24,7 +24,7 @@ public class BlockUserCommandHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserProfileRepository>();
-        var service = scope.ServiceProvider.GetRequiredService<IUserProfileService>();
+        var service = scope.ServiceProvider.GetRequiredService<IUserBlockingService>();
         var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<BlockUserCommandHandler>>();
 

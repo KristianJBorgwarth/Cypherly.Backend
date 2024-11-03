@@ -18,7 +18,7 @@ public class DeleteUserProfileConsumerTest
     private readonly IUserProfileRepository _fakeRepo;
     private readonly IUnitOfWork _fakeUow;
     private readonly IProducer<OperationSuccededMessage> _fakeProducer;
-    private readonly IUserProfileService _fakeService;
+    private readonly IUserProfileLifecycleService _fakeLifecycleService;
     private readonly DeleteUserProfileConsumer _sut;
 
     public DeleteUserProfileConsumerTest()
@@ -26,9 +26,9 @@ public class DeleteUserProfileConsumerTest
         _fakeRepo = A.Fake<IUserProfileRepository>();
         _fakeUow = A.Fake<IUnitOfWork>();
         _fakeProducer = A.Fake<IProducer<OperationSuccededMessage>>();
-        _fakeService = A.Fake<IUserProfileService>();
+        _fakeLifecycleService = A.Fake<IUserProfileLifecycleService>();
         var logger = A.Fake<ILogger<DeleteUserProfileConsumer>>();
-        _sut = new DeleteUserProfileConsumer(_fakeRepo, _fakeService, _fakeUow, _fakeProducer, logger);
+        _sut = new DeleteUserProfileConsumer(_fakeRepo, _fakeLifecycleService, _fakeUow, _fakeProducer, logger);
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class DeleteUserProfileConsumerTest
         await _sut.Consume(fakeConsumeContext);
 
         // Assert
-        A.CallTo(() => _fakeService.SoftDelete(user)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeLifecycleService.SoftDelete(user)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeUow.SaveChangesAsync(A<CancellationToken>._)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeProducer.PublishMessageAsync(A<OperationSuccededMessage>._, A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }

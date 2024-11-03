@@ -15,14 +15,14 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.CommandT
 public class CreateFriendshipCommandHandlerTest
 {
     private readonly IUserProfileRepository _fakeRepo;
-    private readonly IUserProfileService _fakeService;
+    private readonly IFriendshipService _fakeService;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly CreateFriendshipCommandHandler _sut;
 
     public CreateFriendshipCommandHandlerTest()
     {
         _fakeRepo = A.Fake<IUserProfileRepository>();
-        _fakeService = A.Fake<IUserProfileService>();
+        _fakeService = A.Fake<IFriendshipService>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         var fakeLogger = A.Fake<ILogger<CreateFriendshipCommandHandler>>();
         _sut = new(_fakeRepo, _fakeService, _fakeUnitOfWork, fakeLogger);

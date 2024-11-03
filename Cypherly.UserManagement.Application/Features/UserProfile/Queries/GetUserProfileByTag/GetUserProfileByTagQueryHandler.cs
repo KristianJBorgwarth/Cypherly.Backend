@@ -9,7 +9,7 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUs
 
 public class GetUserProfileByTagQueryHandler(
     IUserProfileRepository userProfileRepository,
-    IUserProfileService userProfileService,
+    IUserBlockingService userBlockingService,
     IProfilePictureService profilePictureService,
     IMapper mapper,
     ILogger<GetUserProfileByTagQueryHandler> logger)
@@ -28,11 +28,11 @@ public class GetUserProfileByTagQueryHandler(
 
             var userProfile = await userProfileRepository.GetByUserTag(request.Tag);
 
-            if (userProfile is null || userProfileService.IsUserBloccked(requestingUser, userProfile))
+            if (userProfile is null || userBlockingService.IsUserBloccked(requestingUser, userProfile))
                 return Result.Ok<GetUserProfileByTagDto>();
 
             var profilePictureUrl = "";
-            
+
             if (!string.IsNullOrEmpty(userProfile.ProfilePictureUrl))
             {
                 var presignedUrlResult = await profilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl);
@@ -45,10 +45,10 @@ public class GetUserProfileByTagQueryHandler(
                     profilePictureUrl = presignedUrlResult.Value;
                 }
             }
-            
+
             var dto = mapper.Map<GetUserProfileByTagDto>(userProfile);
             dto = dto with { ProfilePictureUrl = profilePictureUrl };
-            
+
             return Result.Ok(dto);
         }
         catch (Exception e)

@@ -9,7 +9,7 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Commands.Upda
 
 public class AcceptFriendshipCommandHandler(
     IUserProfileRepository userProfileRepository,
-    IUserProfileService userProfileService,
+    IFriendshipService friendshipService,
     IUnitOfWork unitOfWork,
     ILogger<AcceptFriendshipCommandHandler> logger)
     : ICommandHandler<AcceptFriendshipCommand>
@@ -25,7 +25,7 @@ public class AcceptFriendshipCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.Id));
             }
 
-            var result = userProfileService.AcceptFriendship(userProfile, request.FriendTag);
+            var result = friendshipService.AcceptFriendship(userProfile, request.FriendTag);
             if(result.Success is false)
             {
                 logger.LogWarning("Error accepting friendship: {Error} {UserId} {FriendTag}",result.Error, request.Id, request.FriendTag);

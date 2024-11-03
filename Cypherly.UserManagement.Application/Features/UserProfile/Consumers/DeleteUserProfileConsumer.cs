@@ -11,7 +11,7 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
 
 public class DeleteUserProfileConsumer(
     IUserProfileRepository userProfileRepository,
-    IUserProfileService userProfileService,
+    IUserProfileLifecycleService userProfileLifecycleService,
     IUnitOfWork unitOfWork,
     IProducer<OperationSuccededMessage> producer,
     ILogger<DeleteUserProfileConsumer> logger)
@@ -30,7 +30,7 @@ public class DeleteUserProfileConsumer(
                 throw new KeyNotFoundException($"User with id {message.UserProfileId} not found.");
             }
 
-            userProfileService.SoftDelete(user);
+            userProfileLifecycleService.SoftDelete(user);
             await unitOfWork.SaveChangesAsync();
             await producer.PublishMessageAsync(new OperationSuccededMessage(OperationType.UserProfileDelete,
                 message.CorrelationId, message.Id));

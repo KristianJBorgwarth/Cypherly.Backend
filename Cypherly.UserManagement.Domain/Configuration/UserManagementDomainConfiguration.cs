@@ -7,6 +7,8 @@ public static class UserManagementDomainConfiguration
 {
     public static void AddUserManagementDomainServices(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddScoped<IUserProfileService, UserProfileService>();
+        serviceCollection.AddScoped<IUserProfileLifecycleService, UserProfileLifecycleLifecycleService>();
+        serviceCollection.AddScoped<IFriendshipService, FriendshipService>();
+        serviceCollection.AddScoped<IUserBlockingService, UserBlockingService>();
     }
 }
