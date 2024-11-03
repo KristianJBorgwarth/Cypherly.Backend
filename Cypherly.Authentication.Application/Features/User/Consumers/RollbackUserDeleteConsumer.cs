@@ -10,7 +10,7 @@ namespace Cypherly.Authentication.Application.Features.User.Consumers;
 
 public class RollbackUserDeleteConsumer(
     IUserRepository userRepository,
-    IUserLifeCycleService userLifeCycleService,
+    IUserLifeCycleServices userLifeCycleServices,
     IUnitOfWork unitOfWork,
     ILogger<RollbackUserDeleteConsumer> logger)
     : IConsumer<UserDeleteFailedMessage>
@@ -32,7 +32,7 @@ public class RollbackUserDeleteConsumer(
             }
 
             logger.LogInformation("Reverting soft delete for user with id {UserId}", message.UserId);
-            userLifeCycleService.RevertSoftDelete(user);
+            userLifeCycleServices.RevertSoftDelete(user);
             await unitOfWork.SaveChangesAsync();
         }
         catch (Exception ex)

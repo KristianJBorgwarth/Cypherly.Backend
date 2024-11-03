@@ -10,7 +10,7 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Delete;
 public class DeleteUserCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
-    IUserLifeCycleService  userLifeCycleService,
+    IUserLifeCycleServices  userLifeCycleServices,
     ILogger<DeleteUserCommandHandler> logger)
     : ICommandHandler<DeleteUserCommand>
 {
@@ -25,7 +25,7 @@ public class DeleteUserCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.Id));
             }
 
-            userLifeCycleService.SoftDelete(user);
+            userLifeCycleServices.SoftDelete(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Ok();

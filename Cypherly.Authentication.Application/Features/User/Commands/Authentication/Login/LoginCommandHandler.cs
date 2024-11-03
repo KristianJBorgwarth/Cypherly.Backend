@@ -11,7 +11,7 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Authenticat
 public class LoginCommandHandler(
     IUserRepository userRepository,
     IJwtService jwtService,
-    IUserLifeCycleService userLifeCycleService,
+    IUserLifeCycleServices userLifeCycleServices,
     IUnitOfWork unitOfWork,
     ILogger<LoginCommandHandler> logger)
     : ICommandHandler<LoginCommand, LoginDto>
@@ -31,7 +31,7 @@ public class LoginCommandHandler(
 
             var token = jwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims());
 
-            var refreshToken = userLifeCycleService.GenerateRefreshToken(user);
+            var refreshToken = userLifeCycleServices.GenerateRefreshToken(user);
 
             var dto = new LoginDto
             {

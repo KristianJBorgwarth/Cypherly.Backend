@@ -7,13 +7,13 @@ using FluentAssertions;
 
 namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
 {
-    public class UserLifeCycleServiceTests
+    public class UserLifeCycleServicesTests
     {
-        private readonly UserLifeCycleService _userLifeCycleService;
+        private readonly UserLifeCycleServices _userLifeCycleServices;
 
-        public UserLifeCycleServiceTests()
+        public UserLifeCycleServicesTests()
         {
-            _userLifeCycleService = new UserLifeCycleService();
+            _userLifeCycleServices = new UserLifeCycleServices();
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             string password = "Password123!";
 
             // Act
-            var result = _userLifeCycleService.CreateUser(invalidEmail, password);
+            var result = _userLifeCycleServices.CreateUser(invalidEmail, password);
 
             // Assert
             result.Success.Should().BeFalse();
@@ -39,7 +39,7 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             var invalidPassword = "short"; // Assuming password should meet certain criteria
 
             // Act
-            var result = _userLifeCycleService.CreateUser(email, invalidPassword);
+            var result = _userLifeCycleServices.CreateUser(email, invalidPassword);
 
             // Assert
             result.Success.Should().BeFalse();
@@ -54,7 +54,7 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             var password = "Password123!";
 
             // Act
-            var result = _userLifeCycleService.CreateUser(email, password);
+            var result = _userLifeCycleServices.CreateUser(email, password);
 
             // Assert
             result.Success.Should().BeTrue();
@@ -71,7 +71,7 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             var password = "Password123!";
 
             // Act
-            var result = _userLifeCycleService.CreateUser(email, password);
+            var result = _userLifeCycleServices.CreateUser(email, password);
 
             // Assert
             result.Success.Should().BeTrue();
@@ -93,7 +93,7 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjshsdi9?A"), false);
 
             // Act
-            _userLifeCycleService.GenerateVerificationCode(user, codeType);
+            _userLifeCycleServices.GenerateVerificationCode(user, codeType);
 
             // Assert
             user.VerificationCodes.Should().HaveCount(1);
