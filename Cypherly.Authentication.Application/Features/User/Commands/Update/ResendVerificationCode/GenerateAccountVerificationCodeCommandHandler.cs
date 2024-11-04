@@ -11,7 +11,7 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Update.Rese
 public sealed class GenerateAccountVerificationCodeCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
-    IUserLifeCycleServices userLifeCycleServices,
+    IVerificationCodeService verificationCodeService,
     ILogger<GenerateAccountVerificationCodeCommandHandler> logger)
     : ICommandHandler<GenerateAccountVerificationCodeCommand>
 {
@@ -32,7 +32,7 @@ public sealed class GenerateAccountVerificationCodeCommandHandler(
                 return Result.Fail(Errors.General.UnspecifiedError("User is already verified"));
             }
 
-            userLifeCycleServices.GenerateVerificationCode(user, VerificationCodeType.EmailVerification);
+            verificationCodeService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Ok();

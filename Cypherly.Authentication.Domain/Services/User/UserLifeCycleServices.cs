@@ -11,8 +11,6 @@ public interface IUserLifeCycleServices
     Result<Aggregates.User> CreateUser(string email, string password);
     void SoftDelete(Aggregates.User user);
     void RevertSoftDelete(Aggregates.User user);
-    void GenerateVerificationCode(Aggregates.User user, VerificationCodeType codeType);
-    RefreshToken GenerateRefreshToken(Aggregates.User user);
 }
 
 public class UserLifeCycleServices : IUserLifeCycleServices
@@ -45,17 +43,5 @@ public class UserLifeCycleServices : IUserLifeCycleServices
     public void RevertSoftDelete(Aggregates.User user)
     {
         user.RevertDelete();
-    }
-
-    public void GenerateVerificationCode(Aggregates.User user, VerificationCodeType codeType)
-    {
-        user.AddVerificationCode(codeType);
-        user.AddDomainEvent(new VerificationCodeGeneratedEvent(user.Id, codeType));
-    }
-
-    public RefreshToken GenerateRefreshToken(Aggregates.User user)
-    {
-        user.AddRefreshToken();
-        return user.GetActiveRefreshToken()!;
     }
 }

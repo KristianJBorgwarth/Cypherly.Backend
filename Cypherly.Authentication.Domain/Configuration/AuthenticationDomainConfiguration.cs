@@ -10,5 +10,7 @@ public static class AuthenticationDomainConfiguration
     {
         serviceCollection.AddScoped<IUserLifeCycleServices, UserLifeCycleServices>();
         serviceCollection.AddScoped<IClaimService, ClaimService>();
+        serviceCollection.AddScoped<IVerificationCodeService, VerificationCodeService>();
+        serviceCollection.AddScoped<IAuthenticationService, AuthenticationService>();
     }
 }

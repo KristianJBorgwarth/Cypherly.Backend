@@ -23,10 +23,10 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         var scope = factory.Services.CreateScope().ServiceProvider;
         var repo = scope.GetRequiredService<IUserRepository>();
         var jwtService = scope.GetRequiredService<IJwtService>();
-        var userService = scope.GetRequiredService<IUserLifeCycleServices>();
+        var authService = scope.GetRequiredService<IAuthenticationService>();
         var unitOfWork = scope.GetRequiredService<IUnitOfWork>();
         var logger = scope.GetRequiredService<ILogger<LoginCommandHandler>>();
-        _sut = new LoginCommandHandler(repo, jwtService, userService, unitOfWork, logger);
+        _sut = new LoginCommandHandler(repo, jwtService, authService, unitOfWork, logger);
     }
 
     [Fact]
