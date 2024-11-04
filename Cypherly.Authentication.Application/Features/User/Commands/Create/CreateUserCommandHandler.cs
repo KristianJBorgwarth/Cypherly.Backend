@@ -13,7 +13,7 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Create;
 public class CreateUserCommandHandler(
     IUserRepository userRepository,
     IMapper mapper,
-    IUserService userService,
+    IUserLifeCycleServices userLifeCycleServices,
     IUnitOfWork unitOfWork,
     IRequestClient<CreateUserProfileRequest> requestClient,
     ILogger<CreateUserCommandHandler> logger)
@@ -26,7 +26,7 @@ public class CreateUserCommandHandler(
             if( await DoesEmailExist(email: request.Email))
                 return Result.Fail<CreateUserDto>(Errors.General.UnspecifiedError("An account already exists with that email"));
 
-            var userResult = userService.CreateUser(request.Email, request.Password);
+            var userResult = userLifeCycleServices.CreateUser(request.Email, request.Password);
 
             if (userResult.Success is false)
                 return Result.Fail<CreateUserDto>(userResult.Error);

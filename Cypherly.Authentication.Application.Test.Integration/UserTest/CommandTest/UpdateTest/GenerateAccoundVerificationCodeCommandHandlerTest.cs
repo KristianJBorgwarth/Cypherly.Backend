@@ -22,9 +22,9 @@ public class GenerateAccoundVerificationCodeCommandHandlerTest : IntegrationTest
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-        var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+        var verificationCodeService = scope.ServiceProvider.GetRequiredService<IVerificationCodeService>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<GenerateAccountVerificationCodeCommandHandler>>();
-        _sut = new(repo, unitOfWork, userService, logger);
+        _sut = new(repo, unitOfWork, verificationCodeService, logger);
     }
 
     [Fact]

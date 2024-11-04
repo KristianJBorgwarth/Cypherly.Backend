@@ -15,16 +15,16 @@ public class GenerateAccountVerificationCodeCommandHandlerTest
 {
     private readonly IUserRepository _fakeRepo;
     private readonly IUnitOfWork _fakeUnitOfWork;
-    private readonly IUserService _fakeUserService;
+    private readonly IVerificationCodeService _fakeVerificationCodeService;
     private readonly GenerateAccountVerificationCodeCommandHandler _sut;
 
     public GenerateAccountVerificationCodeCommandHandlerTest()
     {
         _fakeRepo = A.Fake<IUserRepository>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
-        _fakeUserService = A.Fake<IUserService>();
+        _fakeVerificationCodeService = A.Fake<IVerificationCodeService>();
         var fakeLogger = A.Fake<ILogger<GenerateAccountVerificationCodeCommandHandler>>();
-        _sut = new GenerateAccountVerificationCodeCommandHandler(_fakeRepo, _fakeUnitOfWork, _fakeUserService, fakeLogger);
+        _sut = new GenerateAccountVerificationCodeCommandHandler(_fakeRepo, _fakeUnitOfWork, _fakeVerificationCodeService, fakeLogger);
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class GenerateAccountVerificationCodeCommandHandlerTest
             UserId = user.Id
         };
         A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.UserId)).Returns(user);
-        A.CallTo(() => _fakeUserService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification)).Throws<Exception>();
+        A.CallTo(() => _fakeVerificationCodeService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification)).Throws<Exception>();
 
         // Act
         var result = await _sut.Handle(cmd, CancellationToken.None);
@@ -93,14 +93,14 @@ public class GenerateAccountVerificationCodeCommandHandlerTest
             UserId = user.Id
         };
         A.CallTo(() => _fakeRepo.GetByIdAsync(cmd.UserId)).Returns(user);
-        A.CallTo(()=> _fakeUserService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification)).DoesNothing();
+        A.CallTo(()=> _fakeVerificationCodeService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification)).DoesNothing();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).DoesNothing();
 
         var result = await _sut.Handle(cmd, CancellationToken.None);
 
         result.Success.Should().BeTrue();
         A.CallTo(()=> _fakeRepo.GetByIdAsync(cmd.UserId)).MustHaveHappenedOnceExactly();
-        A.CallTo(()=> _fakeUserService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeVerificationCodeService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustHaveHappenedOnceExactly();
 
     }

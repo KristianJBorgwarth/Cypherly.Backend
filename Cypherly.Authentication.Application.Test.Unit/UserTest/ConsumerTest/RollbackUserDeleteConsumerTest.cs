@@ -16,7 +16,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.ConsumerTest;
 public class RollbackUserDeleteConsumerTest
 {
     private readonly IUserRepository _fakeRepo;
-    private readonly IUserService _fakeService;
+    private readonly IUserLifeCycleServices _fakeLifeCycleServices;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly ILogger<RollbackUserDeleteConsumer> _fakeLogger;
     private readonly RollbackUserDeleteConsumer _sut;
@@ -24,10 +24,10 @@ public class RollbackUserDeleteConsumerTest
     public RollbackUserDeleteConsumerTest()
     {
         _fakeRepo = A.Fake<IUserRepository>();
-        _fakeService = A.Fake<IUserService>();
+        _fakeLifeCycleServices = A.Fake<IUserLifeCycleServices>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         _fakeLogger = A.Fake<ILogger<RollbackUserDeleteConsumer>>();
-        _sut = new RollbackUserDeleteConsumer(_fakeRepo, _fakeService, _fakeUnitOfWork, _fakeLogger);
+        _sut = new RollbackUserDeleteConsumer(_fakeRepo, _fakeLifeCycleServices, _fakeUnitOfWork, _fakeLogger);
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class RollbackUserDeleteConsumerTest
         await _sut.Consume(fakeConsumeContext);
 
         // Assert
-        A.CallTo(() => _fakeService.RevertSoftDelete(user)).MustHaveHappenedOnceExactly();
+        A.CallTo(() => _fakeLifeCycleServices.RevertSoftDelete(user)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>._)).MustHaveHappenedOnceExactly();
     }
 
@@ -67,7 +67,7 @@ public class RollbackUserDeleteConsumerTest
 
         // Assert
         A.CallTo(() => _fakeRepo.GetByIdAsync(A<Guid>._)).MustNotHaveHappened();
-        A.CallTo(() => _fakeService.RevertSoftDelete(A<User>._)).MustNotHaveHappened();
+        A.CallTo(() => _fakeLifeCycleServices.RevertSoftDelete(A<User>._)).MustNotHaveHappened();
     }
 
     [Fact]
