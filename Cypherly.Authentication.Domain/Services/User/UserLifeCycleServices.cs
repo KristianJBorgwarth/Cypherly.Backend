@@ -1,5 +1,4 @@
-﻿using Cypherly.Authentication.Domain.Entities;
-using Cypherly.Authentication.Domain.Enums;
+﻿using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Domain.Common;
