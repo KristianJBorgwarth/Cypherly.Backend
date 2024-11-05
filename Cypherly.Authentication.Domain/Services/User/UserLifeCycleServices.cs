@@ -10,6 +10,7 @@ public interface IUserLifeCycleServices
     Result<Aggregates.User> CreateUser(string email, string password);
     void SoftDelete(Aggregates.User user);
     void RevertSoftDelete(Aggregates.User user);
+    bool IsUserDeleted(Aggregates.User user);
 }
 
 public class UserLifeCycleServices : IUserLifeCycleServices
@@ -42,5 +43,10 @@ public class UserLifeCycleServices : IUserLifeCycleServices
     public void RevertSoftDelete(Aggregates.User user)
     {
         user.RevertDelete();
+    }
+
+    public bool IsUserDeleted(Aggregates.User user)
+    {
+        return user.DeletedAt.HasValue;
     }
 }
