@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
+using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Domain.ValueObjects;
@@ -28,7 +28,7 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/user/login", command);
+        var response = await Client.PostAsJsonAsync("/api/authentication/login", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -51,7 +51,7 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         };
 
         // Act
-        var response = await Client.PostAsJsonAsync("/api/user/login", command);
+        var response = await Client.PostAsJsonAsync("/api/authentication/login", command);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

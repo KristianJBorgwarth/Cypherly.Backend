@@ -1,6 +1,6 @@
 ﻿using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
-using Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
+using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Domain.Entities;

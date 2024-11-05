@@ -1,4 +1,4 @@
-﻿namespace Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
+﻿namespace Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 
 public sealed record LoginDto
 {

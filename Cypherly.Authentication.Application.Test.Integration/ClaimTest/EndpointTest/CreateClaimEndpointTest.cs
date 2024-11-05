@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
-using Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
+using Cypherly.Authentication.Application.Features.Claim.Commands.Create;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;

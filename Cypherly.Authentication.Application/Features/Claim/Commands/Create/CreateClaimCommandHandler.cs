@@ -6,7 +6,7 @@ using Cypherly.Authentication.Domain.Services.Claim;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
-namespace Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
+namespace Cypherly.Authentication.Application.Features.Claim.Commands.Create;
 
 public class CreateClaimCommandHandler(
     IClaimRepository claimRepository,

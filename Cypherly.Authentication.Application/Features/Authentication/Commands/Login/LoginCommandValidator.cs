@@ -1,7 +1,7 @@
 ﻿using Cypherly.Domain.Common;
 using FluentValidation;
 
-namespace Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
+namespace Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 
 public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {

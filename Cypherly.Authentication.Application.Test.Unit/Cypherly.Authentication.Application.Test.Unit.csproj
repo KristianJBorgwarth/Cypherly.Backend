@@ -26,4 +26,8 @@
       <ProjectReference Include="..\Cypherly.Authentication.Application\Cypherly.Authentication.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="AuthenticationTest\" />
+    </ItemGroup>
+
 </Project>

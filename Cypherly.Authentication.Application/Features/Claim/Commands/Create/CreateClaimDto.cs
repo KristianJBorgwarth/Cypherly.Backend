@@ -1,4 +1,4 @@
-﻿namespace Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
+﻿namespace Cypherly.Authentication.Application.Features.Claim.Commands.Create;
 
 public sealed record CreateClaimDto
 {
