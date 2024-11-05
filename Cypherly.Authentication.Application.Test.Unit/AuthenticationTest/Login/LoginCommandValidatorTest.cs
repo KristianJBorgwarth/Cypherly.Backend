@@ -1,7 +1,7 @@
 ﻿using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 using FluentValidation.TestHelper;
 
-namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.AuthenticationTest.Login;
+namespace Cypherly.Authentication.Application.Test.Unit.AuthenticationTest.Login;
 
 public class LoginCommandValidatorTest
 {

@@ -10,7 +10,7 @@ using FakeItEasy;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 
-namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.AuthenticationTest.Login;
+namespace Cypherly.Authentication.Application.Test.Unit.AuthenticationTest.Login;
 
 public class LoginCommandHandlerTest
 {
@@ -18,7 +18,6 @@ public class LoginCommandHandlerTest
     private readonly IJwtService _fakeJwtService;
     private readonly IAuthenticationService _fakeAuthService;
     private readonly IUnitOfWork _fakeUnitOfWork;
-    private readonly ILogger<LoginCommandHandler> _fakeLogger;
     private readonly LoginCommandHandler _sut;
 
     public LoginCommandHandlerTest()
@@ -27,8 +26,8 @@ public class LoginCommandHandlerTest
         _fakeJwtService = A.Fake<IJwtService>();
         _fakeAuthService = A.Fake<IAuthenticationService>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
-        _fakeLogger = A.Fake<ILogger<LoginCommandHandler>>();
-        _sut = new LoginCommandHandler(_fakeRepo, _fakeJwtService, _fakeAuthService, _fakeUnitOfWork, _fakeLogger);
+        var fakeLogger = A.Fake<ILogger<LoginCommandHandler>>();
+        _sut = new LoginCommandHandler(_fakeRepo, _fakeJwtService, _fakeAuthService, _fakeUnitOfWork, fakeLogger);
     }
     [Fact]
     public async Task Handle_Command_When_Valid_Returns_Ok()
