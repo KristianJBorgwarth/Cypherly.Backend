@@ -6,7 +6,7 @@ using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
-namespace Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
+namespace Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 
 public class LoginCommandHandler(
     IUserRepository userRepository,

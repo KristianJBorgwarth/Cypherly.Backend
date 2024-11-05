@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
-using Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
+using Cypherly.Authentication.Application.Features.Claim.Commands.Create;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Services.Claim;
 using Cypherly.Authentication.Persistence.Context;

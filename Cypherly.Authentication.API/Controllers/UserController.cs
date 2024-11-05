@@ -1,5 +1,4 @@
-﻿using Cypherly.Authentication.Application.Features.User.Commands.Authentication.Login;
-using Cypherly.Authentication.Application.Features.User.Commands.Create;
+﻿using Cypherly.Authentication.Application.Features.User.Commands.Create;
 using Cypherly.Authentication.Application.Features.User.Commands.Delete;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
@@ -29,16 +28,6 @@ public class UserController(ISender sender) : BaseController
     {
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
-    }
-
-    [HttpPost]
-    [Route("login")]
-    [ProducesResponseType(typeof(LoginDto),StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Login([FromBody] LoginCommand command)
-    {
-        var result = await sender.Send(command);
-        return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
     [HttpPut]

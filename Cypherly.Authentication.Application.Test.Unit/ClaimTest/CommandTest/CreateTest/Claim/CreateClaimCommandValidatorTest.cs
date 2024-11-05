@@ -1,4 +1,4 @@
-﻿using Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
+﻿using Cypherly.Authentication.Application.Features.Claim.Commands.Create;
 using FluentAssertions;
 using Xunit;
 

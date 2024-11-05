@@ -1,7 +1,7 @@
 ﻿using Cypherly.Domain.Common;
 using FluentValidation;
 
-namespace Cypherly.Authentication.Application.Features.Claim.Commands.Create.Claim;
+namespace Cypherly.Authentication.Application.Features.Claim.Commands.Create;
 
 public class CreateClaimCommandValidator : AbstractValidator<CreateClaimCommand>
 {
