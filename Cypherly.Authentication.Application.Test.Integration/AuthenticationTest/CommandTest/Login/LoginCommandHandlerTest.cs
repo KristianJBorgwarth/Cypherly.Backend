@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Cypherly.Application.Contracts.Repository;
+﻿using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 using Cypherly.Authentication.Application.Services.Authentication;
@@ -12,7 +11,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Cypherly.Authentication.Application.Test.Integration.UserTest.CommandTest.Authentication.Login;
+namespace Cypherly.Authentication.Application.Test.Integration.AuthenticationTest.CommandTest.Login;
 
 public class LoginCommandHandlerTest : IntegrationTestBase
 {
