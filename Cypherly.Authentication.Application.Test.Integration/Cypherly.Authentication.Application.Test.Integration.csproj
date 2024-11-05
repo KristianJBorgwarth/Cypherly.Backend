@@ -36,4 +36,8 @@
       <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="AuthenticationTest\CommandTest\" />
+    </ItemGroup>
+
 </Project>
