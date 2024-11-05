@@ -24,8 +24,8 @@ public class DeleteUserCommandHandler(
                 logger.LogError("User not found with id {Id} during delete process", request.Id);
                 return Result.Fail(Errors.General.NotFound(request.Id));
             }
-            
-            if(userLifeCycleServices.IsUserDeleted(user))
+
+            if (userLifeCycleServices.IsUserDeleted(user))
             {
                 logger.LogError("User with id {Id} is already deleted", request.Id);
                 return Result.Fail(Errors.General.UnspecifiedError("User is already marked as deleted"));
@@ -38,8 +38,8 @@ public class DeleteUserCommandHandler(
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            logger.LogError(e, "Error occurred during delete process for user with id {Id}", request.Id);
+            return Result.Fail(Errors.General.UnspecifiedError("An exception occured while attempting to delete the user"));
         }
     }
 }
