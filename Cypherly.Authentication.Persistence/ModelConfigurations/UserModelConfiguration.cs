@@ -1,5 +1,4 @@
 ﻿using Cypherly.Authentication.Domain.Aggregates;
-using Cypherly.Authentication.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -36,9 +35,9 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey(vc => vc.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(u => u.RefreshTokens)
-            .WithOne(rt=> rt.User)
-            .HasForeignKey(rt => rt.UserId)
+        builder.HasMany(u => u.Devices)
+            .WithOne(d=> d.User)
+            .HasForeignKey(d => d.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

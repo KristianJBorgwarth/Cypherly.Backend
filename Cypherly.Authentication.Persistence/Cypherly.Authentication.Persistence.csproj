@@ -12,4 +12,8 @@
       <ProjectReference Include="..\Cypherly.Persistence\Cypherly.Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
 </Project>

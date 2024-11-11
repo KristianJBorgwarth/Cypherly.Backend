@@ -124,37 +124,4 @@ public class UserTest
         user.VerificationCodes.Should().ContainSingle(vc => vc.IsUsed);
         user.DomainEvents.Should().HaveCount(1);
     }
-
-    [Fact]
-    public void AddRefreshToken_Should_Add_New_RefreshToken()
-    {
-        // Arrange
-        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("asdoiasd212?K"), false);
-
-        // Act
-        user.AddRefreshToken();
-
-        // Assert
-        user.RefreshTokens.Should().HaveCount(1);
-    }
-
-    [Fact]
-    public void GetActiveRefreshToken_Should_Return_Newest_Active_RefreshToken()
-    {
-        // Arrange
-        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("asdoiasd212?K"), false);
-
-        user.AddRefreshToken();
-
-        var assertToken = user.GetActiveRefreshToken();
-
-        user.AddRefreshToken();
-
-        // Act
-        var token = user.GetActiveRefreshToken();
-
-        // Assert
-        token.Should().NotBeNull();
-        token!.Id.Should().NotBe(assertToken!.Id);
-    }
 }

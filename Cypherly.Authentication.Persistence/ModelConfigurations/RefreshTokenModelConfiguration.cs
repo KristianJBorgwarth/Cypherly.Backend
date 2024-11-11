@@ -24,7 +24,7 @@ public class RefreshTokenModelConfiguration : IEntityTypeConfiguration<RefreshTo
 
         builder.Property(rt => rt.Revoked);
 
-        builder.Property(rt => rt.UserId)
+        builder.Property(rt => rt.DeviceId)
             .IsRequired();
 
         builder.HasIndex(rt => rt.Token)

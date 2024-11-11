@@ -4,13 +4,14 @@ namespace Cypherly.Authentication.Domain.Services.User;
 
 public interface IAuthenticationService
 {
-    RefreshToken GenerateRefreshToken(Aggregates.User user);
+    RefreshToken GenerateRefreshToken(Aggregates.User user, Guid deviceId);
 }
 public class AuthenticationService : IAuthenticationService
 {
-    public RefreshToken GenerateRefreshToken(Aggregates.User user)
+    public RefreshToken GenerateRefreshToken(Aggregates.User user, Guid deviceId)
     {
-        user.AddRefreshToken();
-        return user.GetActiveRefreshToken()!;
+        var device = user.GetDevice(deviceId);
+        device.AddRefreshToken();
+        return device.GetActiveRefreshToken()!;
     }
 }

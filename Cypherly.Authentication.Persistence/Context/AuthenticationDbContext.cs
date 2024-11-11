@@ -13,11 +13,13 @@ public class AuthenticationDbContext(DbContextOptions options) : CypherlyBaseDbC
     public DbSet<Claim> Claim { get; private set; } = null!;
     public DbSet<UserClaim> UserClaim { get; private set; } = null!;
 
+    public DbSet<Device> Device { get; private set; } = null!;
     public DbSet<RefreshToken> RefreshToken { get; private set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserModelConfiguration());
+        modelBuilder.ApplyConfiguration(new DeviceModelConfiguration());
         modelBuilder.ApplyConfiguration(new VerificationCodeModelConfiguration());
         modelBuilder.ApplyConfiguration(new ClaimModelConfiguration());
         modelBuilder.ApplyConfiguration(new UserClaimModelConfiguration());

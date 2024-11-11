@@ -2,6 +2,7 @@
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Authentication.Domain.Entities;
 using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ public class LoginCommandHandler(
 
             var token = jwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims());
 
-            var refreshToken = authenticationService.GenerateRefreshToken(user);
+            var refreshToken = new RefreshToken();
 
             var dto = new LoginDto
             {

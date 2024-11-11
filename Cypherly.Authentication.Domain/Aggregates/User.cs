@@ -16,8 +16,8 @@ public class User : AggregateRoot
 
     private readonly List<VerificationCode> _verificationCodes = [];
 
-    private readonly List<RefreshToken> _refreshTokens = [];
-    public virtual IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens;
+    private readonly List<Device> _devices = [];
+    public virtual IReadOnlyCollection<Device> Devices => _devices;
     public virtual IReadOnlyCollection<VerificationCode> VerificationCodes => _verificationCodes;
     public virtual IReadOnlyCollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
     public User() : base(Guid.Empty) { } // For EF Core
@@ -98,20 +98,13 @@ public class User : AggregateRoot
         return UserClaims.ToList();
     }
 
-    /// <summary>
-    /// Adds a valid refresh token to the user.
-    /// </summary>
-    public void AddRefreshToken()
+    public void AddDevice(string name, string publicKey, string appVersion, DeviceType? type, DevicePlatform? platform)
     {
-        _refreshTokens.Add(new RefreshToken(Guid.NewGuid(), userId: Id));
+        _devices.Add(new(Guid.NewGuid(), name, publicKey, appVersion, type, platform, Id));
     }
 
-    /// <summary>
-    /// Returns the most recent active refresh token.
-    /// </summary>
-    /// <returns><see cref="RefreshToken"/></returns>
-    public RefreshToken? GetActiveRefreshToken()
+    public Device GetDevice(Guid deviceId)
     {
-        return RefreshTokens.Where(rt=> rt.IsValid()).MaxBy(rt => rt.Expires);
+        return Devices.FirstOrDefault(d => d.Id == deviceId) ?? throw new InvalidOperationException("Device not found");
     }
 }

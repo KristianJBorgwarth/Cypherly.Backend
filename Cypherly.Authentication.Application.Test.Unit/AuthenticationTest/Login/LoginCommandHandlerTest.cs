@@ -42,7 +42,7 @@ public class LoginCommandHandlerTest
         };
         A.CallTo(()=> _fakeRepo.GetByEmailAsync(user.Email.Address)).Returns(user);
         A.CallTo(()=> _fakeJwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims())).Returns("token");
-        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(user)).Returns(new RefreshToken(Guid.NewGuid(),user.Id));
+        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(user, Guid.NewGuid())).Returns(new RefreshToken(Guid.NewGuid(),user.Id));
 
         // Act
         var result = await _sut.Handle(cmd, CancellationToken.None);
@@ -75,7 +75,7 @@ public class LoginCommandHandlerTest
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("Invalid Credentials");
         A.CallTo(()=>_fakeJwtService.GenerateToken(A<Guid>._, A<string>._, new())).MustNotHaveHappened();
-        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(A<User>._)).MustNotHaveHappened();
+        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(A<User>._, A<Guid>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustNotHaveHappened();
     }
 
@@ -99,7 +99,7 @@ public class LoginCommandHandlerTest
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("Invalid Credentials");
         A.CallTo(()=>_fakeJwtService.GenerateToken(A<Guid>._, A<string>._, new())).MustNotHaveHappened();
-        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(A<User>._)).MustNotHaveHappened();
+        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(A<User>._, A<Guid>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustNotHaveHappened();
     }
 
@@ -116,7 +116,7 @@ public class LoginCommandHandlerTest
         };
         A.CallTo(()=> _fakeRepo.GetByEmailAsync(user.Email.Address)).Returns(user);
         A.CallTo(()=> _fakeJwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims())).Returns("token");
-        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(user)).Returns(new RefreshToken(Guid.NewGuid(),user.Id));
+        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(user, A<Guid>._)).Returns(new RefreshToken(Guid.NewGuid(),user.Id));
 
         // Act
         var result = await _sut.Handle(cmd, CancellationToken.None);
@@ -129,7 +129,7 @@ public class LoginCommandHandlerTest
         result.Value.RefreshToken.Should().BeNull();
         result.Value.RefreshTokenExpires.Should().BeNull();
         A.CallTo(()=>_fakeJwtService.GenerateToken(A<Guid>._, A<string>._, new())).MustNotHaveHappened();
-        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(A<User>._)).MustNotHaveHappened();
+        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(A<User>._, A<Guid>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustNotHaveHappened();
     }
 
@@ -153,7 +153,7 @@ public class LoginCommandHandlerTest
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("An exception occured while attempting to login");
         A.CallTo(()=>_fakeJwtService.GenerateToken(A<Guid>._, A<string>._, new())).MustNotHaveHappened();
-        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(A<User>._)).MustNotHaveHappened();
+        A.CallTo(()=>_fakeAuthService.GenerateRefreshToken(A<User>._, A<Guid>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(CancellationToken.None)).MustNotHaveHappened();
     }
 
