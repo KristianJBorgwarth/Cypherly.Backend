@@ -17,7 +17,11 @@ public class CreateUserCommandValidatorTests
         {
             Email = "valid@email.dk",
             Password = "validPassword97?",
-            Username = "validUsername"
+            Username = "validUsername",
+            DeviceAppVersion = "1.0",
+            DeviceName = "deviceName",
+            DevicePlatform = Domain.Enums.DevicePlatform.Android,
+            DevicePublicKey = "devicePublicKey"
         };
 
         // Act
@@ -35,7 +39,11 @@ public class CreateUserCommandValidatorTests
         {
             Email = "",
             Password = "validPassword97?",
-            Username = "validUsername"
+            Username = "validUsername",
+            DeviceAppVersion = "1.0",
+            DeviceName = "deviceName",
+            DevicePlatform = Domain.Enums.DevicePlatform.Android,
+            DevicePublicKey = "devicePublicKey"
         };
 
         // Act
@@ -52,9 +60,13 @@ public class CreateUserCommandValidatorTests
         // Arrange
         var cmd = new CreateUserCommand()
         {
-            Email = "valid@email.com",
+            Email = "valid@email.dk",
             Password = "",
-            Username = "validUsername"
+            Username = "validUsername",
+            DeviceAppVersion = "1.0",
+            DeviceName = "deviceName",
+            DevicePlatform = Domain.Enums.DevicePlatform.Android,
+            DevicePublicKey = "devicePublicKey"
         };
 
         // Act
@@ -75,9 +87,13 @@ public class CreateUserCommandValidatorTests
         // Arrange
         var cmd = new CreateUserCommand()
         {
-            Email = "valid@email.com",
+            Email = "valid@email.dk",
             Password = "validPassword97?",
-            Username = ""
+            Username = "",
+            DeviceAppVersion = "1.0",
+            DeviceName = "deviceName",
+            DevicePlatform = Domain.Enums.DevicePlatform.Android,
+            DevicePublicKey = "devicePublicKey"
         };
 
         // Act

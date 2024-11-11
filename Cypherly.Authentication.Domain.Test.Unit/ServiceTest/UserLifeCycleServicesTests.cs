@@ -78,8 +78,8 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             userCreatedEvent.Should().NotBeNull();
             userCreatedEvent!.UserId.Should().Be(user.Id);
         }
-        
-        
+
+
         [Fact]
         public void SoftDelete_Should_Mark_User_As_Deleted()
         {
@@ -95,7 +95,7 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ServiceTest
             user.DeletedAt.Should().NotBeNull();
             user.DomainEvents.Should().ContainSingle(e => e is UserDeletedEvent);
         }
-        
+
         [Fact]
         public void RevertSoftDelete_Should_Remove_DeletedAt_Date()
         {

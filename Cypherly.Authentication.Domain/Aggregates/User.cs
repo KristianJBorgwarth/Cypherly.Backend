@@ -98,9 +98,9 @@ public class User : AggregateRoot
         return UserClaims.ToList();
     }
 
-    public void AddDevice(string name, string publicKey, string appVersion, DeviceType? type, DevicePlatform? platform)
+    public void AddDevice(Device device)
     {
-        _devices.Add(new(Guid.NewGuid(), name, publicKey, appVersion, type, platform, Id));
+        _devices.Add(device);
     }
 
     public Device GetDevice(Guid deviceId)

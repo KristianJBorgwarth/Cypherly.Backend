@@ -1,5 +1,4 @@
-﻿using Cypherly.Authentication.Domain.Aggregates;
-using Cypherly.Authentication.Domain.Enums;
+﻿using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Domain.Common;
@@ -28,7 +27,6 @@ public class UserLifeCycleServices : IUserLifeCycleServices
 
         var user = new Aggregates.User(Guid.NewGuid(), emailResult.Value!, pwResult.Value!, isVerified: false);
 
-        //TODO: consider moving this to GenerateVerificationCode method and implement some generic email event
         user.AddVerificationCode(VerificationCodeType.EmailVerification);
         user.AddDomainEvent(new UserCreatedEvent(user.Id));
 

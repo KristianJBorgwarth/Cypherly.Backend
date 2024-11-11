@@ -23,14 +23,14 @@ public class CreateUserCommandHandlerTest : IntegrationTestBase
     {
 
         var scope = factory.Services.CreateScope();
-        var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
         var userService = scope.ServiceProvider.GetRequiredService<IUserLifeCycleServices>();
         var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var requestClient = scope.ServiceProvider.GetRequiredService<IRequestClient<CreateUserProfileRequest>>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<CreateUserCommandHandler>>();
         var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+        var deviceService = scope.ServiceProvider.GetRequiredService<IDeviceService>();
 
-        _sut = new(userRepository, mapper, userService, unitOfWork, requestClient, logger);
+        _sut = new CreateUserCommandHandler(userRepository, userService, deviceService, unitOfWork, requestClient, logger);
     }
 
     [Fact]
@@ -46,7 +46,11 @@ public class CreateUserCommandHandlerTest : IntegrationTestBase
         {
             Email = user.Email.Address,
             Password = "validPassword=?23",
-            Username = "validUsername"
+            Username = "validUsername",
+            DeviceAppVersion = "1.0",
+            DeviceName = "deviceName",
+            DevicePlatform = Domain.Enums.DevicePlatform.Android,
+            DevicePublicKey = "devicePublicKey"
         };
 
         // Act
@@ -57,6 +61,7 @@ public class CreateUserCommandHandlerTest : IntegrationTestBase
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("An account already exists with that email");
         Db.User.Should().HaveCount(1);
+        Db.Device.Should().HaveCount(0);
         Db.OutboxMessage.Should().HaveCount(0);
     }
 
@@ -68,7 +73,11 @@ public class CreateUserCommandHandlerTest : IntegrationTestBase
         {
             Email = "wrong email",
             Password = "wrong password",
-            Username = "validUsername"
+            Username = "validUsername",
+            DeviceAppVersion = "1.0",
+            DeviceName = "deviceName",
+            DevicePlatform = Domain.Enums.DevicePlatform.Android,
+            DevicePublicKey = "devicePublicKey"
         };
 
         // Act
@@ -79,6 +88,7 @@ public class CreateUserCommandHandlerTest : IntegrationTestBase
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("Invalid email address.");
         Db.User.Should().HaveCount(0);
+        Db.Device.Should().HaveCount(0);
         Db.OutboxMessage.Should().HaveCount(0);
     }
 
@@ -96,7 +106,11 @@ public class CreateUserCommandHandlerTest : IntegrationTestBase
         {
             Email = "valid@email.dk",
             Password = "validPassword=?23",
-            Username = "validUsername"
+            Username = "validUsername",
+            DeviceAppVersion = "1.0",
+            DeviceName = "deviceName",
+            DevicePlatform = Domain.Enums.DevicePlatform.Android,
+            DevicePublicKey = "devicePublicKey"
         };
 
         // Act
@@ -107,6 +121,7 @@ public class CreateUserCommandHandlerTest : IntegrationTestBase
         result.Success.Should().BeTrue();
         result.Error.Should().BeNull();
         Db.User.Should().HaveCount(1);
+        Db.Device.Should().HaveCount(1);
         Db.OutboxMessage.Count().Should().Be(1);
     }
 }

@@ -9,8 +9,8 @@ public class Device : Entity
     public string Name { get; init; } = null!;
     public string PublicKey { get; init; } = null!;
     public DeviceStatus Status { get; private set; }
-    public DeviceType? Type { get; init; }
-    public DevicePlatform? Platform { get; init; }
+    public DeviceType Type { get; init; }
+    public DevicePlatform Platform { get; init; }
     public string AppVersion { get; private set; } = null!;
     public Guid UserId { get; private set; }
     public virtual User User { get; private set; } = null!;
@@ -24,8 +24,8 @@ public class Device : Entity
         string name,
         string publicKey,
         string appVersion,
-        DeviceType? type,
-        DevicePlatform? platform,
+        DeviceType type,
+        DevicePlatform platform,
         Guid userId) : base(id)
     {
         Name = name;

@@ -29,10 +29,12 @@ public class DeviceModelConfiguration : IEntityTypeConfiguration<Device>
             .IsRequired();
 
         builder.Property(d => d.Type)
-            .HasConversion<string>();
+            .HasConversion<string>()
+            .IsRequired();
 
         builder.Property(d => d.Platform)
-            .HasConversion<string>();
+            .HasConversion<string>()
+            .IsRequired();
 
         builder.HasIndex(d=> d.UserId);
     }
