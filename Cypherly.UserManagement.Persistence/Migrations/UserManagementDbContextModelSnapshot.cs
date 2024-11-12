@@ -69,6 +69,11 @@ namespace Cypherly.UserManagement.Persistence.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<bool>("IsPrivate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false);
+
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
