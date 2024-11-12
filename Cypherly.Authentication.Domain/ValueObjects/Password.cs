@@ -44,7 +44,7 @@ namespace Cypherly.Authentication.Domain.ValueObjects
 
         /// <summary>
         /// Validates the password format:
-        /// Must be between 8 and 18 characters.
+        /// Must be between 8 and 36 characters.
         /// Must contain at least one uppercase letter
         /// Must contain at least one lowercase letter
         /// Must contain at least one special character
@@ -54,10 +54,10 @@ namespace Cypherly.Authentication.Domain.ValueObjects
         /// <returns>boolean value representing the validity of password</returns>
         private static void IsPasswordValidFormat(string pw)
         {
-            if (!Regex.IsMatch(pw, @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_]).{8,18}$"))
+            if (!Regex.IsMatch(pw, @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[\W_]).{8,36}$"))
             {
                 throw new ArgumentException(
-                    "Incorrect password: Must be between 8 and 18 characters, contain one uppercase letter, one lowercase letter, one special character, and no spaces.");
+                    "Incorrect password: Must be between 8 and 36 characters, contain one uppercase letter, one lowercase letter, one special character, and no spaces.");
             }
         }
 
