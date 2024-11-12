@@ -123,7 +123,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new()
     {
-        Title = "Cypherly.Authentication.API",
+        Title = "Cypherly.UserManagement.API",
         Version = "v1"
     });
 
