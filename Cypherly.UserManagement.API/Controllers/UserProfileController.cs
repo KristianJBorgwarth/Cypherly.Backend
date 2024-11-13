@@ -17,8 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.UserManagement.API.Controllers;
 
-[Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[ServiceFilter(typeof(IValidateUserIdFilter))]
+// [Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+// [ServiceFilter(typeof(IValidateUserIdFilter))]
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
 {

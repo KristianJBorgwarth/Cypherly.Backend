@@ -28,7 +28,7 @@ public class GetUserProfileByTagQueryHandler(
 
             var userProfile = await userProfileRepository.GetByUserTag(request.Tag);
 
-            if (userProfile is null || userBlockingService.IsUserBloccked(requestingUser, userProfile))
+            if (userProfile is null || userBlockingService.IsUserBloccked(requestingUser, userProfile) || userProfile.IsPrivate)
                 return Result.Ok<GetUserProfileByTagDto>();
 
             var profilePictureUrl = "";
