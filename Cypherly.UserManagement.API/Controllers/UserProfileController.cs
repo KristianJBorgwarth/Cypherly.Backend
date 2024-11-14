@@ -5,6 +5,7 @@ using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.A
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.BlockUser;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.DisplayName;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
+using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.UnblockUser;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
@@ -16,8 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.UserManagement.API.Controllers;
 
-[Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[ServiceFilter(typeof(IValidateUserIdFilter))]
+// [Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+// [ServiceFilter(typeof(IValidateUserIdFilter))]
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
 {
@@ -119,4 +120,14 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
     }
+    
+    [HttpPut("toggle-privacy")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> TogglePrivacy([FromBody] TogglePrivacyCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
+    }
+
 }

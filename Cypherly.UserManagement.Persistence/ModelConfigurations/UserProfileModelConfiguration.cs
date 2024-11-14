@@ -40,5 +40,9 @@ public class UserProfileModelConfiguration : IEntityTypeConfiguration<UserProfil
             .WithOne()
             .HasForeignKey(x => x.BlockingUserProfileId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Property(x => x.IsPrivate)
+            .IsRequired()
+            .HasDefaultValue(false);
     }
 }

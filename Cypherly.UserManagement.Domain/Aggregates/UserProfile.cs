@@ -12,6 +12,8 @@ public partial class UserProfile : AggregateRoot
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
 
+    public bool IsPrivate { get; private set; }
+    
     private readonly List<BlockedUser> _blockedUsers = [];
     public virtual IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
 
@@ -48,8 +50,9 @@ public partial class UserProfile : AggregateRoot
         AddDomainEvent(new UserProfileDisplayNameUpdatedEvent(Id));
         return Result.Ok();
     }
-
-	//TODO: should probably just throw exceptions instead of result, like in delete friendship 
+    
+    public void TogglePrivacy(bool isPrivate) => IsPrivate = isPrivate;
+    
     public Result AddFriendship(UserProfile userProfile)
     {
         if(Id == userProfile.Id)
