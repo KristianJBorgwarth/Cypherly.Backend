@@ -1,6 +1,6 @@
 ﻿namespace Cypherly.Authentication.Domain.Enums;
 
-public enum VerificationCodeType
+public enum UserVerificationCodeType
 {
     EmailVerification,
     PasswordReset,

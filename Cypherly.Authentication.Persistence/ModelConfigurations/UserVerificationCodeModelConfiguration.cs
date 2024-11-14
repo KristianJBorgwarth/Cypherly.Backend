@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Cypherly.Authentication.Persistence.ModelConfigurations;
 
-public class VerificationCodeModelConfiguration : IEntityTypeConfiguration<VerificationCode>
+public class VerificationCodeModelConfiguration : IEntityTypeConfiguration<UserVerificationCode>
 {
-    public void Configure(EntityTypeBuilder<VerificationCode> builder)
+    public void Configure(EntityTypeBuilder<UserVerificationCode> builder)
     {
         builder.ToTable("VerificationCode");
 
