@@ -102,5 +102,23 @@ public class GetUserProfileByTagQueryHandlerTest : IntegrationTestBase
         result.Success.Should().BeTrue();
         result.Value.Should().Be(null);
     }
+    [Fact]
+    
+    public async Task Handle_Query_When_User_Is_Private_Should_Return_EmptyDto()
+    {
+        var requestingUser = new UserProfile(Guid.NewGuid(), "requestingUser", UserTag.Create("requestingUser"));
+        var userProfile = new UserProfile(Guid.NewGuid(), "userProfile", UserTag.Create("userProfile"));
+        userProfile.TogglePrivacy(true);
+        await Db.AddRangeAsync(requestingUser, userProfile);
+        await Db.SaveChangesAsync();
 
+        var query = new GetUserProfileByTagQuery() {Id = requestingUser.Id, Tag = userProfile.UserTag.Tag};
+
+        // Act
+        var result = await _sut.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeTrue();
+        result.Value.Should().Be(null);
+    }
 }
