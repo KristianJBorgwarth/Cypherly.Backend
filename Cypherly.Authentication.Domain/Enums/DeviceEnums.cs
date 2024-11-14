@@ -10,6 +10,7 @@ public enum DeviceType
 public enum DeviceStatus
 {
     Active,
+    Trusted,
     Inactive,
     Pending,
     Revoked,

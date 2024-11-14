@@ -21,7 +21,6 @@ public class CreateUserCommandHandlerTests
     private readonly IUserLifeCycleServices _fakeUserLifeCycleServices;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly IRequestClient<CreateUserProfileRequest> _fakeRequestClient;
-    private readonly IDeviceService _fakeDeviceService;
     private readonly CreateUserCommandHandler _sut;
 
     public CreateUserCommandHandlerTests()
@@ -30,11 +29,10 @@ public class CreateUserCommandHandlerTests
         _fakeUserLifeCycleServices = A.Fake<IUserLifeCycleServices>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         _fakeRequestClient = A.Fake<IRequestClient<CreateUserProfileRequest>>();
-        _fakeDeviceService = A.Fake<IDeviceService>();
         var fakeLogger = A.Fake<ILogger<CreateUserCommandHandler>>();
 
 
-        _sut = new CreateUserCommandHandler(_fakeRepo, _fakeUserLifeCycleServices, _fakeDeviceService, _fakeUnitOfWork, _fakeRequestClient, fakeLogger);
+        _sut = new CreateUserCommandHandler(_fakeRepo, _fakeUserLifeCycleServices, _fakeUnitOfWork, _fakeRequestClient, fakeLogger);
     }
 
     [Fact]
@@ -45,12 +43,8 @@ public class CreateUserCommandHandlerTests
         {
             Email = "test@mail.dk",
             Password = "password923K=?",
-            Username = "validUsername",
-            DeviceAppVersion = "1.0",
-            DeviceName = "deviceName",
-            DevicePlatform = Domain.Enums.DevicePlatform.Android,
-            DevicePublicKey = "devicePublicKey",
-            DeviceType = DeviceType.Desktop
+            Username = "validUsername"
+
         };
 
         var user = new User(Guid.NewGuid(), Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified: false);
@@ -95,12 +89,7 @@ public class CreateUserCommandHandlerTests
         {
             Email = "test@mail.dk",
             Password = "password923K=?",
-            Username = "validUsername",
-            DeviceAppVersion = "1.0",
-            DeviceName = "deviceName",
-            DevicePlatform = DevicePlatform.Android,
-            DeviceType = DeviceType.Desktop,
-            DevicePublicKey = "devicePublicKey"
+            Username = "validUsername"
         };
 
 
@@ -130,12 +119,7 @@ public class CreateUserCommandHandlerTests
         {
             Email = "test@mail.dk",
             Password = "password923K=?",
-            Username = "validUsername",
-            DeviceAppVersion = "1.0",
-            DeviceName = "deviceName",
-            DevicePlatform = DevicePlatform.Android,
-            DeviceType = DeviceType.Desktop,
-            DevicePublicKey = "devicePublicKey"
+            Username = "validUsername"
         };
 
 
@@ -165,12 +149,7 @@ public class CreateUserCommandHandlerTests
         {
             Email = "test@mail.dk",
             Password = "password923K=?",
-            Username = "validUsername",
-            DeviceAppVersion = "1.0",
-            DeviceName = "deviceName",
-            DevicePlatform = DevicePlatform.Android,
-            DevicePublicKey = "devicePublicKey",
-            DeviceType = DeviceType.Desktop
+            Username = "validUsername"
         };
 
 

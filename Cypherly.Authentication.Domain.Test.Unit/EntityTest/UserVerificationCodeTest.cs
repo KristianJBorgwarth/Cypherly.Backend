@@ -10,7 +10,7 @@ public class UserVerificationCodeTest
     public void Verify_WhenCodeIsUsed_ReturnsError()
     {
         // Arrange
-        var verificationCode = new UserVerificationCode(Guid.NewGuid(),Guid.NewGuid(), VerificationCodeType.EmailVerification);
+        var verificationCode = new UserVerificationCode(Guid.NewGuid(),Guid.NewGuid(), UserVerificationCodeType.EmailVerification);
         verificationCode.Use();
 
         // Act
@@ -25,7 +25,7 @@ public class UserVerificationCodeTest
     public void Verify_WhenCodeIsInvalid_ReturnsError()
     {
         // Arrange
-        var verificationCode = new UserVerificationCode(Guid.NewGuid(), Guid.NewGuid(), VerificationCodeType.EmailVerification);
+        var verificationCode = new UserVerificationCode(Guid.NewGuid(), Guid.NewGuid(), UserVerificationCodeType.EmailVerification);
 
         // Act
         var result = verificationCode.Verify("123456");
@@ -39,7 +39,7 @@ public class UserVerificationCodeTest
     public void Verify_WhenCodeIsValid_ReturnsSuccess()
     {
         // Arrange
-        var verificationCode = new UserVerificationCode(Guid.NewGuid(),Guid.NewGuid(), VerificationCodeType.EmailVerification);
+        var verificationCode = new UserVerificationCode(Guid.NewGuid(),Guid.NewGuid(), UserVerificationCodeType.EmailVerification);
 
         // Act
         var result = verificationCode.Verify(verificationCode.Code);
@@ -52,7 +52,7 @@ public class UserVerificationCodeTest
     public void Use_MarksCodeAsUsed()
     {
         // Arrange
-        var verificationCode = new UserVerificationCode(Guid.NewGuid(),Guid.NewGuid(), VerificationCodeType.EmailVerification);
+        var verificationCode = new UserVerificationCode(Guid.NewGuid(),Guid.NewGuid(), UserVerificationCodeType.EmailVerification);
 
         // Act
         verificationCode.Use();

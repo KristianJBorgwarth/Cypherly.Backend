@@ -32,12 +32,12 @@ public class VerificationCodeGeneratedEventHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("testPassword?923"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 
-        var notification = new VerificationCodeGeneratedEvent(user.Id, VerificationCodeType.EmailVerification);
+        var notification = new VerificationCodeGeneratedEvent(user.Id, UserVerificationCodeType.EmailVerification);
 
         // Act
         await _sut.Handle(notification, default);
@@ -51,7 +51,7 @@ public class VerificationCodeGeneratedEventHandlerTest : IntegrationTestBase
     public async Task Handle_Given_Invalid_Notification_Should_Throw_Exception()
     {
         // Arrange
-        var notification = new VerificationCodeGeneratedEvent(Guid.NewGuid(), VerificationCodeType.EmailVerification);
+        var notification = new VerificationCodeGeneratedEvent(Guid.NewGuid(), UserVerificationCodeType.EmailVerification);
 
         // Act
         Func<Task> act = async () => await _sut.Handle(notification, default);

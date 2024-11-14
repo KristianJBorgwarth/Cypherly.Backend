@@ -13,7 +13,6 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Create;
 public class CreateUserCommandHandler(
     IUserRepository userRepository,
     IUserLifeCycleServices userLifeCycleServices,
-    IDeviceService deviceService,
     IUnitOfWork unitOfWork,
     IRequestClient<CreateUserProfileRequest> requestClient,
     ILogger<CreateUserCommandHandler> logger)
@@ -31,7 +30,6 @@ public class CreateUserCommandHandler(
             if (userResult.Success is false || userResult.Value is null)
                 return Result.Fail<CreateUserDto>(userResult.Error);
 
-            var device = deviceService.RegisterDevice(userResult.Value, request.DeviceName, request.DevicePublicKey, request.DeviceAppVersion, request.DeviceType, request.DevicePlatform);
             await userRepository.CreateAsync(userResult.Value);
 
 
@@ -42,7 +40,7 @@ public class CreateUserCommandHandler(
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var dto = CreateUserDto.Map(userResult.Value, device);
+            var dto = CreateUserDto.Map(userResult.Value);
 
             return Result.Ok(dto);
         }

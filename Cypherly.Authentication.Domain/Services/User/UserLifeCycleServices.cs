@@ -27,7 +27,7 @@ public class UserLifeCycleServices : IUserLifeCycleServices
 
         var user = new Aggregates.User(Guid.NewGuid(), emailResult.Value!, pwResult.Value!, isVerified: false);
 
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
         user.AddDomainEvent(new UserCreatedEvent(user.Id));
 
         return user;

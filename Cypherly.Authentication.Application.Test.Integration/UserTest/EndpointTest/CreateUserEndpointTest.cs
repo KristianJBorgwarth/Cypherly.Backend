@@ -19,11 +19,7 @@ public class CreateUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         {
             Username = "TestUser",
             Email = "test@email.dk",
-            Password = "TestPassword3?",
-            DeviceAppVersion = "1.0",
-            DeviceName = "deviceName",
-            DevicePlatform = Domain.Enums.DevicePlatform.Android,
-            DevicePublicKey = "devicePublicKey"
+            Password = "TestPassword3?"
         };
 
         // Act
@@ -45,11 +41,7 @@ public class CreateUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         {
             Username = "TestUser",
             Email = "testemail.dk",
-            Password = "TestPassword3?",
-            DeviceAppVersion = "1.0",
-            DeviceName = "deviceName",
-            DevicePlatform = Domain.Enums.DevicePlatform.Android,
-            DevicePublicKey = "devicePublicKey"
+            Password = "TestPassword3?"
         };
 
         // Act

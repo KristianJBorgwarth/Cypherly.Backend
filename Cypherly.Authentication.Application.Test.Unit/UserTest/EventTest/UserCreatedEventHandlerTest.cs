@@ -32,7 +32,7 @@ public class UserCreatedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test=??8239"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(user.Id)).Returns(user);
 
@@ -94,7 +94,7 @@ public class UserCreatedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test=??8239"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         A.CallTo(() => _fakeUserRepository.GetByIdAsync(user.Id)).Returns(user);
 

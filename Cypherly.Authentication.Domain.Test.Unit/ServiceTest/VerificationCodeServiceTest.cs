@@ -12,9 +12,9 @@ public class VerificationCodeServiceTest
     private readonly IVerificationCodeService _sut = new VerificationCodeService();
     
     [Theory]
-    [InlineData(VerificationCodeType.EmailVerification)]
-    [InlineData(VerificationCodeType.PasswordReset)]
-    public void GenerateVerificationCode_Should_Add_VerificationCode_And_DomainEvent(VerificationCodeType codeType)
+    [InlineData(UserVerificationCodeType.EmailVerification)]
+    [InlineData(UserVerificationCodeType.PasswordReset)]
+    public void GenerateVerificationCode_Should_Add_VerificationCode_And_DomainEvent(UserVerificationCodeType codeType)
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjshsdi9?A"), false);

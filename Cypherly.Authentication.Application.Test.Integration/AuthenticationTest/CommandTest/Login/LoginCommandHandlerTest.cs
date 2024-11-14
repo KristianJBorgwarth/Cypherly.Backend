@@ -4,6 +4,7 @@ using Cypherly.Authentication.Application.Features.Authentication.Commands.Login
 using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
@@ -21,11 +22,10 @@ public class LoginCommandHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope().ServiceProvider;
         var repo = scope.GetRequiredService<IUserRepository>();
-        var jwtService = scope.GetRequiredService<IJwtService>();
-        var authService = scope.GetRequiredService<IAuthenticationService>();
+        var deviceService = scope.GetRequiredService<IDeviceService>();
         var unitOfWork = scope.GetRequiredService<IUnitOfWork>();
         var logger = scope.GetRequiredService<ILogger<LoginCommandHandler>>();
-        _sut = new LoginCommandHandler(repo, jwtService, authService, unitOfWork, logger);
+        _sut = new LoginCommandHandler(repo, deviceService, unitOfWork, logger);
     }
 
     [Fact]
@@ -40,7 +40,12 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         var command = new LoginCommand
         {
             Email = user.Email.Address,
-            Password = "TestPassword?123"
+            Password = "TestPassword?123",
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -49,9 +54,6 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        result.Value.JwtToken.Should().NotBeNullOrEmpty();
-        result.Value.RefreshToken.Should().NotBeNullOrEmpty();
-        result.Value.RefreshTokenExpires.Should().BeAfter(DateTime.Now);
         Db.RefreshToken.Should().HaveCount(1);
     }
 
@@ -68,7 +70,12 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         var command = new LoginCommand
         {
             Email = invalidEmail,
-            Password = "TestPassword?123"
+            Password = "TestPassword?123",
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -94,7 +101,12 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         var command = new LoginCommand
         {
             Email = user.Email.Address,
-            Password = invalidPw
+            Password = invalidPw,
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -119,7 +131,12 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         var command = new LoginCommand
         {
             Email = user.Email.Address,
-            Password = "TestPassword?123"
+            Password = "TestPassword?123",
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act

@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;
@@ -24,7 +25,12 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         var command = new LoginCommand
         {
             Email = user.Email.Address,
-            Password = "TestPassword?123"
+            Password = "TestPassword?123",
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -47,7 +53,12 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         var command = new LoginCommand
         {
             Email = user.Email.Address,
-            Password = "TestPassword?12323123" // Invalid password
+            Password = "TestPassword?12323123", // Invalid password
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act

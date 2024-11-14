@@ -31,14 +31,14 @@ public class VerifyUserCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"),false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 
         var command = new VerifyUserCommand()
         {
             UserId = user.Id,
-            VerificationCode = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification)!.Code
+            VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code
         };
 
         // Act
@@ -55,14 +55,14 @@ public class VerifyUserCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"),false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 
         var command = new VerifyUserCommand()
         {
             UserId = Guid.NewGuid(),
-            VerificationCode = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification)!.Code
+            VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code
         };
 
         // Act
@@ -80,7 +80,7 @@ public class VerifyUserCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@email.dk"), Password.Create("lolwortks?293K"),false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 

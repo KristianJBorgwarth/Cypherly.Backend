@@ -15,9 +15,11 @@ public class Device : Entity
     public Guid UserId { get; private set; }
     public virtual User User { get; private set; } = null!;
 
+    private readonly List<DeviceVerificationCode> _verificationCodes = [];
+
     private readonly List<RefreshToken> _refreshTokens = [];
     public virtual IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens;
-
+    public virtual IReadOnlyCollection<DeviceVerificationCode> VerificationCodes => _verificationCodes;
     public Device() : base(Guid.Empty) {} // For EF Core
 
     public Device(Guid id,
@@ -59,5 +61,7 @@ public class Device : Entity
     {
         return RefreshTokens.Where(rt=> rt.IsValid()).MaxBy(rt => rt.Expires);
     }
+
+
 
 }
