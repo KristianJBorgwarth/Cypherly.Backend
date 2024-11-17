@@ -37,5 +37,10 @@ public class DeviceModelConfiguration : IEntityTypeConfiguration<Device>
             .IsRequired();
 
         builder.HasIndex(d=> d.UserId);
+
+        builder.HasMany<DeviceVerificationCode>()
+            .WithOne()
+            .HasForeignKey(dvc=> dvc.DeviceId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

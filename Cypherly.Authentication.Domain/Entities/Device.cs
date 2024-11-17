@@ -40,6 +40,14 @@ public class Device : Entity
     }
 
     /// <summary>
+    /// Adds a verification code to the device.
+    /// </summary>
+    public void AddDeviceVerificationCode()
+    {
+        _verificationCodes.Add(new(Guid.NewGuid(), deviceId: Id));
+    }
+
+    /// <summary>
     /// Set the status of the device to any of the <see cref="DeviceStatus"/> values.
     /// </summary>
     /// <param name="status"><see cref="DeviceStatus"/></param>

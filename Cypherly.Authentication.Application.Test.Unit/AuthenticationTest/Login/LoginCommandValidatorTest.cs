@@ -1,4 +1,5 @@
 ﻿using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
+using Cypherly.Authentication.Domain.Enums;
 using FluentValidation.TestHelper;
 
 namespace Cypherly.Authentication.Application.Test.Unit.AuthenticationTest.Login;
@@ -14,7 +15,12 @@ public class LoginCommandValidatorTest
         var command = new LoginCommand
         {
             Email = "",
-            Password = "ValidPassword123!"
+            Password = "ValidPassword123!",
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -32,7 +38,12 @@ public class LoginCommandValidatorTest
         var command = new LoginCommand
         {
             Email = new string('a', 256),
-            Password = "ValidPassword123!"
+            Password = "ValidPassword123!",
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -50,7 +61,12 @@ public class LoginCommandValidatorTest
         var command = new LoginCommand
         {
             Email = "user@example.com",
-            Password = ""
+            Password = "",
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -68,7 +84,12 @@ public class LoginCommandValidatorTest
         var command = new LoginCommand
         {
             Email = "user@example.com",
-            Password = new('a', 256)
+            Password = new('a', 256),
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -86,7 +107,12 @@ public class LoginCommandValidatorTest
         var command = new LoginCommand
         {
             Email = "user@example.com",
-            Password = "ValidPassword123!"
+            Password = "ValidPassword123!",
+            DeviceName = "TestDevice",
+            DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act

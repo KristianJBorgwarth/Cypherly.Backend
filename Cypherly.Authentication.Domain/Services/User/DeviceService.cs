@@ -14,12 +14,11 @@ public interface IDeviceService
 
 public class DeviceService : IDeviceService
 {
-    public Device RegisterDevice(Aggregates.User user, string deviceName, string devicePublicKey,
-        string deviceAppVersion,
-        DeviceType deviceType, DevicePlatform devicePlatform)
+    public Device RegisterDevice(Aggregates.User user, string deviceName, string devicePublicKey, string deviceAppVersion, DeviceType deviceType, DevicePlatform devicePlatform)
     {
-        var device = new Device(Guid.NewGuid(), deviceName, devicePublicKey, deviceAppVersion, deviceType,
-            devicePlatform, user.Id);
+        var device = new Device(Guid.NewGuid(), deviceName, devicePublicKey, deviceAppVersion, deviceType, devicePlatform, user.Id);
+
+        device.AddDeviceVerificationCode();
 
         user.AddDevice(device);
 

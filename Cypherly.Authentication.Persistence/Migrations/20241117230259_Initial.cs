@@ -70,8 +70,8 @@ namespace Cypherly.Authentication.Persistence.Migrations
                     Name = table.Column<string>(type: "text", nullable: false),
                     PublicKey = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: true),
-                    Platform = table.Column<string>(type: "text", nullable: true),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    Platform = table.Column<string>(type: "text", nullable: false),
                     AppVersion = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -117,7 +117,7 @@ namespace Cypherly.Authentication.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VerificationCode",
+                name: "UserVerificationCode",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -132,11 +132,35 @@ namespace Cypherly.Authentication.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VerificationCode", x => x.Id);
+                    table.PrimaryKey("PK_UserVerificationCode", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VerificationCode_User_UserId",
+                        name: "FK_UserVerificationCode_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeviceVerificationCode",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Code = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    Code_IsUsed = table.Column<bool>(type: "boolean", nullable: false),
+                    Code_ExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeviceId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceVerificationCode", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DeviceVerificationCode_Device_DeviceId",
+                        column: x => x.DeviceId,
+                        principalTable: "Device",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -171,6 +195,21 @@ namespace Cypherly.Authentication.Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DeviceVerificationCode_Code",
+                table: "DeviceVerificationCode",
+                column: "Code");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeviceVerificationCode_Code_ExpirationDate",
+                table: "DeviceVerificationCode",
+                column: "Code_ExpirationDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeviceVerificationCode_DeviceId",
+                table: "DeviceVerificationCode",
+                column: "DeviceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_DeviceId",
                 table: "RefreshToken",
                 column: "DeviceId");
@@ -193,14 +232,17 @@ namespace Cypherly.Authentication.Persistence.Migrations
                 column: "ClaimId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VerificationCode_UserId",
-                table: "VerificationCode",
+                name: "IX_UserVerificationCode_UserId",
+                table: "UserVerificationCode",
                 column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "DeviceVerificationCode");
+
             migrationBuilder.DropTable(
                 name: "OutboxMessage");
 
@@ -211,7 +253,7 @@ namespace Cypherly.Authentication.Persistence.Migrations
                 name: "UserClaim");
 
             migrationBuilder.DropTable(
-                name: "VerificationCode");
+                name: "UserVerificationCode");
 
             migrationBuilder.DropTable(
                 name: "Device");
