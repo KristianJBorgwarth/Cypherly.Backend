@@ -36,7 +36,7 @@ public class UserModelConfiguration : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(u => u.Devices)
-            .WithOne(d=> d.User)
+            .WithOne()
             .HasForeignKey(d => d.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }

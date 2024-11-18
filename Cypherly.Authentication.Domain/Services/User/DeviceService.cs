@@ -22,6 +22,8 @@ public class DeviceService : IDeviceService
 
         user.AddDevice(device);
 
+        user.AddDomainEvent(new DeviceCreatedEvent(user.Id, device.VerificationCodes.First().Code.Value));
+
         return device;
     }
 

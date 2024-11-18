@@ -13,7 +13,6 @@ public class Device : Entity
     public DevicePlatform Platform { get; init; }
     public string AppVersion { get; private set; } = null!;
     public Guid UserId { get; private set; }
-    public virtual User User { get; private set; } = null!;
 
     private readonly List<DeviceVerificationCode> _verificationCodes = [];
 
@@ -45,6 +44,12 @@ public class Device : Entity
     public void AddDeviceVerificationCode()
     {
         _verificationCodes.Add(new(Guid.NewGuid(), deviceId: Id));
+    }
+
+    public DeviceVerificationCode? GetActiveVerificationCode()
+    {
+        return VerificationCodes.Where(dvc => !dvc.Code.IsUsed && dvc.Code.ExpirationDate > DateTime.UtcNow).MaxBy(dvc => dvc.Code.ExpirationDate);
+
     }
 
     /// <summary>
