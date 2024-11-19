@@ -1,5 +1,4 @@
-﻿using Cypherly.Authentication.Domain.Aggregates;
-using Cypherly.Authentication.Domain.Enums;
+﻿using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Entities;
@@ -46,10 +45,33 @@ public class Device : Entity
         _verificationCodes.Add(new(Guid.NewGuid(), deviceId: Id));
     }
 
+    /// <summary>
+    /// Returns the most recent active verification code.
+    /// </summary>
+    /// <returns><see cref="DeviceVerificationCode"/></returns>
     public DeviceVerificationCode? GetActiveVerificationCode()
     {
         return VerificationCodes.Where(dvc => !dvc.Code.IsUsed && dvc.Code.ExpirationDate > DateTime.UtcNow).MaxBy(dvc => dvc.Code.ExpirationDate);
+    }
 
+    public Result Verify(string verificationCode)
+    {
+        if(VerificationCodes.Count == 0)
+            throw new InvalidOperationException("This device does not have a verification code");
+
+        if(Status == DeviceStatus.Trusted)
+            return Result.Fail(Errors.General.UnspecifiedError("This device is already verified"));
+
+        var deviceVerificationCode = VerificationCodes.FirstOrDefault(c => c.Code.Value == verificationCode);
+        if (deviceVerificationCode is null) return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
+
+        var verificationResult = deviceVerificationCode.Code.Verify(verificationCode);
+        if (verificationResult.Success is false)
+            return verificationResult;
+
+        Status = DeviceStatus.Trusted;
+        deviceVerificationCode.Code.Use();
+        return Result.Ok();
     }
 
     /// <summary>
