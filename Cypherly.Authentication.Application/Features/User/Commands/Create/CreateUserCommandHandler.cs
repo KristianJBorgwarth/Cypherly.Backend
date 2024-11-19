@@ -12,7 +12,6 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Create;
 
 public class CreateUserCommandHandler(
     IUserRepository userRepository,
-    IMapper mapper,
     IUserLifeCycleServices userLifeCycleServices,
     IUnitOfWork unitOfWork,
     IRequestClient<CreateUserProfileRequest> requestClient,
@@ -28,8 +27,9 @@ public class CreateUserCommandHandler(
 
             var userResult = userLifeCycleServices.CreateUser(request.Email, request.Password);
 
-            if (userResult.Success is false)
+            if (userResult.Success is false || userResult.Value is null)
                 return Result.Fail<CreateUserDto>(userResult.Error);
+
             await userRepository.CreateAsync(userResult.Value);
 
 
@@ -39,7 +39,8 @@ public class CreateUserCommandHandler(
                 return Result.Fail<CreateUserDto>(createProfileResult.Error);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            var dto = mapper.Map<CreateUserDto>(userResult.Value);
+
+            var dto = CreateUserDto.Map(userResult.Value);
 
             return Result.Ok(dto);
         }

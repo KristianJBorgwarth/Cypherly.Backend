@@ -12,4 +12,8 @@
       <ProjectReference Include="..\Cypherly.UserManagement.Domain\Cypherly.UserManagement.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
 </Project>

@@ -3,17 +3,17 @@ using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Entities;
 
-public class VerificationCode : Entity
+public class UserVerificationCode : Entity
 {
     public Guid UserId { get; private set; }
     public string Code { get; } = null!;
-    public VerificationCodeType CodeType { get; private set; }
+    public UserVerificationCodeType CodeType { get; private set; }
     public DateTime ExpirationDate { get; }
     public bool IsUsed { get; private set; }
 
-    public VerificationCode() : base(Guid.Empty){ } // For EF Core
+    public UserVerificationCode() : base(Guid.Empty){ } // For EF Core
 
-    public VerificationCode(Guid id, Guid userId, VerificationCodeType codeType) : base(id)
+    public UserVerificationCode(Guid id, Guid userId, UserVerificationCodeType codeType) : base(id)
     {
         UserId = userId;
         CodeType = codeType;

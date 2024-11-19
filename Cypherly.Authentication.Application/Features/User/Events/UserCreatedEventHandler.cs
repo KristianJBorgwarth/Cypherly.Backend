@@ -23,7 +23,7 @@ public class UserCreatedEventHandler(
             throw new InvalidOperationException("User not found");
         }
 
-        var verificationCode = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification);
+        var verificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification);
         if (verificationCode is null)
         {
             logger.LogError("Verification code for user with id {UserId} not found", notification.UserId);

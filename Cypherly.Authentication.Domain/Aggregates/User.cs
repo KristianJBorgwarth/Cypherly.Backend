@@ -14,11 +14,11 @@ public class User : AggregateRoot
     public Password Password { get; private set; } = null!;
     public bool IsVerified { get; private set; }
 
-    private readonly List<VerificationCode> _verificationCodes = [];
+    private readonly List<UserVerificationCode> _verificationCodes = [];
 
-    private readonly List<RefreshToken> _refreshTokens = [];
-    public virtual IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens;
-    public virtual IReadOnlyCollection<VerificationCode> VerificationCodes => _verificationCodes;
+    private readonly List<Device> _devices = [];
+    public virtual IReadOnlyCollection<Device> Devices => _devices;
+    public virtual IReadOnlyCollection<UserVerificationCode> VerificationCodes => _verificationCodes;
     public virtual IReadOnlyCollection<UserClaim> UserClaims { get; private set; } = new List<UserClaim>();
     public User() : base(Guid.Empty) { } // For EF Core
 
@@ -35,8 +35,8 @@ public class User : AggregateRoot
     /// Marks any existing codes of the same type as used.
     /// </para>
     /// </summary>
-    /// <param name="codeType"><see cref="VerificationCodeType"/></param>
-    public void AddVerificationCode(VerificationCodeType codeType)
+    /// <param name="codeType"><see cref="UserVerificationCodeType"/></param>
+    public void AddVerificationCode(UserVerificationCodeType codeType)
     {
         var existingCodes = VerificationCodes.Where(vc => vc.CodeType == codeType && !vc.IsUsed);
 
@@ -54,9 +54,9 @@ public class User : AggregateRoot
     /// Returns null if no active codes are found.
     /// </para>
     /// </summary>
-    /// <param name="codeType"><see cref="VerificationCodeType"/></param>
+    /// <param name="codeType"><see cref="UserVerificationCodeType"/></param>
     /// <returns></returns>
-    public VerificationCode? GetActiveVerificationCode(VerificationCodeType codeType)
+    public UserVerificationCode? GetActiveVerificationCode(UserVerificationCodeType codeType)
     {
         return VerificationCodes.Where(vc => vc.CodeType == codeType && !vc.IsUsed && vc.ExpirationDate > DateTime.UtcNow).MaxBy(vc => vc.ExpirationDate);
     }
@@ -64,7 +64,7 @@ public class User : AggregateRoot
     /// <summary>
     /// Checks the count of the verification codes and verifies the user if the code is valid.
     /// </summary>
-    /// <param name="verificationCode">Value representing the VerificationCode.Code <see cref="VerificationCode.Code"/></param>
+    /// <param name="verificationCode">Value representing the VerificationCode.Code <see cref="UserVerificationCode.Code"/></param>
     /// <returns>Result representing the verification result</returns>
     /// <exception cref="InvalidOperationException"></exception>
     public Result Verify(string verificationCode)
@@ -98,20 +98,18 @@ public class User : AggregateRoot
         return UserClaims.ToList();
     }
 
-    /// <summary>
-    /// Adds a valid refresh token to the user.
-    /// </summary>
-    public void AddRefreshToken()
+    public void AddDevice(Device device)
     {
-        _refreshTokens.Add(new RefreshToken(Guid.NewGuid(), userId: Id));
+        _devices.Add(device);
     }
 
-    /// <summary>
-    /// Returns the most recent active refresh token.
-    /// </summary>
-    /// <returns><see cref="RefreshToken"/></returns>
-    public RefreshToken? GetActiveRefreshToken()
+    public Device GetDevice(Guid deviceId)
     {
-        return RefreshTokens.Where(rt=> rt.IsValid()).MaxBy(rt => rt.Expires);
+        return Devices.FirstOrDefault(d => d.Id == deviceId) ?? throw new InvalidOperationException("Device not found");
+    }
+
+    public List<Device> GetValidDevices()
+    {
+        return Devices.Where(d => d.Status == DeviceStatus.Active).ToList();
     }
 }

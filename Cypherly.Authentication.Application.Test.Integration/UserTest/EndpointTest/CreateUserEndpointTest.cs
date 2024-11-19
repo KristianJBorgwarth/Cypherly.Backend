@@ -19,7 +19,7 @@ public class CreateUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         {
             Username = "TestUser",
             Email = "test@email.dk",
-            Password = "TestPassword3?",
+            Password = "TestPassword3?"
         };
 
         // Act
@@ -41,7 +41,7 @@ public class CreateUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         {
             Username = "TestUser",
             Email = "testemail.dk",
-            Password = "TestPassword3?",
+            Password = "TestPassword3?"
         };
 
         // Act

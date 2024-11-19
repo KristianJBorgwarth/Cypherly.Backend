@@ -31,9 +31,9 @@ public class VerificationCodeGeneratedEventHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("Test@mail.dk"), Password.Create("kjsKidh??923"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
-        var notification = new VerificationCodeGeneratedEvent(user.Id, VerificationCodeType.EmailVerification);
+        var notification = new VerificationCodeGeneratedEvent(user.Id, UserVerificationCodeType.EmailVerification);
 
         A.CallTo(() => _fakeRepo.GetByIdAsync(user.Id)).Returns(user);
         A.CallTo(()=> _fakeEmailProducer.PublishMessageAsync(A<SendEmailMessage>._, default)).DoesNothing();
@@ -50,7 +50,7 @@ public class VerificationCodeGeneratedEventHandlerTest
     public async Task Handle_Notification_With_Invalid_Id_Should_Throw_Exception()
     {
         // Arrange
-        var notification = new VerificationCodeGeneratedEvent(Guid.NewGuid(), VerificationCodeType.EmailVerification);
+        var notification = new VerificationCodeGeneratedEvent(Guid.NewGuid(), UserVerificationCodeType.EmailVerification);
         A.CallTo(() => _fakeRepo.GetByIdAsync(notification.UserId)).Returns<User?>(null);
 
 
@@ -69,7 +69,7 @@ public class VerificationCodeGeneratedEventHandlerTest
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("Test@mail.dk"), Password.Create("kjsKidh??923"), false);
 
-        var notification = new VerificationCodeGeneratedEvent(user.Id, VerificationCodeType.EmailVerification);
+        var notification = new VerificationCodeGeneratedEvent(user.Id, UserVerificationCodeType.EmailVerification);
 
         A.CallTo(() => _fakeRepo.GetByIdAsync(user.Id)).Returns(user);
 

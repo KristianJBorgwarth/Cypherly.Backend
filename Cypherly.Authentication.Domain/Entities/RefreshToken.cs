@@ -11,16 +11,16 @@ public class RefreshToken : Entity
     public DateTime? Revoked { get; private set; }
     public bool IsRevoked => Revoked.HasValue;
     public bool IsExpired => DateTime.UtcNow >= Expires;
-    public Guid UserId { get; private set; }
-    public virtual User User { get; private set; } = null!;
+    public Guid DeviceId { get; private set; }
+    public virtual Device Device { get; private set; } = null!;
 
     public RefreshToken() : base(Guid.Empty) {} // For EF Core
 
-    public RefreshToken(Guid id, Guid userId, DateTime? expires = null) : base(id)
+    public RefreshToken(Guid id, Guid deviceId, DateTime? expires = null) : base(id)
     {
         Token = GenerateToken();
         Expires = expires ?? DateTime.UtcNow.AddDays(7);
-        UserId = userId;
+        DeviceId = deviceId;
     }
 
     /// <summary>

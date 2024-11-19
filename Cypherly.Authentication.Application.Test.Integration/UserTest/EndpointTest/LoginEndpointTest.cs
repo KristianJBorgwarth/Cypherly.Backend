@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using Cypherly.API.Responses;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;
@@ -24,7 +26,12 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         var command = new LoginCommand
         {
             Email = user.Email.Address,
-            Password = "TestPassword?123"
+            Password = "TestPassword?123",
+            DeviceName = "TestDevice",
+            Base64DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act
@@ -32,7 +39,8 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        Db.RefreshToken.Should().HaveCount(1);
+        Db.Device.Should().HaveCount(1);
+        Db.DeviceVerificationCode.Should().HaveCount(1);
     }
 
     [Fact]
@@ -47,7 +55,12 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         var command = new LoginCommand
         {
             Email = user.Email.Address,
-            Password = "TestPassword?12323123" // Invalid password
+            Password = "TestPassword?12323123", // Invalid password
+            DeviceName = "TestDevice",
+            Base64DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0.0",
+            DeviceType = DeviceType.Desktop,
+            DevicePlatform = DevicePlatform.Windows
         };
 
         // Act

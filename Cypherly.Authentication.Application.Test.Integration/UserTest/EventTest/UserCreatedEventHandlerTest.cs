@@ -31,7 +31,7 @@ public class UserCreatedEventHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("validPassword=?23"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 

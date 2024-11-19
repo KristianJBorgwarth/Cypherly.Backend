@@ -1,4 +1,5 @@
 ﻿using Cypherly.Application.Abstractions;
+using Cypherly.Authentication.Domain.Enums;
 
 namespace Cypherly.Authentication.Application.Features.User.Commands.Create;
 

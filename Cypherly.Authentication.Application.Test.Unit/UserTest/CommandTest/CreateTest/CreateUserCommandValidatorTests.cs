@@ -18,6 +18,7 @@ public class CreateUserCommandValidatorTests
             Email = "valid@email.dk",
             Password = "validPassword97?",
             Username = "validUsername"
+
         };
 
         // Act
@@ -52,7 +53,7 @@ public class CreateUserCommandValidatorTests
         // Arrange
         var cmd = new CreateUserCommand()
         {
-            Email = "valid@email.com",
+            Email = "valid@email.dk",
             Password = "",
             Username = "validUsername"
         };
@@ -75,7 +76,7 @@ public class CreateUserCommandValidatorTests
         // Arrange
         var cmd = new CreateUserCommand()
         {
-            Email = "valid@email.com",
+            Email = "valid@email.dk",
             Password = "validPassword97?",
             Username = ""
         };

@@ -3,6 +3,7 @@ using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.User.Commands.Create;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
@@ -17,7 +18,6 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.Cre
 public class CreateUserCommandHandlerTests
 {
     private readonly IUserRepository _fakeRepo;
-    private readonly IMapper _fakeMapper;
     private readonly IUserLifeCycleServices _fakeUserLifeCycleServices;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly IRequestClient<CreateUserProfileRequest> _fakeRequestClient;
@@ -26,12 +26,13 @@ public class CreateUserCommandHandlerTests
     public CreateUserCommandHandlerTests()
     {
         _fakeRepo = A.Fake<IUserRepository>();
-        _fakeMapper = A.Fake<IMapper>();
         _fakeUserLifeCycleServices = A.Fake<IUserLifeCycleServices>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         _fakeRequestClient = A.Fake<IRequestClient<CreateUserProfileRequest>>();
         var fakeLogger = A.Fake<ILogger<CreateUserCommandHandler>>();
-        _sut = new(_fakeRepo, _fakeMapper, _fakeUserLifeCycleServices, _fakeUnitOfWork, _fakeRequestClient, fakeLogger);
+
+
+        _sut = new CreateUserCommandHandler(_fakeRepo, _fakeUserLifeCycleServices, _fakeUnitOfWork, _fakeRequestClient, fakeLogger);
     }
 
     [Fact]
@@ -43,6 +44,7 @@ public class CreateUserCommandHandlerTests
             Email = "test@mail.dk",
             Password = "password923K=?",
             Username = "validUsername"
+
         };
 
         var user = new User(Guid.NewGuid(), Email.Create(cmd.Email), Password.Create(cmd.Password), isVerified: false);
@@ -51,7 +53,6 @@ public class CreateUserCommandHandlerTests
         A.CallTo(() => _fakeUserLifeCycleServices.CreateUser(cmd.Email, cmd.Password)).Returns(Result.Ok(user));
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).DoesNothing();
-        A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).Returns(new CreateUserDto { Email = cmd.Email, Id = default });
 
 
         // Create the response message you want to return
@@ -73,7 +74,6 @@ public class CreateUserCommandHandlerTests
         result.Value.Email.Should().Be(cmd.Email);
 
         A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustHaveHappenedOnceExactly();
 
@@ -105,7 +105,6 @@ public class CreateUserCommandHandlerTests
         result.Error.Message.Should().Be("An account already exists with that email");
 
         A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRequestClient.GetResponse<CreateUserProfileResponse>(A<CreateUserProfileRequest>.Ignored, A<CancellationToken>.Ignored, A<RequestTimeout>.Ignored))
@@ -136,7 +135,6 @@ public class CreateUserCommandHandlerTests
 
         A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
         A.CallTo(() => _fakeUserLifeCycleServices.CreateUser(A<string>.Ignored, A<string>.Ignored)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRequestClient.GetResponse<CreateUserProfileResponse>(A<CreateUserProfileRequest>.Ignored, A<CancellationToken>.Ignored, A<RequestTimeout>.Ignored))
@@ -167,7 +165,6 @@ public class CreateUserCommandHandlerTests
 
         // Verify the exception was thrown and handled
         A.CallTo(() => _fakeRepo.GetByEmailAsync(cmd.Email)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<CreateUserDto>(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).MustNotHaveHappened();
         A.CallTo(() => _fakeRequestClient.GetResponse<CreateUserProfileResponse>(A<CreateUserProfileRequest>.Ignored, A<CancellationToken>.Ignored, A<RequestTimeout>.Ignored))

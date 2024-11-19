@@ -32,7 +32,7 @@ public sealed class GenerateAccountVerificationCodeCommandHandler(
                 return Result.Fail(Errors.General.UnspecifiedError("User is already verified"));
             }
 
-            verificationCodeService.GenerateVerificationCode(user, VerificationCodeType.EmailVerification);
+            verificationCodeService.GenerateVerificationCode(user, UserVerificationCodeType.EmailVerification);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Ok();

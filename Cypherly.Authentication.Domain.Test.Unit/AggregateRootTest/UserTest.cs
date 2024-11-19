@@ -14,7 +14,7 @@ public class UserTest
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjFis97823??sd"), false);
 
         // Act
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Assert
         user.VerificationCodes.Should().HaveCount(1);
@@ -25,10 +25,10 @@ public class UserTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjFis97823??sd"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Assert
         user.VerificationCodes.Should().HaveCount(2);
@@ -40,12 +40,12 @@ public class UserTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjFis97823??sd"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
-        var assertCode = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
+        var assertCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
-        var code = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification);
+        var code = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Assert
         code.Should().NotBeNull();
@@ -59,7 +59,7 @@ public class UserTest
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjFis97823??sd"), false);
 
         // Act
-        var code = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification);
+        var code = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Assert
         code.Should().BeNull();
@@ -83,7 +83,7 @@ public class UserTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjFis97823??sd"), true);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
         Action act = () => user.Verify("1234");
@@ -97,7 +97,7 @@ public class UserTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjFis97823??sd"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
         var result = user.Verify("1234");
@@ -112,8 +112,8 @@ public class UserTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("asdoiasd212?K"), false);
-        user.AddVerificationCode(VerificationCodeType.EmailVerification);
-        var code = user.GetActiveVerificationCode(VerificationCodeType.EmailVerification);
+        user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
+        var code = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
         var result = user.Verify(code!.Code);
@@ -123,38 +123,5 @@ public class UserTest
         user.IsVerified.Should().BeTrue();
         user.VerificationCodes.Should().ContainSingle(vc => vc.IsUsed);
         user.DomainEvents.Should().HaveCount(1);
-    }
-
-    [Fact]
-    public void AddRefreshToken_Should_Add_New_RefreshToken()
-    {
-        // Arrange
-        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("asdoiasd212?K"), false);
-
-        // Act
-        user.AddRefreshToken();
-
-        // Assert
-        user.RefreshTokens.Should().HaveCount(1);
-    }
-
-    [Fact]
-    public void GetActiveRefreshToken_Should_Return_Newest_Active_RefreshToken()
-    {
-        // Arrange
-        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("asdoiasd212?K"), false);
-
-        user.AddRefreshToken();
-
-        var assertToken = user.GetActiveRefreshToken();
-
-        user.AddRefreshToken();
-
-        // Act
-        var token = user.GetActiveRefreshToken();
-
-        // Assert
-        token.Should().NotBeNull();
-        token!.Id.Should().NotBe(assertToken!.Id);
     }
 }

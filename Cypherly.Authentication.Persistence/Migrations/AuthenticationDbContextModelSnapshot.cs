@@ -74,6 +74,78 @@ namespace Cypherly.Authentication.Persistence.Migrations
                     b.ToTable("User", (string)null);
                 });
 
+            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.Device", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AppVersion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Platform")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Device", (string)null);
+                });
+
+            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.DeviceVerificationCode", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
+
+                    b.ToTable("DeviceVerificationCode", (string)null);
+                });
+
             modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -84,6 +156,9 @@ namespace Cypherly.Authentication.Persistence.Migrations
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DeviceId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("Expires")
                         .HasColumnType("timestamp with time zone");
@@ -99,15 +174,12 @@ namespace Cypherly.Authentication.Persistence.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("DeviceId");
 
                     b.HasIndex("Token")
                         .IsUnique();
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("RefreshToken", (string)null);
                 });
@@ -136,7 +208,7 @@ namespace Cypherly.Authentication.Persistence.Migrations
                     b.ToTable("UserClaim", (string)null);
                 });
 
-            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.VerificationCode", b =>
+            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.UserVerificationCode", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -172,7 +244,7 @@ namespace Cypherly.Authentication.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("VerificationCode", (string)null);
+                    b.ToTable("UserVerificationCode", (string)null);
                 });
 
             modelBuilder.Entity("Cypherly.Persistence.Outbox.OutboxMessage", b =>
@@ -253,15 +325,67 @@ namespace Cypherly.Authentication.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.Device", b =>
                 {
                     b.HasOne("Cypherly.Authentication.Domain.Aggregates.User", "User")
-                        .WithMany("RefreshTokens")
+                        .WithMany("Devices")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.DeviceVerificationCode", b =>
+                {
+                    b.HasOne("Cypherly.Authentication.Domain.Entities.Device", null)
+                        .WithMany("VerificationCodes")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Cypherly.Authentication.Domain.ValueObjects.VerificationCode", "Code", b1 =>
+                        {
+                            b1.Property<Guid>("DeviceVerificationCodeId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTime>("ExpirationDate")
+                                .HasColumnType("timestamp with time zone");
+
+                            b1.Property<bool>("IsUsed")
+                                .HasColumnType("boolean");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)")
+                                .HasColumnName("Code");
+
+                            b1.HasKey("DeviceVerificationCodeId");
+
+                            b1.HasIndex("ExpirationDate");
+
+                            b1.HasIndex("Value");
+
+                            b1.ToTable("DeviceVerificationCode");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DeviceVerificationCodeId");
+                        });
+
+                    b.Navigation("Code")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Cypherly.Authentication.Domain.Entities.Device", "Device")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
                 });
 
             modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.UserClaim", b =>
@@ -283,7 +407,7 @@ namespace Cypherly.Authentication.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.VerificationCode", b =>
+            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.UserVerificationCode", b =>
                 {
                     b.HasOne("Cypherly.Authentication.Domain.Aggregates.User", null)
                         .WithMany("VerificationCodes")
@@ -299,9 +423,16 @@ namespace Cypherly.Authentication.Persistence.Migrations
 
             modelBuilder.Entity("Cypherly.Authentication.Domain.Aggregates.User", b =>
                 {
-                    b.Navigation("RefreshTokens");
+                    b.Navigation("Devices");
 
                     b.Navigation("UserClaims");
+
+                    b.Navigation("VerificationCodes");
+                });
+
+            modelBuilder.Entity("Cypherly.Authentication.Domain.Entities.Device", b =>
+                {
+                    b.Navigation("RefreshTokens");
 
                     b.Navigation("VerificationCodes");
                 });

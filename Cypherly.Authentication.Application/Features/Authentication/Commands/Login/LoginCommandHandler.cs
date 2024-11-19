@@ -1,7 +1,6 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
-using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
@@ -10,8 +9,7 @@ namespace Cypherly.Authentication.Application.Features.Authentication.Commands.L
 
 public class LoginCommandHandler(
     IUserRepository userRepository,
-    IJwtService jwtService,
-    IAuthenticationService authenticationService,
+    IDeviceService deviceService,
     IUnitOfWork unitOfWork,
     ILogger<LoginCommandHandler> logger)
     : ICommandHandler<LoginCommand, LoginDto>
@@ -27,22 +25,14 @@ public class LoginCommandHandler(
             if(!pwResult) return Result.Fail<LoginDto>(Errors.General.UnspecifiedError("Invalid Credentials"));
 
             if (user.IsVerified == false)
-                return Result.Ok(new LoginDto() { Id = user.Id, IsVerified = false });
+                return Result.Ok(LoginDto.Map(user, false));
 
-            var token = jwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims());
-
-            var refreshToken = authenticationService.GenerateRefreshToken(user);
-
-            var dto = new LoginDto
-            {
-                JwtToken = token,
-                RefreshToken = refreshToken.Token,
-                RefreshTokenExpires = refreshToken.Expires
-            };
+            var device = deviceService.RegisterDevice(user, request.DeviceName, request.Base64DevicePublicKey, request.DeviceAppVersion, request.DeviceType, request.DevicePlatform);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result.Ok(dto);
+            return Result.Ok(LoginDto.Map(user, true, device));
+
         }
         catch (Exception ex)
         {
