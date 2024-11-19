@@ -25,7 +25,10 @@ public class VerifyDeviceCommandHandler(
 
             var device = user.GetDevice(request.DeviceId);
 
-            device.Verify(request.DeviceVerificationCode);
+            var verifyDeviceResult = device.Verify(request.DeviceVerificationCode);
+
+            if (verifyDeviceResult.Success is false)
+                return verifyDeviceResult;
 
             await userRepository.UpdateAsync(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
