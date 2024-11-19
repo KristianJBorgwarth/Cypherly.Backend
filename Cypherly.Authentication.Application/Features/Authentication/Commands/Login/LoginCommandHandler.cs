@@ -27,7 +27,7 @@ public class LoginCommandHandler(
             if (user.IsVerified == false)
                 return Result.Ok(LoginDto.Map(user, false));
 
-            var device = deviceService.RegisterDevice(user, request.DeviceName, request.DevicePublicKey, request.DeviceAppVersion, request.DeviceType, request.DevicePlatform);
+            var device = deviceService.RegisterDevice(user, request.DeviceName, request.Base64DevicePublicKey, request.DeviceAppVersion, request.DeviceType, request.DevicePlatform);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

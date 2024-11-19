@@ -17,7 +17,7 @@ public class LoginCommandValidatorTest
             Email = "",
             Password = "ValidPassword123!",
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
+            Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows
@@ -40,7 +40,7 @@ public class LoginCommandValidatorTest
             Email = new string('a', 256),
             Password = "ValidPassword123!",
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
+            Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows
@@ -63,7 +63,7 @@ public class LoginCommandValidatorTest
             Email = "user@example.com",
             Password = "",
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
+            Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows
@@ -86,7 +86,7 @@ public class LoginCommandValidatorTest
             Email = "user@example.com",
             Password = new('a', 256),
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
+            Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows
@@ -109,7 +109,7 @@ public class LoginCommandValidatorTest
             Email = "user@example.com",
             Password = "ValidPassword123!",
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
+            Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows

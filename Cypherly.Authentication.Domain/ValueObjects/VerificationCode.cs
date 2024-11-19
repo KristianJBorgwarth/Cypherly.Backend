@@ -10,7 +10,7 @@ public class VerificationCode : ValueObject
 
     public DateTime ExpirationDate { get; private set; }
 
-    private VerificationCode() { } //For EF Core
+    public VerificationCode() { } //For EF Core
 
     private VerificationCode(string value, DateTime expirationDate)
     {

@@ -42,8 +42,8 @@ public class LoginCommandHandlerTest : IntegrationTestBase
             Email = user.Email.Address,
             Password = "TestPassword?123",
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0.0",
+            Base64DevicePublicKey = "TestPublicKey",
+            DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows
         };
@@ -54,7 +54,12 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        Db.RefreshToken.Should().HaveCount(1);
+        Db.Device.Should().HaveCount(1);
+        Db.DeviceVerificationCode.Should().HaveCount(1);
+        result.Value.IsVerified.Should().BeTrue();
+        result.Value.DeviceId.Should().NotBeNull().And.NotBeEmpty().And.Be(Db.Device.First().Id);
+        result.Value.Id.Should().NotBeEmpty().And.Be(user.Id);
+        Db.Device.First().UserId.Should().Be(user.Id);
     }
 
     [Fact]
@@ -72,7 +77,7 @@ public class LoginCommandHandlerTest : IntegrationTestBase
             Email = invalidEmail,
             Password = "TestPassword?123",
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
+            Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows
@@ -103,7 +108,7 @@ public class LoginCommandHandlerTest : IntegrationTestBase
             Email = user.Email.Address,
             Password = invalidPw,
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
+            Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows
@@ -133,7 +138,7 @@ public class LoginCommandHandlerTest : IntegrationTestBase
             Email = user.Email.Address,
             Password = "TestPassword?123",
             DeviceName = "TestDevice",
-            DevicePublicKey = "TestPublicKey",
+            Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
             DevicePlatform = DevicePlatform.Windows
