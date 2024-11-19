@@ -58,7 +58,7 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         Db.DeviceVerificationCode.Should().HaveCount(1);
         result.Value.IsVerified.Should().BeTrue();
         result.Value.DeviceId.Should().NotBeNull().And.NotBeEmpty().And.Be(Db.Device.First().Id);
-        result.Value.Id.Should().NotBeEmpty().And.Be(user.Id);
+        result.Value.UserId.Should().NotBeEmpty().And.Be(user.Id);
         Db.Device.First().UserId.Should().Be(user.Id);
     }
 

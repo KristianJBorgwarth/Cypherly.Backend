@@ -47,6 +47,6 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
 
     private static bool BeValidDeviceAppVersion(string appVersion)
     {
-        return Regex.IsMatch(appVersion, @"^\d+\.\d+$");
+        return Regex.IsMatch(appVersion, @"^\d+\.\d{1,3}$");
     }
 }

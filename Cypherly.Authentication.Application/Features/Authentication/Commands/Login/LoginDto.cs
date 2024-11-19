@@ -4,9 +4,9 @@ namespace Cypherly.Authentication.Application.Features.Authentication.Commands.L
 
 public sealed record LoginDto
 {
-    public Guid Id { get; init; }
-    public bool IsVerified { get; init; }
-    public Guid? DeviceId { get; init; }
+    public Guid UserId { get; private init; }
+    public bool IsVerified { get; private init; }
+    public Guid? DeviceId { get; private init; }
 
     private LoginDto() { } // Hide the constructor to force the use of the Map method
 
@@ -14,7 +14,7 @@ public sealed record LoginDto
     {
         return new LoginDto()
         {
-            Id = user.Id,
+            UserId = user.Id,
             DeviceId = device?.Id,
             IsVerified = isVerified
         };
