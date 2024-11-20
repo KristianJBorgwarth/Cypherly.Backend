@@ -1,4 +1,4 @@
-﻿using Cypherly.UserManagement.Storage.Validation;
+﻿using Cypherly.UserManagement.Bucket.Validation;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;

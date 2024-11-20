@@ -86,7 +86,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniEmail.API.Test.Integrat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{DD489ABA-C4B3-461F-9000-944629E9265E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Storage", "Cypherly.UserManagement.Storage\Cypherly.UserManagement.Storage.csproj", "{C2F8BFA7-A559-4FDA-8350-A1B94CAFF4F0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Bucket", "Cypherly.UserManagement.Bucket\Cypherly.UserManagement.Bucket.csproj", "{C2F8BFA7-A559-4FDA-8350-A1B94CAFF4F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.Storage.Test.Unit", "Cypherly.UserManagement.Storage.Test.Unit\Cypherly.UserManagement.Storage.Test.Unit.csproj", "{BEFC1B36-6D64-4F11-A1B7-B85F922ED098}"
 EndProject

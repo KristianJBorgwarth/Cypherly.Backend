@@ -24,7 +24,7 @@
       <ProjectReference Include="..\Cypherly.Outboxing.Messaging\Cypherly.Outboxing.Messaging.csproj" />
       <ProjectReference Include="..\Cypherly.UserManagement.Application\Cypherly.UserManagement.Application.csproj" />
       <ProjectReference Include="..\Cypherly.UserManagement.Persistence\Cypherly.UserManagement.Persistence.csproj" />
-      <ProjectReference Include="..\Cypherly.UserManagement.Storage\Cypherly.UserManagement.Storage.csproj" />
+      <ProjectReference Include="..\Cypherly.UserManagement.Bucket\Cypherly.UserManagement.Bucket.csproj" />
     </ItemGroup>
 
 </Project>

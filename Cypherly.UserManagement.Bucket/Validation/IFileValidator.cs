@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 
 
-namespace Cypherly.UserManagement.Storage.Validation;
+namespace Cypherly.UserManagement.Bucket.Validation;
 
 public interface IFileValidator
 {

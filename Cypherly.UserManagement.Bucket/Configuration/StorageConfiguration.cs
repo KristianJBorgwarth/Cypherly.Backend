@@ -1,12 +1,12 @@
 ﻿using Amazon.S3;
 using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Storage.Services;
-using Cypherly.UserManagement.Storage.Validation;
+using Cypherly.UserManagement.Bucket.Services;
+using Cypherly.UserManagement.Bucket.Validation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Cypherly.UserManagement.Storage.Configuration;
+namespace Cypherly.UserManagement.Bucket.Configuration;
 
 public static class StorageConfiguration
 {

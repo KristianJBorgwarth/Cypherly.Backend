@@ -8,7 +8,7 @@ using Cypherly.UserManagement.Application.Configuration;
 using Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
 using Cypherly.UserManagement.Domain.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;
-using Cypherly.UserManagement.Storage.Configuration;
+using Cypherly.UserManagement.Bucket.Configuration;
 using MassTransit;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
