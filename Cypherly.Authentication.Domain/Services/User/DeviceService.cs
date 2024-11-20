@@ -11,8 +11,6 @@ public interface IDeviceService
         string deviceAppVersion, DeviceType deviceType, DevicePlatform devicePlatform);
 
     public Result VerifyDevice(Aggregates.User user, Guid deviceId, string deviceVerificationCode);
-
-    public bool DoesTrustedDeviceExist(Aggregates.User user);
 }
 
 public class DeviceService : IDeviceService
@@ -36,14 +34,6 @@ public class DeviceService : IDeviceService
 
         var verifyDeviceResult = device.Verify(deviceVerificationCode);
 
-        if (verifyDeviceResult.Success is false)
-            return verifyDeviceResult;
-
-        return Result.Ok();
-    }
-
-    public bool DoesTrustedDeviceExist(Aggregates.User user)
-    {
-        return user.Devices.Any(x => x.Status == DeviceStatus.Trusted);
+        return verifyDeviceResult.Success is false ? verifyDeviceResult : Result.Ok();
     }
 }
