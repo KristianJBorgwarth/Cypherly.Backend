@@ -5,6 +5,7 @@ using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Domain.Entities;
 using Cypherly.Authentication.Domain.Enums;
+using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;
@@ -22,10 +23,11 @@ public class VerifyDeviceCommandHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope();
         var repo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+        var deviceService = scope.ServiceProvider.GetRequiredService<IDeviceService>();
         var uow = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<VerifyDeviceCommandValidator>>();
 
-        _sut = new VerifyDeviceCommandHandler(repo, uow, logger);
+        _sut = new VerifyDeviceCommandHandler(repo, deviceService,uow, logger);
     }
 
     [Fact]

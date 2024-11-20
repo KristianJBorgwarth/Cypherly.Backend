@@ -1,6 +1,7 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
+using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
@@ -8,6 +9,7 @@ namespace Cypherly.Authentication.Application.Features.User.Commands.Update.Veri
 
 public class VerifyDeviceCommandHandler(
     IUserRepository userRepository,
+    IDeviceService deviceService,
     IUnitOfWork unitOfWork,
     ILogger<VerifyDeviceCommandValidator> logger)
     : ICommandHandler<VerifyDeviceCommand>
@@ -23,12 +25,9 @@ public class VerifyDeviceCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.UserId));
             }
 
-            var device = user.GetDevice(request.DeviceId);
+            var result = deviceService.VerifyDevice(user, request.DeviceId, request.DeviceVerificationCode);
 
-            var verifyDeviceResult = device.Verify(request.DeviceVerificationCode);
-
-            if (verifyDeviceResult.Success is false)
-                return verifyDeviceResult;
+            if (result.Success is false) return result;
 
             await userRepository.UpdateAsync(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -37,8 +36,8 @@ public class VerifyDeviceCommandHandler(
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            logger.LogError(e, "Error occurred while verifying device.");
+            return Result.Fail(Errors.General.UnspecifiedError("An Exception occurred while verifying device."));
         }
     }
 }
