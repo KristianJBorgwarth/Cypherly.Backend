@@ -2,6 +2,7 @@
 using Cypherly.Authentication.Application.Features.User.Commands.Delete;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
+using Cypherly.Authentication.Application.Features.User.Commands.Update.VerifyDevice;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ public class UserController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
-    
+
     [HttpDelete]
     [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,6 +48,16 @@ public class UserController(ISender sender) : BaseController
     public async Task<IActionResult> ResendVerification([FromBody]GenerateAccountVerificationCodeCommand codeCommand)
     {
         var result = await sender.Send(codeCommand);
+        return result.Success ? Ok() : Error(result.Error);
+    }
+
+    [HttpPut]
+    [Route("device/verify")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> VerifyDevice([FromBody]VerifyDeviceCommand command)
+    {
+        var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
     }
 }
