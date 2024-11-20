@@ -16,16 +16,27 @@ public class UserVerificationCodeModelConfiguration : IEntityTypeConfiguration<U
         builder.Property(vc => vc.Id)
             .ValueGeneratedNever();
 
-        builder.Property(vc => vc.Code)
-            .HasMaxLength(20)
-            .IsRequired();
-
         builder.Property(vc => vc.CodeType)
             .HasConversion<string>()
             .IsRequired();
 
-        builder.Property(vc => vc.ExpirationDate)
-            .IsRequired();
+        builder.OwnsOne(u => u.Code, uvc =>
+        {
+            uvc.Property(v => v.Value)
+                .HasColumnName("Code")
+                .HasMaxLength(20)
+                .IsRequired();
+
+            uvc.Property(v => v.ExpirationDate)
+                .IsRequired();
+
+            uvc.Property(v => v.IsUsed)
+                .IsRequired();
+
+            uvc.HasIndex(v => v.Value);
+
+            uvc.HasIndex(v => v.ExpirationDate);
+        });
 
         builder.HasOne<User>()
             .WithMany(u => u.VerificationCodes)

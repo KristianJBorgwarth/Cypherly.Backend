@@ -38,11 +38,11 @@ public class User : AggregateRoot
     /// <param name="codeType"><see cref="UserVerificationCodeType"/></param>
     public void AddVerificationCode(UserVerificationCodeType codeType)
     {
-        var existingCodes = VerificationCodes.Where(vc => vc.CodeType == codeType && !vc.IsUsed);
+        var existingCodes = VerificationCodes.Where(vc => vc.CodeType == codeType && !vc.Code.IsUsed);
 
-        foreach (var code in existingCodes)
+        foreach (var vc in existingCodes)
         {
-            code.Use();
+            vc.Code.Use();
         }
 
         _verificationCodes.Add(new(Guid.NewGuid(), userId: Id, codeType));
@@ -58,7 +58,7 @@ public class User : AggregateRoot
     /// <returns></returns>
     public UserVerificationCode? GetActiveVerificationCode(UserVerificationCodeType codeType)
     {
-        return VerificationCodes.Where(vc => vc.CodeType == codeType && !vc.IsUsed && vc.ExpirationDate > DateTime.UtcNow).MaxBy(vc => vc.ExpirationDate);
+        return VerificationCodes.Where(vc => vc.CodeType == codeType && !vc.Code.IsUsed && vc.Code.ExpirationDate > DateTime.UtcNow).MaxBy(vc => vc.Code.ExpirationDate);
     }
 
     /// <summary>
@@ -75,15 +75,15 @@ public class User : AggregateRoot
         if (IsVerified)
             throw new InvalidOperationException("This chat user is already verified");
 
-        var code = VerificationCodes.FirstOrDefault(c => c.Code == verificationCode);
-        if (code is null) return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
+        var userVerificationCode = VerificationCodes.FirstOrDefault(uvc => uvc.Code.Value == verificationCode);
+        if (userVerificationCode is null) return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
 
-        var verificationResult = code.Verify(verificationCode);
+        var verificationResult = userVerificationCode.Code.Verify(verificationCode);
 
         if (verificationResult.Success is false)
             return verificationResult;
 
-        code.Use();
+        userVerificationCode.Code.Use();
         IsVerified = true;
         AddDomainEvent(new UserVerifiedEvent(Id));
         return Result.Ok();

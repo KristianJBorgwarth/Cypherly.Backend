@@ -43,7 +43,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.UserTest.CommandTest.Upd
             var command = new VerifyUserCommand
             {
                 UserId = userId,
-                VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code
+                VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code.Value
             };
 
             // Act

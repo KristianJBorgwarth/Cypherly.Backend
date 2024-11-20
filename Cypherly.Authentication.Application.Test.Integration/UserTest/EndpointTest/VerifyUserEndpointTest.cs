@@ -27,7 +27,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         var req = new VerifyUserCommand()
         {
             UserId = user.Id,
-            VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code
+            VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code.Value
         };
 
         // Act
@@ -36,7 +36,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         Db.User.AsNoTracking().FirstOrDefault(u => u.Id == user.Id)!.IsVerified.Should().BeTrue();
-        Db.VerificationCode.AsNoTracking().FirstOrDefault(vc => vc.UserId == user.Id)!.IsUsed.Should().BeTrue();
+        Db.VerificationCode.AsNoTracking().FirstOrDefault(vc => vc.UserId == user.Id)!.Code.IsUsed.Should().BeTrue();
         Db.OutboxMessage.Should().HaveCount(1);
     }
 
@@ -61,7 +61,7 @@ public class VerifyUserEndpointTest(IntegrationTestFactory<Program, Authenticati
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         Db.User.AsNoTracking().FirstOrDefault(u => u.Id == user.Id)!.IsVerified.Should().BeFalse();
-        Db.VerificationCode.AsNoTracking().FirstOrDefault(vc => vc.UserId == user.Id)!.IsUsed.Should().BeFalse();
+        Db.VerificationCode.AsNoTracking().FirstOrDefault(vc => vc.UserId == user.Id)!.Code.IsUsed.Should().BeFalse();
         Db.OutboxMessage.Should().HaveCount(0);
     }
 }
