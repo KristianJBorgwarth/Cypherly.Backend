@@ -60,7 +60,7 @@ public class Device : Entity
             throw new InvalidOperationException("This device does not have a verification code");
 
         if(Status == DeviceStatus.Trusted)
-            return Result.Fail(Errors.General.UnspecifiedError("This device is already verified"));
+            throw new InvalidOperationException("This device is already trusted");
 
         var deviceVerificationCode = VerificationCodes.FirstOrDefault(c => c.Code.Value == verificationCode);
         if (deviceVerificationCode is null) return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
