@@ -38,7 +38,7 @@ public class VerifyUserCommandHandlerTest : IntegrationTestBase
         var command = new VerifyUserCommand()
         {
             UserId = user.Id,
-            VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code
+            VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code.Value
         };
 
         // Act
@@ -62,7 +62,7 @@ public class VerifyUserCommandHandlerTest : IntegrationTestBase
         var command = new VerifyUserCommand()
         {
             UserId = Guid.NewGuid(),
-            VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code
+            VerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification)!.Code.Value
         };
 
         // Act

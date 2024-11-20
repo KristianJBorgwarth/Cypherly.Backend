@@ -32,7 +32,7 @@ public class UserTest
 
         // Assert
         user.VerificationCodes.Should().HaveCount(2);
-        user.VerificationCodes.Should().ContainSingle(vc => vc.IsUsed);
+        user.VerificationCodes.Should().ContainSingle(vc => vc.Code.IsUsed);
     }
 
     [Fact]
@@ -116,12 +116,12 @@ public class UserTest
         var code = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
-        var result = user.Verify(code!.Code);
+        var result = user.Verify(code!.Code.Value);
 
         // Assert
         result.Success.Should().BeTrue();
         user.IsVerified.Should().BeTrue();
-        user.VerificationCodes.Should().ContainSingle(vc => vc.IsUsed);
+        user.VerificationCodes.Should().ContainSingle(vc => vc.Code.IsUsed);
         user.DomainEvents.Should().HaveCount(1);
     }
 }
