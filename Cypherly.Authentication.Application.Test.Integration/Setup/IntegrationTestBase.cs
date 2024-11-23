@@ -1,4 +1,5 @@
 ﻿using Cypherly.Authentication.Persistence.Context;
+using Cypherly.Authentication.Redis.Services;
 using MassTransit.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,12 +12,14 @@ public class IntegrationTestBase : IDisposable
     protected readonly AuthenticationDbContext Db;
     protected readonly HttpClient Client;
     protected readonly ITestHarness Harness;
+    protected readonly IRedisCacheService Cache;
 
     public IntegrationTestBase(IntegrationTestFactory<Program, AuthenticationDbContext> factory)
     {
         Harness = factory.Services.GetTestHarness();
         var scope = factory.Services.CreateScope();
         Db = scope.ServiceProvider.GetRequiredService<AuthenticationDbContext>();
+        Cache = scope.ServiceProvider.GetRequiredService<IRedisCacheService>();
         Db.Database.EnsureCreated();
         Client = factory.CreateClient();
         Harness.Start();

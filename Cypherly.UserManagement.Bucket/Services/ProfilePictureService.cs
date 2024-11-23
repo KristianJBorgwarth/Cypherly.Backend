@@ -3,12 +3,12 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Cypherly.Domain.Common;
 using Cypherly.UserManagement.Application.Contracts;
-using Cypherly.UserManagement.Storage.Configuration;
-using Cypherly.UserManagement.Storage.Validation;
+using Cypherly.UserManagement.Bucket.Configuration;
+using Cypherly.UserManagement.Bucket.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace Cypherly.UserManagement.Storage.Services;
+namespace Cypherly.UserManagement.Bucket.Services;
 
 public class ProfilePictureService(
     IAmazonS3 s3Client,

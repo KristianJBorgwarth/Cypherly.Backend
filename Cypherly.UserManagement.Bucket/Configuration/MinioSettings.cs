@@ -1,4 +1,4 @@
-﻿namespace Cypherly.UserManagement.Storage.Configuration;
+﻿namespace Cypherly.UserManagement.Bucket.Configuration;
 
 public sealed class MinioSettings
 {

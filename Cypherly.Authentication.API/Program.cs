@@ -5,6 +5,7 @@ using Cypherly.Authentication.Application.Features.User.Consumers;
 using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
+using Cypherly.Authentication.Redis.Configuration;
 using Cypherly.Common.Messaging.Messages.PublishMessages;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using Cypherly.Common.Messaging.Messages.PublishMessages.User.Delete;
@@ -71,9 +72,9 @@ builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.Authentication.A
 #region MassTransit
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"), null, (cfg, context)=> 
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"), null, (cfg, context)=>
     {
-        cfg.ReceiveEndpoint("authentication_fail_queue", e=> 
+        cfg.ReceiveEndpoint("authentication_fail_queue", e=>
         {
             e.Consumer<RollbackUserDeleteConsumer>(context);
         });
@@ -83,6 +84,14 @@ builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authenticati
     .AddProducer<OperationSuccededMessage>();
 
 #endregion
+
+#region Valkey
+
+builder.Services.Configure<ValkeySettings>(configuration.GetSection("Valkey"));
+builder.Services.AddValkey(configuration);
+
+#endregion
+
 
 #region Authenticaion & Authorization
 var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();

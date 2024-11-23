@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5435:5432"
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -42,5 +42,16 @@ services:
     ports:
       - "5341:80"
 
+  valkey:
+    image: valkey/valkey:latest
+    container_name: cypherly-valkey
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - valkey_data:/data
+
 volumes:
   db_data:
+  valkey_data:

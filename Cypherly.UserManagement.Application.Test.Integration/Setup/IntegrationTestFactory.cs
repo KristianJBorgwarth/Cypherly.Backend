@@ -1,5 +1,5 @@
 ﻿using Cypherly.UserManagement.Application.Test.Integration.Setup.Helpers;
-using Cypherly.UserManagement.Storage.Configuration;
+using Cypherly.UserManagement.Bucket.Configuration;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 using MassTransit;
