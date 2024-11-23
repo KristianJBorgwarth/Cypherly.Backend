@@ -21,7 +21,7 @@ public class GetNonceQueryHandler(
             if (user is null)
             {
                 logger.LogWarning("User with ID: {ID} not found.", request.UserId);
-                return Result.Fail<GetNonceDto>(Errors.General.NotFound("User not found."));
+                return Result.Fail<GetNonceDto>(Errors.General.NotFound(request.UserId));
             }
 
             var device = user.GetDevice(request.DeviceId);

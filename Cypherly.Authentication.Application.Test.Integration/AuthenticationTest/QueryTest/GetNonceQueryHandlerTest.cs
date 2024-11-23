@@ -53,4 +53,23 @@ public class GetNonceQueryHandlerTest : IntegrationTestBase
         nonce.Should().NotBeNull();
         nonce!.UserId.Should().Be(user.Id);
     }
+
+    [Fact]
+    public async void Handle_WhenQueryInvalid_UserNot_Found_Should_Not_Cachce_And_Return_Result_Fail()
+    {
+        // Arrange
+        var query = new GetNonceQuery()
+        {
+            UserId = Guid.NewGuid(),
+            DeviceId = Guid.NewGuid()
+        };
+
+        // Act
+        var result = await _sut.Handle(query, CancellationToken.None);
+
+        // Assert
+        result.Success.Should().BeFalse();
+        result.Error.Should().NotBeNull();
+        result.Error.Message.Should().Contain("Could not find entity with ID");
+    }
 }

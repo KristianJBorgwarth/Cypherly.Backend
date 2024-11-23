@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="AuthenticationTest\" />
+      <Folder Include="AuthenticationTest\CommandTest\" />
     </ItemGroup>
 
 </Project>
