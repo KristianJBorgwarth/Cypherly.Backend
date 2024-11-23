@@ -85,9 +85,10 @@ builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authenticati
 
 #endregion
 
-#region Redis
+#region Valkey
 
-builder.Services.AddRedis(configuration);
+builder.Services.Configure<ValkeySettings>(configuration.GetSection("Valkey"));
+builder.Services.AddValkey(configuration);
 
 #endregion
 

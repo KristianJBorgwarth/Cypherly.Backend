@@ -1,6 +1,7 @@
 ﻿using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
 using Cypherly.Authentication.Application.Features.Authentication.Queries.GetNonce;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.Authentication.Controllers;

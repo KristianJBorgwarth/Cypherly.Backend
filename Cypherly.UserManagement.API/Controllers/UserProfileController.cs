@@ -17,8 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.UserManagement.API.Controllers;
 
-// [Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-// [ServiceFilter(typeof(IValidateUserIdFilter))]
+[Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[ServiceFilter(typeof(IValidateUserIdFilter))]
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
 {
@@ -70,7 +70,7 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
     }
-    
+
     [HttpPut("unblock-user")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -120,7 +120,7 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
     }
-    
+
     [HttpPut("toggle-privacy")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

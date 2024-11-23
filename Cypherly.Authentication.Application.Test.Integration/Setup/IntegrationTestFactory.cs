@@ -1,5 +1,7 @@
 ﻿using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Authentication.Redis.Configuration;
 using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
+using DotNet.Testcontainers.Builders;
 using MassTransit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using TestUtilities;
+using DotNet.Testcontainers.Containers;
+
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace Cypherly.Authentication.Application.Test.Integration.Setup;
@@ -16,6 +20,13 @@ public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestF
     where TProgram : class
     where TDbContext : DbContext
 {
+    private readonly IContainer _valkeyContainer = new ContainerBuilder()
+        .WithImage("valkey/valkey:latest")
+        .WithEnvironment("ALLOW_EMPTY_PASSWORD", "yes")
+        .WithExposedPort(6974)
+        .WithPortBinding(6974, 6379)
+        .WithCleanUp(true)
+        .Build();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -53,13 +64,34 @@ public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestF
             };
 
             var configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(inMemorySettings)
+                .AddInMemoryCollection(inMemorySettings!)
                 .Build();
 
             services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
             #endregion
-        });
 
+            #region Valkey Configuration
+
+            services.Configure<ValkeySettings>(options =>
+            {
+                options.Host = "localhost";  // The test container's host
+                options.Port = 6974;        // The mapped port for the Redis container
+            });
+
+            #endregion
+        });
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+        await _valkeyContainer.StartAsync();
+    }
+
+    public override async Task DisposeAsync()
+    {
+        await base.DisposeAsync();
+        await _valkeyContainer.StopAsync();
     }
 }

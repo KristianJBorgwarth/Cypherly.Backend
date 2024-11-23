@@ -17,6 +17,7 @@ public class GetNonceQueryHandler(
         try
         {
             var user = await userRepository.GetByIdAsync(request.UserId);
+
             if (user is null)
             {
                 logger.LogWarning("User with ID: {ID} not found.", request.UserId);
@@ -25,7 +26,7 @@ public class GetNonceQueryHandler(
 
             var device = user.GetDevice(request.DeviceId);
 
-            var nonce = Nonce.Create(user.Id, device.Id);
+            var nonce = new Nonce(user.Id, device.Id);
 
             await nonceCache.AddNonceAsync(nonce, cancellationToken);
 

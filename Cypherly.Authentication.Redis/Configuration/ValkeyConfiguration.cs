@@ -2,18 +2,21 @@
 using Cypherly.Authentication.Redis.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Cypherly.Authentication.Redis.Configuration;
 
-public static class RedisConfiguration
+public static class ValkeyConfiguration
 {
-    public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddValkey(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = configuration.GetConnectionString("Redis");
+            var serviceProvider = services.BuildServiceProvider();
+            var valkeySettings = serviceProvider.GetRequiredService<IOptions<ValkeySettings>>().Value;
 
-            //Prepend any key stored from this service with the service name
+            // Construct the connection string from ValkeySettings
+            options.Configuration = $"{valkeySettings.Host}:{valkeySettings.Port}";
             options.InstanceName = "Cypherly.Authentication.API_";
         });
 

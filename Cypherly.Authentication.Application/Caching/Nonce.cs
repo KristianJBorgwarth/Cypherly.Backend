@@ -14,19 +14,14 @@ public class Nonce
 
     public bool Exipred => DateTime.UtcNow > _expiresAt;
 
-    private Nonce() { } // Hide the constructor to force the use of the Create method
-
-    public static Nonce Create(Guid userId, Guid deviceId)
+    public Nonce(Guid userId, Guid deviceId)
     {
-        return new Nonce()
-        {
-            Id = Guid.NewGuid(),
-            UserId = deviceId,
-            DeviceId = deviceId,
-            NonceValue = GenerateNonceValue(),
-            CreatedAt = DateTime.UtcNow,
-            _expiresAt = DateTime.UtcNow.AddMinutes(15)
-        };
+        Id = Guid.NewGuid();
+        UserId = userId;
+        DeviceId = deviceId;
+        NonceValue = GenerateNonceValue();
+        CreatedAt = DateTime.UtcNow;
+        _expiresAt = DateTime.UtcNow.AddMinutes(15);
     }
 
     private static string GenerateNonceValue()
