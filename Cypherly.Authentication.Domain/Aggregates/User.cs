@@ -110,6 +110,6 @@ public class User : AggregateRoot
 
     public List<Device> GetValidDevices()
     {
-        return Devices.Where(d => d.Status == DeviceStatus.Active).ToList();
+        return Devices.Where(d => d.Status == DeviceStatus.Trusted).ToList();
     }
 }
