@@ -5,12 +5,12 @@ namespace Cypherly.Authentication.Application.Caching;
 public class Nonce
 {
     public Guid Id { get; private init; }
-    public string NonceValue { get; private init; } = null!;
+    public string NonceValue { get; private init; }
     public Guid UserId { get; private init; }
     public Guid DeviceId { get; private init; }
     public DateTime CreatedAt { get; private init; }
 
-    private DateTime _expiresAt;
+    private readonly DateTime _expiresAt;
 
     public bool Exipred => DateTime.UtcNow > _expiresAt;
 
