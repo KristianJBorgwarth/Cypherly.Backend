@@ -34,6 +34,7 @@ if (env.IsDevelopment())
     configuration.AddJsonFile($"appsettings.{Environments.Development}.json", true, true);
     configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 }
+
 #endregion
 
 #region Logger
@@ -74,9 +75,9 @@ builder.Services.AddOutboxProcessingJob(Assembly.Load("Cypherly.Authentication.A
 #region MassTransit
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"), null, (cfg, context)=>
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.Authentication.Application"), null, (cfg, context) =>
     {
-        cfg.ReceiveEndpoint("authentication_fail_queue", e=>
+        cfg.ReceiveEndpoint("authentication_fail_queue", e =>
         {
             e.Consumer<RollbackUserDeleteConsumer>(context);
         });
@@ -95,12 +96,14 @@ builder.Services.AddValkey(configuration);
 #endregion
 
 #region Authenticaion & Authorization
+
 var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
 builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
     {
-        if(jwtSettings is null)
+        if (jwtSettings is null)
             throw new NotImplementedException("MISSING JWT SETTINGS");
+
         options.TokenValidationParameters = new()
         {
             ValidateIssuer = true,
@@ -119,7 +122,7 @@ builder.Services.AddAuthorizationBuilder()
 
 #endregion
 
-#region  CORS
+#region CORS
 
 builder.Services.AddCors(options =>
 {
@@ -172,11 +175,9 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 #region Migration
 
@@ -189,7 +190,7 @@ using (var scope = app.Services.CreateScope())
         var dbcontext = services.GetRequiredService<AuthenticationDbContext>();
 
         Log.Information("Looking for pending migrations...");
-        if(dbcontext.Database.GetPendingMigrations().Any())
+        if (dbcontext.Database.GetPendingMigrations().Any())
         {
             Log.Information("Applying migrations...");
             dbcontext.Database.Migrate();
