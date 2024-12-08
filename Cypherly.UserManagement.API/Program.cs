@@ -9,7 +9,9 @@ using Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
 using Cypherly.UserManagement.Domain.Configuration;
 using Cypherly.UserManagement.Persistence.Configuration;
 using Cypherly.UserManagement.Bucket.Configuration;
+using Cypherly.UserManagement.Persistence.Context;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -30,6 +32,7 @@ if (env.IsDevelopment())
     configuration.AddJsonFile($"appsettings.{Environments.Development}.json", true, true);
     configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 }
+
 #endregion
 
 #region Logger
@@ -43,15 +46,21 @@ builder.Host.UseSerilog();
 #endregion
 
 #region Domain Layer
+
 builder.Services.AddUserManagementDomainServices();
+
 #endregion
 
 #region Application Layer
+
 builder.Services.AddUserManagementApplication(Assembly.Load("Cypherly.UserManagement.Application"));
+
 #endregion
 
 #region Persistence Layer
+
 builder.Services.AddUserManagementPersistence(configuration);
+
 #endregion
 
 #region Storage
@@ -105,7 +114,8 @@ builder.Services.AddAuthentication()
             ValidateIssuerSigningKey = true,
             ValidIssuer = configuration["Jwt:Issuer"] ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Issuer"]}"),
             ValidAudience = configuration["Jwt:Audience"] ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Audience"]}"),
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"] ?? throw new NotImplementedException("MISSING VALUE IN JWT SETTINGS Jwt:Secret")))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"] ??
+                                                                               throw new NotImplementedException("MISSING VALUE IN JWT SETTINGS Jwt:Secret")))
         };
     });
 
@@ -156,11 +166,37 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI();
+
+#region Migration
+
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var services = scope.ServiceProvider;
+    try
+    {
+        var dbcontext = services.GetRequiredService<UserManagementDbContext>();
+
+        Log.Information("Looking for pending migrations...");
+        if (dbcontext.Database.GetPendingMigrations().Any())
+        {
+            Log.Information("Applying migrations...");
+            dbcontext.Database.Migrate();
+            Log.Information("Migrations applied successfully");
+        }
+        else
+        {
+            Log.Information("No pending migrations found");
+        }
+    }
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "An error occured while attempting to migrate the database");
+    }
 }
+
+#endregion
 
 app.UseHttpsRedirection();
 
@@ -172,4 +208,4 @@ app.MapControllers();
 app.Run();
 
 
-public partial class Program {}
+public partial class Program { }
