@@ -5,6 +5,7 @@ using Cypherly.Authentication.Application.Features.User.Consumers;
 using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
+using Cypherly.Authentication.Persistence.Context;
 using Cypherly.Authentication.Redis.Configuration;
 using Cypherly.Common.Messaging.Messages.PublishMessages;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
@@ -12,6 +13,7 @@ using Cypherly.Common.Messaging.Messages.PublishMessages.User.Delete;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -91,7 +93,6 @@ builder.Services.Configure<ValkeySettings>(configuration.GetSection("Valkey"));
 builder.Services.AddValkey(configuration);
 
 #endregion
-
 
 #region Authenticaion & Authorization
 var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
@@ -177,6 +178,37 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+#region Migration
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    try
+    {
+        var dbcontext = services.GetRequiredService<AuthenticationDbContext>();
+
+        Log.Information("Looking for pending migrations...");
+        if(dbcontext.Database.GetPendingMigrations().Any())
+        {
+            Log.Information("Applying migrations...");
+            dbcontext.Database.Migrate();
+            Log.Information("Migrations applied successfully");
+        }
+        else
+        {
+            Log.Information("No pending migrations found");
+        }
+
+    }
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "An error occured while attempting to migrate the database");
+    }
+}
+
+#endregion
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -184,6 +216,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseCors("AllowElectron");
+
 app.Run();
 
 public partial class Program { }
