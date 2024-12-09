@@ -36,6 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		cypherly-dev-docker-compose.yml = cypherly-dev-docker-compose.yml
 		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		.github\workflows\dev-deploy.yml = .github\workflows\dev-deploy.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.UserManagement.API", "Cypherly.UserManagement.API\Cypherly.UserManagement.API.csproj", "{C346E2BF-4AC9-4252-92E6-5376DD402269}"
