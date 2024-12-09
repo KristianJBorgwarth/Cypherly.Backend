@@ -117,6 +117,6 @@ jobs:
             --build-arg RabbitMq__Username="${{ secrets.RABBITMQ_USERNAME }}" \
             --build-arg RabbitMq__Password="${{ secrets.RABBITMQ_PASSWORD }}" \
             --build-arg Serilog__WriteTo__1__Args__serverUrl="${{ secrets.SERILOG_SERVER_URL }}" \
-            -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-sagaorchestrator.messaging:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-sagaorchestrator-messaging:latest \
             -f Cypherly.SagaOrchestrator.Messaging/Dockerfile . \
             --push
