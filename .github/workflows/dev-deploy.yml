@@ -83,7 +83,7 @@ jobs:
             --build-arg RabbitMq__Password="${{ secrets.RABBITMQ_PASSWORD }}" \
             --build-arg Valkey__Host="${{ secrets.VALKEY_HOST }}" \
             --build-arg Valkey__Port="${{ secrets.VALKEY_PORT }}" \
-            -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-authentication.api:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-authentication-api:latest \
             -f Cypherly.Authentication.API/Dockerfile . \
             --push
 
@@ -104,7 +104,7 @@ jobs:
             --build-arg Bucket__ProfilePictureBucket="${{ secrets.BUCKET_PROFILEPICTUREBUCKET }}" \
             --build-arg Bucket__User="${{ secrets.BUCKET_USER }}" \
             --build-arg Bucket__Password="${{ secrets.BUCKET_PASSWORD }}" \
-            -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-usermanagement.api:latest \
+            -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-usermanagement-api:latest \
             -f Cypherly.UserManagement.API/Dockerfile . \
             --push
 
