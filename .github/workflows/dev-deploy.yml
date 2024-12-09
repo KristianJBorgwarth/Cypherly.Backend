@@ -65,7 +65,7 @@ jobs:
             --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
             --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
             -t ${{ secrets.DOCKER_USERNAME }}/dev-minimemail-api:latest \
-            ./MiniEmail.API \
+            -f MiniEmail.API/Dockerfile . \
             --push
 
       # Deploy Cypherly.Authentication.API
@@ -84,7 +84,7 @@ jobs:
             --build-arg Valkey__Host=${{ secrets.VALKEY_HOST }} \
             --build-arg Valkey__Port=${{ secrets.VALKEY_PORT }} \
             -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-authentication.api:latest \
-            ./Cypherly.Authentication.API \
+            -f Cypherly.Authentication.API/Dockerfile . \
             --push
 
       # Deploy Cypherly.UserManagement.API
@@ -105,7 +105,7 @@ jobs:
             --build-arg Bucket__User=${{ secrets.BUCKET_USER }} \
             --build-arg Bucket__Password=${{ secrets.BUCKET_PASSWORD }} \
             -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-usermanagement.api:latest \
-            ./Cypherly.UserManagement.API \
+            -f Cypherly.UserManagement.API/Dockerfile . \
             --push
 
       # Deploy Cypherly.SagaOrchestrator.Messaging
@@ -118,5 +118,5 @@ jobs:
             --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
             --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
             -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-sagaorchestrator.messaging:latest \
-            ./Cypherly.SagaOrchestrator.Messaging \
+            -f Cypherly.SagaOrchestrator.Messaging/Dockerfile . \
             --push
