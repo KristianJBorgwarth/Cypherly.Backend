@@ -54,7 +54,7 @@ jobs:
       # Deploy MiniEmail.API
       - name: Build and Push Docker Image for MiniEmail.API
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 \
+          docker buildx build --platform linux/amd64 \
             --build-arg Email__Smtp__Host=${{ secrets.EMAIL_SMTP_HOST }} \
             --build-arg Email__Smtp__Port=${{ secrets.EMAIL_SMTP_PORT }} \
             --build-arg Email__Smtp__Username=${{ secrets.EMAIL_SMTP_USERNAME }} \
@@ -71,7 +71,7 @@ jobs:
       # Deploy Cypherly.Authentication.API
       - name: Build and Push Docker Image for Cypherly.Authentication.API
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 \
+          docker buildx build --platform linux/amd64 \
             --build-arg Jwt__Secret=${{ secrets.JWT_SECRET }} \
             --build-arg Jwt__Issuer=${{ secrets.JWT_ISSUER }} \
             --build-arg Jwt__Audience=${{ secrets.JWT_AUDIENCE }} \
@@ -90,7 +90,7 @@ jobs:
       # Deploy Cypherly.UserManagement.API
       - name: Build and Push Docker Image for Cypherly.UserManagement.API
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 \
+          docker buildx build --platform linux/amd64 \
             --build-arg ConnectionStrings__UserManagementDbConnectionString=${{ secrets.USERMANAGEMENT_DB_CONNECTIONSTRING }} \
             --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
             --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
@@ -111,7 +111,7 @@ jobs:
       # Deploy Cypherly.SagaOrchestrator.Messaging
       - name: Build and Push Docker Image for Cypherly.SagaOrchestrator.Messaging
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 \
+          docker buildx build --platform linux/amd64 \
             --build-arg ConnectionStrings__SagaOrchestratorDbConnectionString=${{ secrets.SAGAORCHESTRATOR_DB_CONNECTIONSTRING }} \
             --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
             --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
