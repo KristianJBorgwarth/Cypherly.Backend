@@ -35,60 +35,6 @@ jobs:
   deploy:
     needs: build-and-test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service:
-          - name: "minimemail.api"
-            context: "./MiniEmail.API"
-            args: |
-              --build-arg Email__Smtp__Host=${{ secrets.EMAIL_SMTP_HOST }} \
-              --build-arg Email__Smtp__Port=${{ secrets.EMAIL_SMTP_PORT }} \
-              --build-arg Email__Smtp__Username=${{ secrets.EMAIL_SMTP_USERNAME }} \
-              --build-arg Email__Smtp__Password=${{ secrets.EMAIL_SMTP_PASSWORD }} \
-              --build-arg Email__Smtp__FromAddress=${{ secrets.EMAIL_SMTP_FROMADDRESS }} \
-              --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
-              --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
-              --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
-              --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }}
-          - name: "cypherly.authentication.api"
-            context: "./Cypherly.Authentication.API"
-            args: |
-              --build-arg Jwt__Secret=${{ secrets.JWT_SECRET }} \
-              --build-arg Jwt__Issuer=${{ secrets.JWT_ISSUER }} \
-              --build-arg Jwt__Audience=${{ secrets.JWT_AUDIENCE }} \
-              --build-arg Jwt__TokenLifeTimeInMinutes=${{ secrets.JWT_TOKENLIFETIMEINMINUTES }} \
-              --build-arg ConnectionStrings__AuthenticationDbConnectionString=${{ secrets.AUTHENTICATION_DB_CONNECTIONSTRING }} \
-              --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
-              --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
-              --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
-              --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
-              --build-arg Valkey__Host=${{ secrets.VALKEY_HOST }} \
-              --build-arg Valkey__Port=${{ secrets.VALKEY_PORT }}
-          - name: "cypherly.usermanagement.api"
-            context: "./Cypherly.UserManagement.API"
-            args: |
-              --build-arg ConnectionStrings__UserManagementDbConnectionString=${{ secrets.USERMANAGEMENT_DB_CONNECTIONSTRING }} \
-              --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
-              --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
-              --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
-              --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
-              --build-arg Jwt__Secret=${{ secrets.JWT_SECRET }} \
-              --build-arg Jwt__Issuer=${{ secrets.JWT_ISSUER }} \
-              --build-arg Jwt__Audience=${{ secrets.JWT_AUDIENCE }} \
-              --build-arg Jwt__TokenLifeTimeInMinutes=${{ secrets.JWT_TOKENLIFETIMEINMINUTES }} \
-              --build-arg Bucket__Host=${{ secrets.BUCKET_HOST }} \
-              --build-arg Bucket__ProfilePictureBucket=${{ secrets.BUCKET_PROFILEPICTUREBUCKET }} \
-              --build-arg Bucket__User=${{ secrets.BUCKET_USER }} \
-              --build-arg Bucket__Password=${{ secrets.BUCKET_PASSWORD }}
-          - name: "cypherly.sagaorchestrator.messaging"
-            context: "./Cypherly.SagaOrchestrator.Messaging"
-            args: |
-              --build-arg ConnectionStrings__SagaOrchestratorDbConnectionString=${{ secrets.SAGAORCHESTRATOR_DB_CONNECTIONSTRING }} \
-              --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
-              --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
-              --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
-              --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }}
-
     steps:
       # Checkout the code
       - name: Checkout Code
@@ -105,11 +51,72 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Build and push Docker images
-      - name: Build and Push Docker Image for ${{ matrix.service.name }}
+      # Deploy MiniEmail.API
+      - name: Build and Push Docker Image for MiniEmail.API
         run: |
           docker buildx build --platform linux/amd64,linux/arm64 \
-            ${{ matrix.service.args }} \
-            -t ${{ secrets.DOCKER_USERNAME }}/dev:${{ matrix.service.name }}:latest \
-            ${{ matrix.service.context }} \
+            --build-arg Email__Smtp__Host=${{ secrets.EMAIL_SMTP_HOST }} \
+            --build-arg Email__Smtp__Port=${{ secrets.EMAIL_SMTP_PORT }} \
+            --build-arg Email__Smtp__Username=${{ secrets.EMAIL_SMTP_USERNAME }} \
+            --build-arg Email__Smtp__Password=${{ secrets.EMAIL_SMTP_PASSWORD }} \
+            --build-arg Email__Smtp__FromAddress=${{ secrets.EMAIL_SMTP_FROMADDRESS }} \
+            --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
+            --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
+            --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
+            --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/dev:minimemail.api:latest \
+            ./MiniEmail.API \
+            --push
+
+      # Deploy Cypherly.Authentication.API
+      - name: Build and Push Docker Image for Cypherly.Authentication.API
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            --build-arg Jwt__Secret=${{ secrets.JWT_SECRET }} \
+            --build-arg Jwt__Issuer=${{ secrets.JWT_ISSUER }} \
+            --build-arg Jwt__Audience=${{ secrets.JWT_AUDIENCE }} \
+            --build-arg Jwt__TokenLifeTimeInMinutes=${{ secrets.JWT_TOKENLIFETIMEINMINUTES }} \
+            --build-arg ConnectionStrings__AuthenticationDbConnectionString=${{ secrets.AUTHENTICATION_DB_CONNECTIONSTRING }} \
+            --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
+            --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
+            --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
+            --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
+            --build-arg Valkey__Host=${{ secrets.VALKEY_HOST }} \
+            --build-arg Valkey__Port=${{ secrets.VALKEY_PORT }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/dev:cypherly.authentication.api:latest \
+            ./Cypherly.Authentication.API \
+            --push
+
+      # Deploy Cypherly.UserManagement.API
+      - name: Build and Push Docker Image for Cypherly.UserManagement.API
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            --build-arg ConnectionStrings__UserManagementDbConnectionString=${{ secrets.USERMANAGEMENT_DB_CONNECTIONSTRING }} \
+            --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
+            --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
+            --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
+            --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
+            --build-arg Jwt__Secret=${{ secrets.JWT_SECRET }} \
+            --build-arg Jwt__Issuer=${{ secrets.JWT_ISSUER }} \
+            --build-arg Jwt__Audience=${{ secrets.JWT_AUDIENCE }} \
+            --build-arg Jwt__TokenLifeTimeInMinutes=${{ secrets.JWT_TOKENLIFETIMEINMINUTES }} \
+            --build-arg Bucket__Host=${{ secrets.BUCKET_HOST }} \
+            --build-arg Bucket__ProfilePictureBucket=${{ secrets.BUCKET_PROFILEPICTUREBUCKET }} \
+            --build-arg Bucket__User=${{ secrets.BUCKET_USER }} \
+            --build-arg Bucket__Password=${{ secrets.BUCKET_PASSWORD }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/dev:cypherly.usermanagement.api:latest \
+            ./Cypherly.UserManagement.API \
+            --push
+
+      # Deploy Cypherly.SagaOrchestrator.Messaging
+      - name: Build and Push Docker Image for Cypherly.SagaOrchestrator.Messaging
+        run: |
+          docker buildx build --platform linux/amd64,linux/arm64 \
+            --build-arg ConnectionStrings__SagaOrchestratorDbConnectionString=${{ secrets.SAGAORCHESTRATOR_DB_CONNECTIONSTRING }} \
+            --build-arg RabbitMq__Host=${{ secrets.RABBITMQ_HOST }} \
+            --build-arg RabbitMq__Username=${{ secrets.RABBITMQ_USERNAME }} \
+            --build-arg RabbitMq__Password=${{ secrets.RABBITMQ_PASSWORD }} \
+            --build-arg Serilog__WriteTo__1__Args__serverUrl=${{ secrets.SERILOG_SERVER_URL }} \
+            -t ${{ secrets.DOCKER_USERNAME }}/dev:cypherly.sagaorchestrator.messaging:latest \
+            ./Cypherly.SagaOrchestrator.Messaging \
             --push

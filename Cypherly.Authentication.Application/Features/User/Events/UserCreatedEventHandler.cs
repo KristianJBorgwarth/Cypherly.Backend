@@ -31,7 +31,7 @@ public class UserCreatedEventHandler(
         }
 
         var emailMessage = new SendEmailMessage( user.Email.Address, "Welcome to Cypherly",
-            "Welcome to Cypherly! Below is your verification code: " + verificationCode.Code, Guid.NewGuid());
+            "Welcome to Cypherly! Below is your verification code: " + verificationCode.Code.Value, Guid.NewGuid());
         await emailProducer.PublishMessageAsync(emailMessage, cancellationToken);
     }
 }
