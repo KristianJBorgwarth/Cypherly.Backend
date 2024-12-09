@@ -36,6 +36,9 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
+      # Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       # Set up Docker Buildx
       - name: Set up Docker Buildx
