@@ -29,7 +29,8 @@ try
         {
             services.AddDbContext<OrchestratorDbContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("SagaOrchestratorDbConnectionString")!, b=> b.MigrationsAssembly(typeof(OrchestratorDbContext).Assembly.FullName));
+                options.UseNpgsql(configuration.GetConnectionString("SagaOrchestratorDbConnectionString")!,
+                    b => b.MigrationsAssembly(typeof(OrchestratorDbContext).Assembly.FullName));
             });
             services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
             services.AddMassTransitWithRabbitMq(Assembly.GetExecutingAssembly(), x =>
@@ -44,6 +45,23 @@ try
         })
         .Build();
 
+    using (var scope = host.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<OrchestratorDbContext>();
+        Log.Information("Looking for pending migrations...");
+        if (dbContext.Database.GetPendingMigrations().Any())
+        {
+            Log.Information("Applying migrations...");
+            dbContext.Database.Migrate();
+            Log.Information("Migrations applied successfully");
+        }
+        else
+        {
+            Log.Information("No pending migrations found");
+        }
+    }
+
+    Log.Logger.Information("Starting application: SagaOrchestrator.Messaging");
     await host.RunAsync();
 }
 catch (Exception ex)

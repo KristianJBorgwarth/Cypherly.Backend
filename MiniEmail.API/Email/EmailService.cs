@@ -17,6 +17,7 @@ public class EmailService(ILogger<EmailService> logger, ISmtpClient smtpClient) 
                 IsBodyHtml = true
             };
 
+            logger.LogInformation("Sending email to {To} with subject {Subject}", to, subject);
             await smtpClient.SendMailAsync(mailMessage);
             return Result.Ok();
         }
