@@ -69,6 +69,7 @@ public class VerifyNonceCommandHandler(
         }
     }
 
+    //TODO: possibly move to a service for unit test friendly design
     private static bool VerifyNonce(string nonce, string signature, string publickey)
     {
         var publicKeyParam = new Ed25519PublicKeyParameters(Convert.FromBase64String(publickey));
