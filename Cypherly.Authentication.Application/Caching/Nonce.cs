@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+// ReSharper disable ConvertToPrimaryConstructor
 
 namespace Cypherly.Authentication.Application.Caching;
 
