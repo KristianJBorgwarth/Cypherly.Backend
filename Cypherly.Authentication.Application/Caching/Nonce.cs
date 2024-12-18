@@ -6,23 +6,42 @@ namespace Cypherly.Authentication.Application.Caching;
 public class Nonce
 {
     public Guid Id { get; private init; }
-    public string NonceValue { get; private init; }
+    public string NonceValue { get; private init; } = null!;
     public Guid UserId { get; private init; }
     public Guid DeviceId { get; private init; }
     public DateTime CreatedAt { get; private init; }
+    public DateTime ExpiresAt { get; private init; }
+    public bool Exipred => DateTime.UtcNow > ExpiresAt;
 
-    private readonly DateTime _expiresAt;
+    private Nonce() { } // Hide the constructor to force the use of the factory methods
 
-    public bool Exipred => DateTime.UtcNow > _expiresAt;
-
-    public Nonce(Guid userId, Guid deviceId)
+    public static Nonce Create(Guid userId, Guid deviceId)
     {
-        Id = Guid.NewGuid();
-        UserId = userId;
-        DeviceId = deviceId;
-        NonceValue = GenerateNonceValue();
-        CreatedAt = DateTime.UtcNow;
-        _expiresAt = DateTime.UtcNow.AddMinutes(15);
+        return new Nonce()
+        {
+            Id = Guid.NewGuid(),
+            NonceValue = GenerateNonceValue(),
+            UserId = userId,
+            DeviceId = deviceId,
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = DateTime.UtcNow.AddMinutes(5),
+        };
+    }
+
+    internal static Nonce FromCache(Guid id, string nonceValue, Guid userId, Guid deviceId, DateTime createdAt, DateTime expiresAt)
+    {
+        if (string.IsNullOrWhiteSpace(nonceValue))
+            throw new ArgumentException("Value cannot be null or whitespace.", nameof(nonceValue));
+
+        return new Nonce()
+        {
+            Id = id,
+            NonceValue = nonceValue,
+            UserId = userId,
+            DeviceId = deviceId,
+            CreatedAt = createdAt,
+            ExpiresAt = expiresAt,
+        };
     }
 
     private static string GenerateNonceValue()

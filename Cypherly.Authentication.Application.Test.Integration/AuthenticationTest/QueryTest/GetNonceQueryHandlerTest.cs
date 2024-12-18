@@ -1,4 +1,5 @@
-﻿using Cypherly.Authentication.Application.Caching;
+﻿using System.Text.Json;
+using Cypherly.Authentication.Application.Caching;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.Authentication.Queries.GetNonce;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
@@ -49,7 +50,11 @@ public class GetNonceQueryHandlerTest : IntegrationTestBase
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        var nonce = await Cache.GetAsync<Nonce>(result.Value!.Id.ToString(), new CancellationToken());
+        var options = new JsonSerializerOptions()
+        {
+            Converters = { new NonceJsonConverter() },
+        };
+        var nonce = await Cache.GetAsync<Nonce>(result.Value!.Id.ToString(), options, new CancellationToken());
         nonce.Should().NotBeNull();
         nonce!.UserId.Should().Be(user.Id);
     }

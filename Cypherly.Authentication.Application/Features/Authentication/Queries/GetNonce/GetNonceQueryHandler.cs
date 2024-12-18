@@ -26,7 +26,7 @@ public class GetNonceQueryHandler(
 
             var device = user.GetDevice(request.DeviceId);
 
-            var nonce = new Nonce(user.Id, device.Id);
+            var nonce = Nonce.Create(user.Id, device.Id);
 
             await nonceCache.AddNonceAsync(nonce, cancellationToken);
 
