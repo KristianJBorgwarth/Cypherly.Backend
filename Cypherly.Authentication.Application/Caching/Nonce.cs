@@ -28,7 +28,7 @@ public class Nonce
         };
     }
 
-    internal static Nonce FromCache(Guid id, string nonceValue, Guid userId, Guid deviceId, DateTime createdAt, DateTime expiresAt)
+    public static Nonce FromCache(Guid id, string nonceValue, Guid userId, Guid deviceId, DateTime createdAt, DateTime expiresAt)
     {
         if (string.IsNullOrWhiteSpace(nonceValue))
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(nonceValue));
