@@ -6,7 +6,7 @@ public class VerifyNonceDto
 {
     public required string Jwt { get; init; }
     public required string RefreshToken { get; init; }
-    public DateTime ExpiresAt { get; set; }
+    public DateTime ExpiresAt { get; init; }
 
     private VerifyNonceDto() { } // Hide the constructor to force the use of the Map method
 
@@ -16,7 +16,7 @@ public class VerifyNonceDto
         {
             Jwt = jwt,
             RefreshToken = refreshToken.Token,
-            ExpiresAt = refreshToken.Expires
+            ExpiresAt = refreshToken.Expires,
         };
     }
 }
