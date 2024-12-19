@@ -4,7 +4,7 @@ using Cypherly.Authentication.Application.Contracts;
 
 namespace Cypherly.Authentication.Redis.Services;
 
-public class NonceCacheService(IRedisCacheService redisCacheService) : INonceCacheService
+public class NonceCacheService(IValkeyCacheService valkeyCacheService) : INonceCacheService
 {
     private readonly JsonSerializerOptions _options = new JsonSerializerOptions()
     {
@@ -12,16 +12,16 @@ public class NonceCacheService(IRedisCacheService redisCacheService) : INonceCac
     };
     public async Task AddNonceAsync(Nonce nonce, CancellationToken cancellationToken)
     {
-        await redisCacheService.SetAsync(nonce.Id.ToString(), nonce, cancellationToken, TimeSpan.FromMinutes(5));
+        await valkeyCacheService.SetAsync(nonce.Id.ToString(), nonce, cancellationToken, TimeSpan.FromMinutes(5));
     }
 
     public async Task<Nonce?> GetNonceAsync(Guid nonceId, CancellationToken cancellationToken)
     {
-        return await redisCacheService.GetAsync<Nonce>(nonceId.ToString(), _options, cancellationToken);
+        return await valkeyCacheService.GetAsync<Nonce>(nonceId.ToString(), _options, cancellationToken);
     }
 
     public Task DeteleNonceAsync(Guid nonceId, CancellationToken cancellationToken)
     {
-        return redisCacheService.RemoveAsync(nonceId.ToString(), cancellationToken);
+        return valkeyCacheService.RemoveAsync(nonceId.ToString(), cancellationToken);
     }
 }

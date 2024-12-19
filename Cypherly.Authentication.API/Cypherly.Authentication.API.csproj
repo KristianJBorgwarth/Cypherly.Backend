@@ -23,7 +23,7 @@
       <ProjectReference Include="..\Cypherly.API\Cypherly.API.csproj" />
       <ProjectReference Include="..\Cypherly.Authentication.Application\Cypherly.Authentication.Application.csproj" />
       <ProjectReference Include="..\Cypherly.Authentication.Persistence\Cypherly.Authentication.Persistence.csproj" />
-      <ProjectReference Include="..\Cypherly.Authentication.Redis\Cypherly.Authentication.Redis.csproj" />
+      <ProjectReference Include="..\Cypherly.Authentication.Valkey\Cypherly.Authentication.Valkey.csproj" />
       <ProjectReference Include="..\Cypherly.MassTransit.Messaging\Cypherly.MassTransit.Messaging.csproj" />
       <ProjectReference Include="..\Cypherly.Outboxing.Messaging\Cypherly.Outboxing.Messaging.csproj" />
     </ItemGroup>

@@ -5,14 +5,14 @@ using Microsoft.Extensions.Caching.Distributed;
 namespace Cypherly.Authentication.Redis.Services;
 
 [SuppressMessage("Design", "CA1068:CancellationToken parameters must come last")]
-public interface IRedisCacheService
+public interface IValkeyCacheService
 {
     Task<T?> GetAsync<T>(string key,JsonSerializerOptions? options, CancellationToken cancellationToken);
     Task SetAsync<T>(string key, T value, CancellationToken cancellationToken, TimeSpan? expiry);
     Task RemoveAsync(string key, CancellationToken cancellationToken);
 }
 
-internal class RedisCacheService(IDistributedCache cache) : IRedisCacheService
+internal class ValkeyCacheService(IDistributedCache cache) : IValkeyCacheService
 {
     public async Task<T?> GetAsync<T>(string key, JsonSerializerOptions? options, CancellationToken cancellationToken)
     {

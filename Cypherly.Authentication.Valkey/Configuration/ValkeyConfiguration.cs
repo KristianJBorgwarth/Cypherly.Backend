@@ -20,7 +20,7 @@ public static class ValkeyConfiguration
             options.InstanceName = "Cypherly.Authentication.API_";
         });
 
-        services.AddSingleton<IRedisCacheService, RedisCacheService>();
+        services.AddSingleton<IValkeyCacheService, ValkeyCacheService>();
         services.AddScoped<INonceCacheService, NonceCacheService>();
 
         return services;
