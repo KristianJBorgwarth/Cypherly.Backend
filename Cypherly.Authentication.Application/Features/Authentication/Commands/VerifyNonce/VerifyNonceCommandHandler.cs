@@ -1,4 +1,5 @@
 ﻿using Cypherly.Application.Abstractions;
+using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Domain.Common;
@@ -11,6 +12,7 @@ public class VerifyNonceCommandHandler(
     INonceCacheService nonceCacheService,
     IJwtService jwtService,
     IVerifyNonceService verifyNonceService,
+    IUnitOfWork unitOfWork,
     ILogger<VerifyNonceCommandHandler> logger)
     : ICommandHandler<VerifyNonceCommand, VerifyNonceDto>
 {
@@ -34,12 +36,6 @@ public class VerifyNonceCommandHandler(
                 return Result.Fail<VerifyNonceDto>(Errors.General.NotFound(cmd.NonceId));
             }
 
-            if (nonce.UserId != user.Id || nonce.DeviceId != cmd.DeviceId)
-            {
-                logger.LogWarning("Nonce with ID: {ID} does not match user with ID: {UserId} and device with ID: {DeviceId}.", cmd.NonceId, user.Id, cmd.DeviceId);
-                return Result.Fail<VerifyNonceDto>(Errors.General.Unauthorized());
-            }
-
             var device = user.GetDevice(cmd.DeviceId);
 
             var isNonceValid = verifyNonceService.VerifyNonce(nonce.NonceValue, cmd.Nonce, device.PublicKey);
@@ -52,6 +48,8 @@ public class VerifyNonceCommandHandler(
             var refreshToken = device.GetActiveRefreshToken();
 
             var dto = VerifyNonceDto.Map(token, refreshToken!);
+
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Ok(dto);
         }
