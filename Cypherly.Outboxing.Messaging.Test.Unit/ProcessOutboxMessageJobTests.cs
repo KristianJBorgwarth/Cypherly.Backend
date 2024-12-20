@@ -16,7 +16,6 @@ public class ProcessOutboxMessageJobTests
 {
     private readonly IOutboxRepository _fakeOutboxRepository;
     private readonly IPublisher _fakePublisher;
-    private readonly ILogger<ProcessOutboxMessageJob> _fakeLogger;
     private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly ProcessOutboxMessageJob _sut;
     private readonly IJobExecutionContext _fakeJobContext;
@@ -25,10 +24,10 @@ public class ProcessOutboxMessageJobTests
     {
         _fakeOutboxRepository = A.Fake<IOutboxRepository>();
         _fakePublisher = A.Fake<IPublisher>();
-        _fakeLogger = A.Fake<ILogger<ProcessOutboxMessageJob>>();
+        var fakeLogger = A.Fake<ILogger<ProcessOutboxMessageJob>>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         _fakeJobContext = A.Fake<IJobExecutionContext>();
-        _sut = new ProcessOutboxMessageJob(_fakeOutboxRepository, _fakePublisher, _fakeLogger, _fakeUnitOfWork);
+        _sut = new ProcessOutboxMessageJob(_fakeOutboxRepository, _fakePublisher, fakeLogger, _fakeUnitOfWork);
     }
 
     [Fact]

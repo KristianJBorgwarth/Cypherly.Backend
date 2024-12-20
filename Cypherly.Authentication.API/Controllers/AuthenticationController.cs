@@ -1,7 +1,7 @@
 ﻿using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
+using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyNonce;
 using Cypherly.Authentication.Application.Features.Authentication.Queries.GetNonce;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.Authentication.Controllers;
@@ -26,6 +26,16 @@ public class AuthenticationController(ISender sender) : BaseController
     public async Task<IActionResult> GetNonce([FromQuery] GetNonceQuery query)
     {
         var result = await sender.Send(query);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+    [HttpPost]
+    [Route("verify-nonce")]
+    [ProducesResponseType(typeof(VerifyNonceDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> VerifyNonce([FromBody] VerifyNonceCommand command)
+    {
+        var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 }

@@ -99,7 +99,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Common.Messaging",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.SagaOrchestrator.Messaging.Test.Unit", "Cypherly.SagaOrchestrator.Messaging.Test.Unit\Cypherly.SagaOrchestrator.Messaging.Test.Unit.csproj", "{38407EE2-2BFD-4BE2-9366-58BA87EA30C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Redis", "Cypherly.Authentication.Redis\Cypherly.Authentication.Redis.csproj", "{6126BE0D-2E39-42A9-9B6B-C9C3A9842005}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.Authentication.Valkey", "Cypherly.Authentication.Valkey\Cypherly.Authentication.Valkey.csproj", "{6126BE0D-2E39-42A9-9B6B-C9C3A9842005}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
