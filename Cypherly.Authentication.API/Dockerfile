@@ -16,7 +16,7 @@ COPY ["Cypherly.Authentication.Domain/Cypherly.Authentication.Domain.csproj", "C
 COPY ["Cypherly.Common.Messaging/Cypherly.Common.Messaging.csproj", "Cypherly.Common.Messaging/"]
 COPY ["Cypherly.Authentication.Persistence/Cypherly.Authentication.Persistence.csproj", "Cypherly.Authentication.Persistence/"]
 COPY ["Cypherly.Persistence/Cypherly.Persistence.csproj", "Cypherly.Persistence/"]
-COPY ["Cypherly.Authentication.Redis/Cypherly.Authentication.Redis.csproj", "Cypherly.Authentication.Redis/"]
+COPY ["Cypherly.Authentication.Redis/Cypherly.Authentication.Valkey.csproj", "Cypherly.Authentication.Valkey/"]
 COPY ["Cypherly.MassTransit.Messaging/Cypherly.MassTransit.Messaging.csproj", "Cypherly.MassTransit.Messaging/"]
 COPY ["Cypherly.Outboxing.Messaging/Cypherly.Outboxing.Messaging.csproj", "Cypherly.Outboxing.Messaging/"]
 RUN dotnet restore "Cypherly.Authentication.API/Cypherly.Authentication.API.csproj"
