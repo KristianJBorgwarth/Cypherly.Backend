@@ -1,4 +1,5 @@
 ﻿using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
+using Cypherly.Authentication.Application.Features.Authentication.Commands.RefreshTokens;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyNonce;
 using Cypherly.Authentication.Application.Features.Authentication.Queries.GetNonce;
 using MediatR;
@@ -34,6 +35,16 @@ public class AuthenticationController(ISender sender) : BaseController
     [ProducesResponseType(typeof(VerifyNonceDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> VerifyNonce([FromBody] VerifyNonceCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+    
+    [HttpPost]
+    [Route("refresh-token")]
+    [ProducesResponseType(typeof(RefreshTokensDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokensCommand command)
     {
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
