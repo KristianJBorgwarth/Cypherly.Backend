@@ -4,7 +4,7 @@ using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Entities;
 
-public class RefreshToken : Entity
+public sealed class RefreshToken : Entity
 {
     public string Token { get; private set; } = null!;
     public DateTime Expires { get; }
@@ -12,7 +12,7 @@ public class RefreshToken : Entity
     public bool IsRevoked => Revoked.HasValue;
     public bool IsExpired => DateTime.UtcNow >= Expires;
     public Guid DeviceId { get; private set; }
-    public virtual Device Device { get; private set; } = null!;
+    public Device Device { get; private set; } = null!;
 
     public RefreshToken() : base(Guid.Empty) {} // For EF Core
 
