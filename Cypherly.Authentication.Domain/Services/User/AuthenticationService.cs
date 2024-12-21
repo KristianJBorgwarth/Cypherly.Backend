@@ -10,6 +10,7 @@ public interface IAuthenticationService
 }
 public class AuthenticationService : IAuthenticationService
 {
+    //TODO: test this
     public RefreshToken GenerateRefreshToken(Aggregates.User user, Guid deviceId)
     {
         var device = user.GetDevice(deviceId);
@@ -27,6 +28,7 @@ public class AuthenticationService : IAuthenticationService
         return refreshedToken;
     }
     
+    //TODO: test this
     public bool VerifyRefreshToken(Aggregates.User user, Guid deviceId, string refreshToken)
     {
         var device = user.GetDevice(deviceId);
