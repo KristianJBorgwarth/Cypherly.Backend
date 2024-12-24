@@ -83,9 +83,11 @@ public class Device : Entity
     /// <summary>
     /// Adds a valid refresh token <see cref="RefreshToken"/> to the device.
     /// </summary>
-    public void AddRefreshToken()
+    public RefreshToken AddRefreshToken()
     {
-        _refreshTokens.Add(new RefreshToken(Guid.NewGuid(), deviceId: Id));
+        var token = new RefreshToken(Guid.NewGuid(), deviceId: Id);
+        _refreshTokens.Add(token);
+        return token;
     }
 
     /// <summary>

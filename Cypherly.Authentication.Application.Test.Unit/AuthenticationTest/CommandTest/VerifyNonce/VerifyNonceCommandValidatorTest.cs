@@ -6,7 +6,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.AuthenticationTest.Comma
 public class VerifyNonceCommandValidatorTest
 {
     private readonly VerifyNonceCommandValidator _validator = new();
-    
+
     [Fact]
     public void VerifyNonceCommandValidator_WhenUserIdIsEmpty_ShouldHaveError()
     {
@@ -17,13 +17,13 @@ public class VerifyNonceCommandValidatorTest
             DeviceId =  Guid.NewGuid(),
             Nonce = "nonce"
         };
-        
+
         var result = _validator.Validate(command);
-        
+
         result.IsValid.Should().BeFalse();
         result.Errors.Should().Contain(x => x.PropertyName == nameof(VerifyNonceCommand.UserId));
     }
-    
+
     [Fact]
     public void VerifyNonceCommandValidator_WhenNonceIdIsEmpty_ShouldHaveError()
     {
@@ -34,13 +34,13 @@ public class VerifyNonceCommandValidatorTest
             DeviceId =  Guid.NewGuid(),
             Nonce = "nonce"
         };
-        
+
         var result = _validator.Validate(command);
-        
+
         result.IsValid.Should().BeFalse();
         result.Errors.Should().Contain(x => x.PropertyName == nameof(VerifyNonceCommand.NonceId));
     }
-    
+
     [Fact]
     public void VerifyNonceCommandValidator_WhenDeviceIdIsEmpty_ShouldHaveError()
     {
@@ -51,13 +51,13 @@ public class VerifyNonceCommandValidatorTest
             DeviceId =  Guid.Empty,
             Nonce = "nonce"
         };
-        
+
         var result = _validator.Validate(command);
-        
+
         result.IsValid.Should().BeFalse();
         result.Errors.Should().Contain(x => x.PropertyName == nameof(VerifyNonceCommand.DeviceId));
     }
-    
+
     [Fact]
     public void VerifyNonceCommandValidator_WhenNonceIsEmpty_ShouldHaveError()
     {
@@ -68,26 +68,9 @@ public class VerifyNonceCommandValidatorTest
             DeviceId =  Guid.NewGuid(),
             Nonce = string.Empty
         };
-        
+
         var result = _validator.Validate(command);
-        
-        result.IsValid.Should().BeFalse();
-        result.Errors.Should().Contain(x => x.PropertyName == nameof(VerifyNonceCommand.Nonce));
-    }
-    
-    [Fact]
-    public void VerifyNonceCommandValidator_WhenNonceIsTooLong_ShouldHaveError()
-    {
-        var command = new VerifyNonceCommand
-        {
-            UserId = Guid.NewGuid(),
-            NonceId = Guid.NewGuid(),
-            DeviceId =  Guid.NewGuid(),
-            Nonce = "nonce".PadRight(45, 'a')
-        };
-        
-        var result = _validator.Validate(command);
-        
+
         result.IsValid.Should().BeFalse();
         result.Errors.Should().Contain(x => x.PropertyName == nameof(VerifyNonceCommand.Nonce));
     }

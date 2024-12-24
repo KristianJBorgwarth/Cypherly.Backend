@@ -13,9 +13,8 @@ public class VerifyNonceCommandValidator : AbstractValidator<VerifyNonceCommand>
             .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(VerifyNonceCommand.NonceId)).Message);
         RuleFor(x=> x.DeviceId)
             .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(VerifyNonceCommand.DeviceId)).Message);
-        RuleFor(x=> x.Nonce)
+        RuleFor(x => x.Nonce)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(VerifyNonceCommand.Nonce)).Message)
-            .MaximumLength(44).WithMessage(Errors.General.ValueTooLarge(nameof(VerifyNonceCommand.Nonce), 44).Message);
+            .WithMessage(Errors.General.ValueIsEmpty(nameof(VerifyNonceCommand.Nonce)).Message);
     }
 }
