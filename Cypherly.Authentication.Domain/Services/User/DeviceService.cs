@@ -7,7 +7,7 @@ namespace Cypherly.Authentication.Domain.Services.User;
 
 public interface IDeviceService
 {
-    public Device RegisterDevice(Aggregates.User user, string deviceName, string devicePublicKey,
+    public Device RegisterDevice(Aggregates.User user, string devicePublicKey,
         string deviceAppVersion, DeviceType deviceType, DevicePlatform devicePlatform);
 
     public Result VerifyDevice(Aggregates.User user, Guid deviceId, string deviceVerificationCode);
@@ -15,9 +15,9 @@ public interface IDeviceService
 
 public class DeviceService : IDeviceService
 {
-    public Device RegisterDevice(Aggregates.User user, string deviceName, string devicePublicKey, string deviceAppVersion, DeviceType deviceType, DevicePlatform devicePlatform)
+    public Device RegisterDevice(Aggregates.User user, string devicePublicKey, string deviceAppVersion, DeviceType deviceType, DevicePlatform devicePlatform)
     {
-        var device = new Device(Guid.NewGuid(), deviceName, devicePublicKey, deviceAppVersion, deviceType, devicePlatform, user.Id);
+        var device = new Device(Guid.NewGuid(), devicePublicKey, deviceAppVersion, deviceType, devicePlatform, user.Id);
 
         device.AddDeviceVerificationCode();
 

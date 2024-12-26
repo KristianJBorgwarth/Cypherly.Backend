@@ -31,7 +31,7 @@ public class GetNonceQueryHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("test123KJ??L"), true);
-        var device = new Device(Guid.NewGuid(), "TestDevice", "SomeKey", "1.0", DeviceType.Desktop, DevicePlatform.Android, user.Id);
+        var device = new Device(Guid.NewGuid(), "SomeKey", "1.0", DeviceType.Desktop, DevicePlatform.Android, user.Id);
         user.AddDevice(device);
 
         A.CallTo(() => _fakeRepo.GetByIdAsync(user.Id)).Returns(user);

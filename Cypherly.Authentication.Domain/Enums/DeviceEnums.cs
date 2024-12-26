@@ -22,6 +22,7 @@ public enum DevicePlatform
     Android,
     Windows,
     MacOS,
+    Linux,
     Unknown,
 }
 

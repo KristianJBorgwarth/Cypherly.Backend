@@ -35,7 +35,7 @@ public class VerifyDeviceCommandHandlerTest
         // Arrange
 
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("test2kasjda??KK"), true);
-        var device = new Device(Guid.NewGuid(), "Test.PC", "genericshit", "1.2", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
+        var device = new Device(Guid.NewGuid(), "genericshit", "1.2", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
 
         user.AddDevice(device);
 
@@ -83,7 +83,7 @@ public class VerifyDeviceCommandHandlerTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("test2kasjda??KK"), true);
-        var device = new Device(Guid.NewGuid(), "Test.PC", "genericshit", "1.2", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
+        var device = new Device(Guid.NewGuid(), "genericshit", "1.2", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
 
         user.AddDevice(device);
 

@@ -41,11 +41,10 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         {
             Email = user.Email.Address,
             Password = "TestPassword?123",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
+            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -76,11 +75,10 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         {
             Email = invalidEmail,
             Password = "TestPassword?123",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
+            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -107,11 +105,10 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         {
             Email = user.Email.Address,
             Password = invalidPw,
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
+            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -137,11 +134,10 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         {
             Email = user.Email.Address,
             Password = "TestPassword?123",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
+            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act

@@ -5,7 +5,7 @@ namespace Cypherly.Authentication.Domain.Entities;
 
 public class Device : Entity
 {
-    public string Name { get; init; } = null!;
+    public string Name { get; private init; } = null!;
     public string PublicKey { get; init; } = null!;
     public DeviceStatus Status { get; private set; }
     public DeviceType Type { get; init; }
@@ -21,20 +21,33 @@ public class Device : Entity
     public Device() : base(Guid.Empty) {} // For EF Core
 
     public Device(Guid id,
-        string name,
         string publicKey,
         string appVersion,
         DeviceType type,
         DevicePlatform platform,
         Guid userId) : base(id)
     {
-        Name = name;
+        Name = GenerateName(platform);
         PublicKey = publicKey;
         AppVersion = appVersion;
         UserId = userId;
         Type = type;
         Platform = platform;
         Status = DeviceStatus.Pending;
+    }
+
+    private static string GenerateName(DevicePlatform platform)
+    {
+        return platform switch
+        {
+            DevicePlatform.Android => "Mobile.Android",
+            DevicePlatform.iOS => "Mobile.iOS",
+            DevicePlatform.Windows => "PC.Windows",
+            DevicePlatform.MacOS => "PC.MacOS",
+            DevicePlatform.Linux => "PC.Linux",
+            DevicePlatform.Unknown => "Device.Unknown",
+            _ => throw new ArgumentOutOfRangeException(nameof(platform), platform, null),
+        };
     }
 
     /// <summary>

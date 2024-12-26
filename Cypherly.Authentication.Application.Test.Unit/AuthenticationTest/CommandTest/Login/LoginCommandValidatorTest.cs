@@ -17,7 +17,6 @@ public class LoginCommandValidatorTest
         {
             Email = "",
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
@@ -40,7 +39,6 @@ public class LoginCommandValidatorTest
         {
             Email = new string('a', 256),
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
@@ -63,7 +61,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = "",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
@@ -86,7 +83,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = new('a', 256),
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
@@ -109,7 +105,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
@@ -123,51 +118,7 @@ public class LoginCommandValidatorTest
         result.IsValid.Should().BeTrue();
     }
 
-    [Fact]
-    public void Should_Have_Error_When_DeviceName_Is_Too_Short()
-    {
-        // Arrange
-        var command = new LoginCommand
-        {
-            Email = "user@example.com",
-            Password = "ValidPassword123!",
-            DeviceName = "A",
-            Base64DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0",
-            DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
-        };
 
-        // Act
-        var result = _validator.TestValidate(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.DeviceName)
-            .WithErrorMessage("Value 'DeviceName' should be at least 3.");
-    }
-
-    [Fact]
-    public void Should_Have_Error_When_DeviceName_Exceeds_Max_Length()
-    {
-        // Arrange
-        var command = new LoginCommand
-        {
-            Email = "user@example.com",
-            Password = "ValidPassword123!",
-            DeviceName = new string('a', 41),
-            Base64DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0",
-            DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
-        };
-
-        // Act
-        var result = _validator.TestValidate(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.DeviceName)
-            .WithErrorMessage("Value 'DeviceName' should not exceed 40.");
-    }
 
     [Fact]
     public void Should_Have_Error_When_Base64DevicePublicKey_Exceeds_Max_Length()
@@ -177,7 +128,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = new string('a', 101),
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
@@ -200,7 +150,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "123.456",
             DeviceType = DeviceType.Desktop,
@@ -223,7 +172,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1..0",
             DeviceType = DeviceType.Desktop,
@@ -246,7 +194,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
@@ -268,7 +215,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = default,
@@ -291,7 +237,6 @@ public class LoginCommandValidatorTest
         {
             Email = "user@example.com",
             Password = "ValidPassword123!",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
@@ -305,7 +250,4 @@ public class LoginCommandValidatorTest
         result.ShouldHaveValidationErrorFor(x => x.DevicePlatform)
             .WithErrorMessage("The value cannot be empty: DevicePlatform ");
     }
-
-
-
 }

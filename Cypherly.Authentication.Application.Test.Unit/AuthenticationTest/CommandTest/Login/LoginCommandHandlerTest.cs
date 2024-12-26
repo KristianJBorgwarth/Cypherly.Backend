@@ -40,11 +40,10 @@ public class LoginCommandHandlerTest
         {
             Email = "Test@mail.dk",
             Password = "TestPassword?123",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
+            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -54,7 +53,7 @@ public class LoginCommandHandlerTest
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Contain("Invalid Credentials");
         A.CallTo(()=> _fakeUserRepository.GetByEmailAsync(A<string>._)).MustHaveHappenedOnceExactly();
-        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustNotHaveHappened();
+        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
     }
 
@@ -70,7 +69,6 @@ public class LoginCommandHandlerTest
         {
             Email = "Test@mail.dk",
             Password = "THIS PASSWORD WILL BE INVALID GG",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
@@ -84,7 +82,7 @@ public class LoginCommandHandlerTest
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Contain("Invalid Credentials");
         A.CallTo(()=> _fakeUserRepository.GetByEmailAsync(A<string>._)).MustHaveHappenedOnceExactly();
-        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustNotHaveHappened();
+        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
     }
 
@@ -100,7 +98,6 @@ public class LoginCommandHandlerTest
         {
             Email = "Test@mail.dk",
             Password = "kj9203KKJHSD?23",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
@@ -115,7 +112,7 @@ public class LoginCommandHandlerTest
         result.Value.Should().NotBeNull();
         result.Value.IsVerified.Should().BeFalse();
         A.CallTo(()=> _fakeUserRepository.GetByEmailAsync(A<string>._)).MustHaveHappenedOnceExactly();
-        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustNotHaveHappened();
+        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
     }
 
@@ -131,7 +128,6 @@ public class LoginCommandHandlerTest
         {
             Email = "Test@mail.dk",
             Password = "kj9203KKJHSD?23",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
@@ -146,7 +142,7 @@ public class LoginCommandHandlerTest
         result.Value.Should().NotBeNull();
         result.Value.IsVerified.Should().BeTrue();
         A.CallTo(()=> _fakeUserRepository.GetByEmailAsync(A<string>._)).MustHaveHappenedOnceExactly();
-        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustHaveHappenedOnceExactly();
+        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._,  A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustHaveHappenedOnceExactly();
     }
 
@@ -160,7 +156,6 @@ public class LoginCommandHandlerTest
         {
             Email = "Test@mail.dk",
             Password = "kj9203KKJHSD?23",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
@@ -174,7 +169,7 @@ public class LoginCommandHandlerTest
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Contain("An exception occured while attempting to login");
         A.CallTo(()=> _fakeUserRepository.GetByEmailAsync(A<string>._)).MustHaveHappenedOnceExactly();
-        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustNotHaveHappened();
+        A.CallTo(()=> _fakeDeviceService.RegisterDevice(A<User>._, A<string>._, A<string>._, A<DeviceType>._, A<DevicePlatform>._)).MustNotHaveHappened();
         A.CallTo(()=> _fakeUnitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
     }
 
