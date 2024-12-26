@@ -116,7 +116,7 @@ public class VerifyNonceCommandHandlerTest : IntegrationTestBase
         const string privateKey = "mR6AP1dNY1eEp7Z7bn6q0gPiOvcDl3FX4th65LY3Zwg=";
 
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("test=?lk293K"), true);
-        var device = new Device(Guid.NewGuid(), "TestDevice", publicKey, "1.0", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
+        var device = new Device(Guid.NewGuid(), publicKey, "1.0", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
         user.AddDevice(device);
 
         // add nonce to cache
@@ -154,7 +154,7 @@ public class VerifyNonceCommandHandlerTest : IntegrationTestBase
         const string privateKey = "mR6AP1dNY1eEp7Z7bn6q0gPiOvcDl3FX4th65LY3Zwg=";
 
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("test=?lk293K"), true);
-        var device = new Device(Guid.NewGuid(), "TestDevice", publicKey, "1.0", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
+        var device = new Device(Guid.NewGuid(), publicKey, "1.0", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
         user.AddDevice(device);
 
         // add nonce to cache

@@ -10,7 +10,7 @@ public class DeviceTest
     public void AddDeviceVerificationCode_ShouldAddVerificationCode()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
 
         // Act
@@ -24,7 +24,7 @@ public class DeviceTest
     public void GetActiveVerificationCode_ShouldReturnNull_WhenNoVerificationCode()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
 
         // Act
@@ -38,7 +38,7 @@ public class DeviceTest
     public void GetActiveVerificationCode_ShouldReturnVerificationCode_WhenVerificationCodeExists()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
         device.AddDeviceVerificationCode();
 
@@ -53,7 +53,7 @@ public class DeviceTest
     public void Verify_ShouldThrowInvalidOperationException_WhenNoVerificationCode()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
 
         // Act
@@ -67,7 +67,7 @@ public class DeviceTest
     public void Verify_ShouldReturnSuccess_WhenVerificationCodeIsValid()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
         device.AddDeviceVerificationCode();
 
@@ -85,7 +85,7 @@ public class DeviceTest
     public void Verify_ShouldThrowInvalidOperationException_WhenDeviceIsTrusted()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
         device.AddDeviceVerificationCode();
         device.Verify(device.GetActiveVerificationCode()!.Code.Value);
@@ -100,7 +100,7 @@ public class DeviceTest
     public void Verify_ShouldReturnFailure_WhenVerificationCodeIsInvalid()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(),  "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
         device.AddDeviceVerificationCode();
 
@@ -118,7 +118,7 @@ public class DeviceTest
     public async void SetStatus_ShouldSetStatus(DeviceStatus status)
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(),"publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
 
         // Act
@@ -132,7 +132,7 @@ public class DeviceTest
     public void AddRefreshToken_Should_AddRefreshToken()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
 
         // Act
@@ -146,7 +146,7 @@ public class DeviceTest
     public void GetActiveRefreshToken_Should_Return_Null_When_No_Token()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(),"publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
 
         // Act
@@ -160,7 +160,7 @@ public class DeviceTest
     public void GetActiveRefreshToken_Should_Return_Token_When_Token_Exists()
     {
         // Arrange
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, Guid.NewGuid());
 
         device.AddRefreshToken();

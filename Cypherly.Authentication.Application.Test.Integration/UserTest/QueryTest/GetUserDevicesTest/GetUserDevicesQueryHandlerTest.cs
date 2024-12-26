@@ -31,25 +31,25 @@ public class GetUserDevicesQueryHandlerTest : IntegrationTestBase
     public async void Handle_Given_Valid_Query_Should_Return_Devices()
     {
         // Arrange
-        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), 
+        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"),
             Password.Create("kjsidlæ??238Ja"), true);
-        
-        var device1 = new Device(Guid.NewGuid(), "TestDevice", "SomeKey", "1.0", DeviceType.Desktop,
+
+        var device1 = new Device(Guid.NewGuid(), "SomeKey", "1.0", DeviceType.Mobile,
             DevicePlatform.Android, user.Id);
-        var device2 = new Device(Guid.NewGuid(), "TestDevice2", "SomeKey2", "1.0", DeviceType.Desktop,
+        var device2 = new Device(Guid.NewGuid(), "SomeKey2", "1.0", DeviceType.Desktop,
             DevicePlatform.Android, user.Id);
-        
-        var device3 = new Device(Guid.NewGuid(), "TestDevice3", "SomeKey2", "1.0", DeviceType.Desktop,
+
+        var device3 = new Device(Guid.NewGuid(), "SomeKey2", "1.0", DeviceType.Desktop,
             DevicePlatform.Android, user.Id);
 
         device1.AddDeviceVerificationCode();
         var code = device1.GetActiveVerificationCode();
         device1.Verify(code.Code.Value);
-        
+
         device2.AddDeviceVerificationCode();
         var code2 = device2.GetActiveVerificationCode();
         device2.Verify(code2.Code.Value);
-        
+
         user.AddDevice(device1);
         user.AddDevice(device2);
 
@@ -65,10 +65,6 @@ public class GetUserDevicesQueryHandlerTest : IntegrationTestBase
         result.Success.Should().BeTrue();
         result.Value.Should().NotBeNull();
         result.Value.Devices.Should().HaveCount(2);
-        result.Value.Devices.Should().Contain(d => d.Name == "TestDevice");
-        result.Value.Devices.Should().Contain(d => d.Name == "TestDevice2");
-        result.Value.Devices.Should().NotContain(d => d.Name == "TestDevice3");
-        
     }
 
     [Fact]
@@ -89,7 +85,7 @@ public class GetUserDevicesQueryHandlerTest : IntegrationTestBase
     public async void Handle_Given_User_With_No_Devices_Should_Return_Empty_List()
     {
         // Arrange
-        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), 
+        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"),
             Password.Create("kjsidlæ??238Ja"), true);
 
         Db.Add(user);

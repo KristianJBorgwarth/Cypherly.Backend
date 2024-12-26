@@ -18,7 +18,7 @@ public class DeviceServiceTest
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Testpass?932"), true);
 
         // Act
-        var result = sut.RegisterDevice(user, "Test Device", "publicKey", "1.0.0", DeviceType.Mobile, DevicePlatform.iOS);
+        var result = sut.RegisterDevice(user, "publicKey", "1.0.0", DeviceType.Mobile, DevicePlatform.iOS);
 
         // Assert
         result.Should().NotBeNull();
@@ -31,7 +31,7 @@ public class DeviceServiceTest
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Testpass?932"), true);
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, user.Id);
         device.AddDeviceVerificationCode();
 
@@ -52,7 +52,7 @@ public class DeviceServiceTest
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Testpass?932"), true);
 
-        var device = new Device(Guid.NewGuid(), "Test Device", "publicKey", "1.0.0", DeviceType.Mobile,
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0.0", DeviceType.Mobile,
             DevicePlatform.iOS, user.Id);
 
         device.AddDeviceVerificationCode();

@@ -27,11 +27,10 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         {
             Email = user.Email.Address,
             Password = "TestPassword?123",
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0",
             DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
+            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -56,11 +55,10 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         {
             Email = user.Email.Address,
             Password = "TestPassword?12323123", // Invalid password
-            DeviceName = "TestDevice",
             Base64DevicePublicKey = "TestPublicKey",
             DeviceAppVersion = "1.0.0",
             DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows
+            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act

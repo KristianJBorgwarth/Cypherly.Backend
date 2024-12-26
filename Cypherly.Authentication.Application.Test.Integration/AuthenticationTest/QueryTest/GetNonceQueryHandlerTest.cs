@@ -32,7 +32,7 @@ public class GetNonceQueryHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjsidlæ??238Ja"), true);
-        var device = new Device(Guid.NewGuid(), "TestDevice", "SomeKey", "1.0", DeviceType.Desktop,
+        var device = new Device(Guid.NewGuid(), "SomeKey", "1.0", DeviceType.Desktop,
             DevicePlatform.Android, user.Id);
         user.AddDevice(device);
         Db.User.Add(user);

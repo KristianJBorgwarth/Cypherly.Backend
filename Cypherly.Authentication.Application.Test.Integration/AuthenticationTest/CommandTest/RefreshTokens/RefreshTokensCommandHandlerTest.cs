@@ -54,7 +54,7 @@ public class RefreshTokensCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test098??kkkl"), true);
-        var device = new Device(Guid.NewGuid(), "Test.PC", "somekey", "1.0", DeviceType.Desktop, DevicePlatform.Android, user.Id);
+        var device = new Device(Guid.NewGuid(), "somekey", "1.0", DeviceType.Desktop, DevicePlatform.Android, user.Id);
         device.AddRefreshToken();
         user.AddDevice(device);
 
@@ -81,7 +81,7 @@ public class RefreshTokensCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("Test098??kkkl"), true);
-        var device = new Device(Guid.NewGuid(), "Test.PC", "somekey", "1.0", DeviceType.Desktop, DevicePlatform.Android, user.Id);
+        var device = new Device(Guid.NewGuid(), "somekey", "1.0", DeviceType.Desktop, DevicePlatform.Android, user.Id);
         var token = device.AddRefreshToken();
         user.AddDevice(device);
 

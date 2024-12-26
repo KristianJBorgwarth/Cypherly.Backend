@@ -54,7 +54,7 @@ public class VerifyDeviceCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("isksd??lLJK99"), true);
-        var device = new Device(Guid.NewGuid(), "test", "publicKey", "1.0", DeviceType.Mobile, DevicePlatform.Android, user.Id);
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0", DeviceType.Mobile, DevicePlatform.Android, user.Id);
         device.AddDeviceVerificationCode();
         user.AddDevice(device);
 
@@ -81,7 +81,7 @@ public class VerifyDeviceCommandHandlerTest : IntegrationTestBase
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("isksd??lLJK99"), true);
-        var device = new Device(Guid.NewGuid(), "test", "publicKey", "1.0", DeviceType.Mobile, DevicePlatform.Android, user.Id);
+        var device = new Device(Guid.NewGuid(), "publicKey", "1.0", DeviceType.Mobile, DevicePlatform.Android, user.Id);
         device.AddDeviceVerificationCode();
         user.AddDevice(device);
 

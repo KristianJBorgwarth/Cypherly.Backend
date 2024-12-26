@@ -20,12 +20,6 @@ public class LoginCommandValidator : AbstractValidator<LoginCommand>
             .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(LoginCommand.Password)).Message)
             .Must(pw=> pw.Length <= 255).WithMessage(Errors.General.ValueTooLarge(nameof(LoginCommand.Password), 255).Message);
 
-        RuleFor(x => x.DeviceName)
-            .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(LoginCommand.DeviceName)).Message)
-            .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(LoginCommand.DeviceName)).Message)
-            .Must(x=> x.Length <= 40).WithMessage(Errors.General.ValueTooLarge(nameof(LoginCommand.DeviceName), 40).Message)
-            .Must(x=> x.Length >= 3).WithMessage(Errors.General.ValueTooSmall(nameof(LoginCommand.DeviceName), 3).Message);
-
         RuleFor(x=> x.Base64DevicePublicKey)
             .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(LoginCommand.Base64DevicePublicKey)).Message)
             .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(LoginCommand.Base64DevicePublicKey)).Message)

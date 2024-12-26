@@ -21,7 +21,7 @@ public class VerificationCode : ValueObject
     public Result Verify(string code)
     {
         if (IsUsed)
-            return Result.Fail(Errors.General.UnspecifiedError("Verification code has already been used"));
+            return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
         if(DateTime.UtcNow > ExpirationDate)
             return Result.Fail(Errors.General.UnspecifiedError("Verification code has expired"));
         if (Value != code)

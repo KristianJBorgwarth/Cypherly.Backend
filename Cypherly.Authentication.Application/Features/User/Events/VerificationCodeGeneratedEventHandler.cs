@@ -30,7 +30,7 @@ public class VerificationCodeGeneratedEventHandler(
             throw new InvalidOperationException("Verification code not found");
         }
 
-        var emailMessage = new SendEmailMessage(user.Email.Address, "Cypherly Verification", "Here is your verification code: " + verificationCode.Code, Guid.NewGuid());
+        var emailMessage = new SendEmailMessage(user.Email.Address, "Cypherly Verification", "Here is your verification code: " + verificationCode.Code.Value, Guid.NewGuid());
 
         await emailProducer.PublishMessageAsync(emailMessage, cancellationToken);
     }

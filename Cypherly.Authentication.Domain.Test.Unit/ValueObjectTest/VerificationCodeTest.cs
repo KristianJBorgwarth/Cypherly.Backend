@@ -55,7 +55,7 @@ namespace Cypherly.Authentication.Domain.Test.Unit.ValueObjectTest
 
             // Assert
             result.Success.Should().BeFalse();
-            result.Error.Message.Should().Be("Verification code has already been used");
+            result.Error.Message.Should().Be("Invalid verification code");
         }
 
         [Fact]
