@@ -54,7 +54,7 @@ public class GetNonceQueryHandlerTest : IntegrationTestBase
         {
             Converters = { new NonceJsonConverter() },
         };
-        var nonce = await Cache.GetAsync<Nonce>(result.Value!.Id.ToString(), options, new CancellationToken());
+        var nonce = await Cache.GetAsync<Nonce>(result.Value!.NonceId.ToString(), options, new CancellationToken());
         nonce.Should().NotBeNull();
         nonce!.UserId.Should().Be(user.Id);
     }
