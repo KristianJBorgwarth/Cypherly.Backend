@@ -8,7 +8,7 @@ public static class Ed25519Helper
 {
     public static string SignNonce(string nonce, string privateKeyBase64)
     {
-        var nonceBytes = Encoding.UTF8.GetBytes(nonce);
+        var nonceBytes = Convert.FromBase64String(nonce);
         var privateKey = Convert.FromBase64String(privateKeyBase64);
         var privateKeyParam = new Ed25519PrivateKeyParameters(privateKey, 0);
 
