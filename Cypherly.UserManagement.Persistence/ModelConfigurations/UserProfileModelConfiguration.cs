@@ -14,6 +14,9 @@ public class UserProfileModelConfiguration : IEntityTypeConfiguration<UserProfil
             .HasMaxLength(50)
             .IsRequired();
 
+        builder.Property(x=> x.ConnectionId)
+            .IsRequired();
+
         builder.OwnsOne(x=> x.UserTag, y =>
         {
             y.Property(x => x.Tag)
@@ -35,12 +38,12 @@ public class UserProfileModelConfiguration : IEntityTypeConfiguration<UserProfil
             .WithOne(x => x.FriendProfile)
             .HasForeignKey(x => x.FriendProfileId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.HasMany(x=> x.BlockedUsers)
             .WithOne()
             .HasForeignKey(x => x.BlockingUserProfileId)
             .OnDelete(DeleteBehavior.Cascade);
-        
+
         builder.Property(x => x.IsPrivate)
             .IsRequired()
             .HasDefaultValue(false);

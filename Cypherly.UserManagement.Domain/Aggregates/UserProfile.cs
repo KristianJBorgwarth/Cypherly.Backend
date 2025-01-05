@@ -9,11 +9,11 @@ public partial class UserProfile : AggregateRoot
 {
     public string Username { get; private set; } = null!;
     public UserTag UserTag { get; private set; } = null!;
+    public Guid ConnectionId { get; private set; }
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
-
     public bool IsPrivate { get; private set; }
-    
+
     private readonly List<BlockedUser> _blockedUsers = [];
     public virtual IReadOnlyCollection<BlockedUser> BlockedUsers => _blockedUsers;
 
@@ -29,6 +29,7 @@ public partial class UserProfile : AggregateRoot
     {
         Username = username;
         UserTag = userUserTag;
+        ConnectionId = Guid.NewGuid();
     }
 
     public void SetProfilePictureUrl(string profilePictureUrl)
@@ -50,9 +51,9 @@ public partial class UserProfile : AggregateRoot
         AddDomainEvent(new UserProfileDisplayNameUpdatedEvent(Id));
         return Result.Ok();
     }
-    
+
     public void TogglePrivacy(bool isPrivate) => IsPrivate = isPrivate;
-    
+
     public Result AddFriendship(UserProfile userProfile)
     {
         if(Id == userProfile.Id)
@@ -113,7 +114,7 @@ public partial class UserProfile : AggregateRoot
         _blockedUsers.Add(new(Guid.NewGuid(), blockingUserProfileId: Id, blockedUserProfileId: blockedUserId));
         AddDomainEvent(new UserBlockedEvent(Id, blockedUserId));
     }
-    
+
     public void UnblockUser(Guid unblockedUserId)
     {
         if(unblockedUserId == Guid.Empty)
@@ -122,7 +123,7 @@ public partial class UserProfile : AggregateRoot
         if(unblockedUserId == Id)
             throw new InvalidOperationException("Cannot unblock self");
 
-        
+
         var blockedUser = BlockedUsers.FirstOrDefault(c=> c.BlockedUserProfileId == unblockedUserId);
         if(blockedUser is null)
             throw new InvalidOperationException("User not blocked");
