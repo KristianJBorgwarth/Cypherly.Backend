@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Cypherly.Application.Abstractions;
+﻿using Cypherly.Application.Abstractions;
 using Cypherly.Domain.Common;
 using Cypherly.UserManagement.Application.Contracts;
 using Microsoft.Extensions.Logging;
@@ -9,7 +8,6 @@ namespace Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUs
 public class GetUserProfileQueryHandler(
     IUserProfileRepository userProfileRepository,
     IProfilePictureService profilePictureService,
-    IMapper mapper,
     ILogger<GetUserProfileQueryHandler> logger)
     : IQueryHandler<GetUserProfileQuery, GetUserProfileDto>
 {
@@ -39,9 +37,7 @@ public class GetUserProfileQueryHandler(
                 }
             }
 
-            var dto = mapper.Map<GetUserProfileDto>(userprofile);
-            dto = dto with { ProfilePictureUrl = profilePictureUrl };
-
+            var dto = GetUserProfileDto.MapFrom(userprofile, profilePictureUrl);
             return Result.Ok(dto);
         }
         catch (Exception ex)

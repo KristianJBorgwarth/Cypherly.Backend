@@ -10,7 +10,6 @@ public class UserManagementDbContext(DbContextOptions options) : CypherlyBaseDbC
 {
     public DbSet<UserProfile> UserProfile { get; set; } = null!;
     public DbSet<Friendship> Friendship { get; set; } = null!;
-
     public DbSet<BlockedUser> BlockedUser { get; set; } = null!;
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -14,17 +14,15 @@ namespace Cypherly.UserManagement.Application.Test.Unit.UserProfileTest.QueryTes
 public class GetUserProfileQueryHandlerTest
 {
     private readonly IUserProfileRepository _fakeRepository;
-    private readonly IMapper _fakeMapper;
     private readonly IProfilePictureService _fakeProfilePictureService;
     private readonly GetUserProfileQueryHandler _sut;
 
     public GetUserProfileQueryHandlerTest()
     {
         _fakeRepository = A.Fake<IUserProfileRepository>();
-        _fakeMapper = A.Fake<IMapper>();
         _fakeProfilePictureService = A.Fake<IProfilePictureService>();
         var fakeLogger = A.Fake<ILogger<GetUserProfileQueryHandler>>();
-        _sut = new(_fakeRepository, _fakeProfilePictureService,_fakeMapper, fakeLogger);
+        _sut = new(_fakeRepository, _fakeProfilePictureService, fakeLogger);
     }
 
     [Fact]
@@ -42,7 +40,6 @@ public class GetUserProfileQueryHandlerTest
         result.Error.Code.Should().Be("entity.not.found");
 
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.UserProfileId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<GetUserProfileDto>(A<UserProfile>._)).MustNotHaveHappened();
     }
 
     [Fact]
@@ -59,7 +56,6 @@ public class GetUserProfileQueryHandlerTest
         result.Success.Should().BeFalse();
         result.Error.Message.Should().Contain("An exception occured while handling the request");
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.UserProfileId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<GetUserProfileDto>(A<UserProfile>._)).MustNotHaveHappened();
     }
 
     [Fact]
@@ -72,16 +68,7 @@ public class GetUserProfileQueryHandlerTest
 
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.UserProfileId)).Returns(userProfile);
 
-        var dto = new GetUserProfileDto()
-        {
-            DisplayName = null,
-            UserTag = userProfile.UserTag.Tag,
-            Id = userProfile.Id,
-            Username = userProfile.Username,
-            ProfilePictureUrl = ""
-        };
-
-        A.CallTo(() => _fakeMapper.Map<GetUserProfileDto>(userProfile)).Returns(dto);
+        var dto = GetUserProfileDto.MapFrom(userProfile, "");
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -90,7 +77,6 @@ public class GetUserProfileQueryHandlerTest
         result.Success.Should().BeTrue();
         result.Value.Should().BeEquivalentTo(dto);
         A.CallTo(()=> _fakeRepository.GetByIdAsync(query.UserProfileId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<GetUserProfileDto>(userProfile)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -105,15 +91,9 @@ public class GetUserProfileQueryHandlerTest
         A.CallTo(() => _fakeRepository.GetByIdAsync(query.UserProfileId)).Returns(userProfile);
         A.CallTo(()=> _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).Returns(Result.Ok("presignedUrl"));
 
-        var dto = new GetUserProfileDto()
-        {
-            DisplayName = null,
-            UserTag = userProfile.UserTag.Tag,
-            Id = userProfile.Id,
-            Username = userProfile.Username,
-        };
 
-        A.CallTo(() => _fakeMapper.Map<GetUserProfileDto>(userProfile)).Returns(dto);
+        var dto = GetUserProfileDto.MapFrom(userProfile, "presignedUrl");
+
 
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
@@ -123,7 +103,6 @@ public class GetUserProfileQueryHandlerTest
         result.Value.ProfilePictureUrl.Should().Be("presignedUrl");
         A.CallTo(()=> _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeRepository.GetByIdAsync(query.UserProfileId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<GetUserProfileDto>(userProfile)).MustHaveHappenedOnceExactly();
     }
 
     [Fact]
@@ -139,16 +118,6 @@ public class GetUserProfileQueryHandlerTest
 
         A.CallTo(()=> _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).Returns(Result.Fail<string>(Errors.General.UnspecifiedError("Failed to get presigned url")));
 
-        var dto = new GetUserProfileDto()
-        {
-            DisplayName = null,
-            UserTag = userProfile.UserTag.Tag,
-            Id = userProfile.Id,
-            Username = userProfile.Username,
-        };
-
-        A.CallTo(() => _fakeMapper.Map<GetUserProfileDto>(userProfile)).Returns(dto);
-
         // Act
         var result = await _sut.Handle(query, CancellationToken.None);
 
@@ -157,6 +126,5 @@ public class GetUserProfileQueryHandlerTest
         result.Value.ProfilePictureUrl.Should().Be("");
         A.CallTo(()=> _fakeProfilePictureService.GetPresignedProfilePictureUrlAsync(userProfile.ProfilePictureUrl)).MustHaveHappenedOnceExactly();
         A.CallTo(()=> _fakeRepository.GetByIdAsync(query.UserProfileId)).MustHaveHappenedOnceExactly();
-        A.CallTo(() => _fakeMapper.Map<GetUserProfileDto>(userProfile)).MustHaveHappenedOnceExactly();
     }
 }
