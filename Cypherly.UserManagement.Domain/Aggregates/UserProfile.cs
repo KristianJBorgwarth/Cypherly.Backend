@@ -9,7 +9,6 @@ public partial class UserProfile : AggregateRoot
 {
     public string Username { get; private set; } = null!;
     public UserTag UserTag { get; private set; } = null!;
-    public Guid ConnectionId { get; private set; }
     public string? DisplayName { get; private set; }
     public string? ProfilePictureUrl { get; private set; }
     public bool IsPrivate { get; private set; }
@@ -29,7 +28,6 @@ public partial class UserProfile : AggregateRoot
     {
         Username = username;
         UserTag = userUserTag;
-        ConnectionId = Guid.NewGuid();
     }
 
     public void SetProfilePictureUrl(string profilePictureUrl)
