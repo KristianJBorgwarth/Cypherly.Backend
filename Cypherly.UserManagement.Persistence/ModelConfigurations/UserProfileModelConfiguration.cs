@@ -14,9 +14,6 @@ public class UserProfileModelConfiguration : IEntityTypeConfiguration<UserProfil
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.Property(x=> x.ConnectionId)
-            .IsRequired();
-
         builder.OwnsOne(x=> x.UserTag, y =>
         {
             y.Property(x => x.Tag)

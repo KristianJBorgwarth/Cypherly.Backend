@@ -43,6 +43,5 @@ public class CreateUserProfileConsumerTest : IntegrationTestBase
         Db.UserProfile.Count().Should().Be(1);
         Db.UserProfile.First().Id.Should().Be(request.UserId);
         Db.UserProfile.First().Username.Should().Be(request.Username);
-        Db.UserProfile.First().ConnectionId.Should().NotBe(Guid.Empty);
     }
 }
