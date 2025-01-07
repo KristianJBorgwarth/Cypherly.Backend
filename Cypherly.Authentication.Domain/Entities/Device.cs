@@ -7,6 +7,7 @@ public class Device : Entity
 {
     public string Name { get; private init; } = null!;
     public string PublicKey { get; init; } = null!;
+    public Guid ConnectionId { get; init; }
     public DeviceStatus Status { get; private set; }
     public DeviceType Type { get; init; }
     public DevicePlatform Platform { get; init; }
@@ -34,8 +35,15 @@ public class Device : Entity
         Type = type;
         Platform = platform;
         Status = DeviceStatus.Pending;
+        ConnectionId = Guid.NewGuid();
     }
 
+    /// <summary>
+    /// Adds a default name to the device based on the <see cref="DevicePlatform"/>.
+    /// </summary>
+    /// <param name="platform"><see cref="DevicePlatform"/></param>
+    /// <returns>A string representing the name generating based on the <see cref="DevicePlatform"/></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
     private static string GenerateName(DevicePlatform platform)
     {
         return platform switch

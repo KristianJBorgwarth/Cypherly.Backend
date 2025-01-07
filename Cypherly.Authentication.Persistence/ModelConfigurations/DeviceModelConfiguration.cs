@@ -15,6 +15,10 @@ public class DeviceModelConfiguration : IEntityTypeConfiguration<Device>
         builder.Property(d => d.Id)
             .ValueGeneratedNever();
 
+        builder.Property(d => d.ConnectionId)
+            .IsRequired()
+            .ValueGeneratedNever();
+
         builder.Property(d => d.Name)
             .IsRequired();
 
