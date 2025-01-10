@@ -22,10 +22,10 @@ public class LoginCommandHandlerTest : IntegrationTestBase
     {
         var scope = factory.Services.CreateScope().ServiceProvider;
         var repo = scope.GetRequiredService<IUserRepository>();
-        var deviceService = scope.GetRequiredService<IDeviceService>();
         var unitOfWork = scope.GetRequiredService<IUnitOfWork>();
+        var authservice = scope.GetRequiredService<IAuthenticationService>();
         var logger = scope.GetRequiredService<ILogger<LoginCommandHandler>>();
-        _sut = new LoginCommandHandler(repo, deviceService, unitOfWork, logger);
+        _sut = new LoginCommandHandler(repo, authservice, unitOfWork, logger);
     }
 
     [Fact]
@@ -41,10 +41,6 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         {
             Email = user.Email.Address,
             Password = "TestPassword?123",
-            Base64DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0",
-            DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -53,12 +49,9 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         // Assert
         result.Success.Should().BeTrue();
         result.Value.Should().NotBeNull();
-        Db.Device.Should().HaveCount(1);
-        Db.DeviceVerificationCode.Should().HaveCount(1);
+        Db.VerificationCode.Should().HaveCount(1);
         result.Value.IsVerified.Should().BeTrue();
-        result.Value.DeviceId.Should().NotBeNull().And.NotBeEmpty().And.Be(Db.Device.First().Id);
         result.Value.UserId.Should().NotBeEmpty().And.Be(user.Id);
-        Db.Device.First().UserId.Should().Be(user.Id);
     }
 
     [Fact]
@@ -75,10 +68,6 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         {
             Email = invalidEmail,
             Password = "TestPassword?123",
-            Base64DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0.0",
-            DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -105,10 +94,6 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         {
             Email = user.Email.Address,
             Password = invalidPw,
-            Base64DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0.0",
-            DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -118,7 +103,6 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         result.Success.Should().BeFalse();
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("Invalid Credentials");
-        Db.RefreshToken.Should().HaveCount(0);
     }
 
     [Fact]
@@ -134,10 +118,6 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         {
             Email = user.Email.Address,
             Password = "TestPassword?123",
-            Base64DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0.0",
-            DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act

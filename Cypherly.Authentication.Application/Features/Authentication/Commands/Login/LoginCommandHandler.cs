@@ -1,4 +1,5 @@
-﻿using Cypherly.Application.Abstractions;
+﻿using System.Net;
+using Cypherly.Application.Abstractions;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Domain.Services.User;
@@ -9,7 +10,7 @@ namespace Cypherly.Authentication.Application.Features.Authentication.Commands.L
 
 public class LoginCommandHandler(
     IUserRepository userRepository,
-    IDeviceService deviceService,
+    IAuthenticationService authenticationService,
     IUnitOfWork unitOfWork,
     ILogger<LoginCommandHandler> logger)
     : ICommandHandler<LoginCommand, LoginDto>
@@ -27,11 +28,13 @@ public class LoginCommandHandler(
             if (user.IsVerified == false)
                 return Result.Ok(LoginDto.Map(user, false));
 
-            var device = deviceService.RegisterDevice(user, request.Base64DevicePublicKey, request.DeviceAppVersion, request.DeviceType, request.DevicePlatform);
+            authenticationService.GenerateLoginVerificationCode(user);
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result.Ok(LoginDto.Map(user, true, device));
+            var dto = LoginDto.Map(user, true);
+
+            return Result.Ok(dto);
 
         }
         catch (Exception ex)

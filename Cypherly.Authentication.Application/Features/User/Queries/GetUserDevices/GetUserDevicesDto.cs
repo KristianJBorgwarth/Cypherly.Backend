@@ -5,13 +5,13 @@ namespace Cypherly.Authentication.Application.Features.User.Queries.GetUserDevic
 public sealed record GetUserDevicesDto
 {
     public List<DeviceDto> Devices { get; init; }
-    
+
     private GetUserDevicesDto() { } // Hide the constructor to force the use of the Map method
 
-    public static GetUserDevicesDto Map(List<Device> devices)
+    public static GetUserDevicesDto Map(List<Domain.Entities.Device> devices)
     {
         var DeviceList = new List<DeviceDto>();
-        foreach (Device device in devices)
+        foreach (Domain.Entities.Device device in devices)
         {
             DeviceList.Add(new DeviceDto(){DeviceId = device.Id, Name = device.Name});
         }
@@ -20,7 +20,7 @@ public sealed record GetUserDevicesDto
             Devices = DeviceList
         };
     }
-    
+
 }
 
 public sealed record DeviceDto
