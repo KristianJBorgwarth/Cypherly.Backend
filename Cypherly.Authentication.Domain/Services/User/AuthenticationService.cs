@@ -1,6 +1,7 @@
 ﻿using Cypherly.Authentication.Domain.Entities;
 using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
+using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Domain.Common;
 
 namespace Cypherly.Authentication.Domain.Services.User;
@@ -39,6 +40,7 @@ public class AuthenticationService : IAuthenticationService
         return token?.Token == refreshToken;
     }
 
+    //TODO: test this
     public void GenerateLoginVerificationCode(Aggregates.User user)
     {
         user.AddVerificationCode(UserVerificationCodeType.Login);

@@ -72,7 +72,7 @@ public class UserTest
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("kjFis97823??sd"), false);
 
         // Act
-        Action act = () => user.Verify("1234");
+        Action act = () => user.VerifyAccount("1234");
 
         // Assert
         act.Should().Throw<InvalidOperationException>().WithMessage("This chat user does not have a verification code");
@@ -86,7 +86,7 @@ public class UserTest
         user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
-        Action act = () => user.Verify("1234");
+        Action act = () => user.VerifyAccount("1234");
 
         // Assert
         act.Should().Throw<InvalidOperationException>().WithMessage("This chat user is already verified");
@@ -100,7 +100,7 @@ public class UserTest
         user.AddVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
-        var result = user.Verify("1234");
+        var result = user.VerifyAccount("1234");
 
         // Assert
         result.Success.Should().BeFalse();
@@ -116,7 +116,7 @@ public class UserTest
         var code = user.GetActiveVerificationCode(UserVerificationCodeType.EmailVerification);
 
         // Act
-        var result = user.Verify(code!.Code.Value);
+        var result = user.VerifyAccount(code!.Code.Value);
 
         // Assert
         result.Success.Should().BeTrue();

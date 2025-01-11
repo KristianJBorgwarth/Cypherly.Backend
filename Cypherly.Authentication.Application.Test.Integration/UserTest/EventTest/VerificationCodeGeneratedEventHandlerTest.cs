@@ -28,7 +28,7 @@ public class VerificationCodeGeneratedEventHandlerTest : IntegrationTestBase
     }
 
     [Fact]
-    public async Task Handle_Given_Valid_Notification_Should_Send_Email()
+    public async Task Handle_Given_Valid_Email_Verification_Notification_Should_Send_Email()
     {
         // Arrange
         var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("testPassword?923"), false);
@@ -44,6 +44,28 @@ public class VerificationCodeGeneratedEventHandlerTest : IntegrationTestBase
 
         // Assert
         Harness.Published.Select<SendEmailMessage>().FirstOrDefault(uc => uc.Context.Message.To == user.Email.Address)
+            .Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task Handle_Given_Valid_Login_Verification_Notification_Should_Not_Send_Email()
+    {
+        // Arrange
+        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("testPassword?923"), false);
+        user.AddVerificationCode(UserVerificationCodeType.Login);
+
+        await Db.User.AddAsync(user);
+        await Db.SaveChangesAsync();
+
+        var notification = new VerificationCodeGeneratedEvent(user.Id, UserVerificationCodeType.Login);
+
+        // Act
+        await _sut.Handle(notification, default);
+
+        // Assert
+        Harness.Published.Select<SendEmailMessage>().FirstOrDefault(uc => uc.Context.Message.To == user.Email.Address)
+            .Should().NotBeNull();
+        Harness.Published.Select<SendEmailMessage>().FirstOrDefault(uc => uc.Context.Message.Body.Contains("Here is your login verification code: "))
             .Should().NotBeNull();
     }
 

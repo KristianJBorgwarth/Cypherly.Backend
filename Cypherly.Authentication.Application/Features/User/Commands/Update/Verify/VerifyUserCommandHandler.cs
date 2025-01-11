@@ -20,7 +20,7 @@ public class VerifyUserCommandHandler(
             if (user is null)
                 return Result.Fail(Errors.General.NotFound(request.UserId));
 
-            var result = user.Verify(request.VerificationCode);
+            var result = user.VerifyAccount(request.VerificationCode);
             if (result.Success is false) return Result.Fail(result.Error);
 
             await userRepository.UpdateAsync(user);

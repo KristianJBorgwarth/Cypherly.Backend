@@ -61,12 +61,12 @@ public class User : AggregateRoot
     }
 
     /// <summary>
-    /// Checks the count of the verification codes and verifies the user if the code is valid.
+    /// Verifies the user account with the provided verification code.
     /// </summary>
     /// <param name="verificationCode">Value representing the VerificationCode.Code <see cref="UserVerificationCode.Code"/></param>
     /// <returns>Result representing the verification result</returns>
     /// <exception cref="InvalidOperationException"></exception>
-    public Result Verify(string verificationCode)
+    public Result VerifyAccount(string verificationCode)
     {
         if (VerificationCodes.Count == 0)
             throw new InvalidOperationException("This chat user does not have a verification code");
@@ -85,6 +85,30 @@ public class User : AggregateRoot
         userVerificationCode.Code.Use();
         IsVerified = true;
         AddDomainEvent(new UserVerifiedEvent(Id));
+        return Result.Ok();
+    }
+
+
+    /// <summary>
+    /// Verifies the login with the provided verification code.
+    /// </summary>
+    /// <param name="loginVerificationCode">Value representing the VerificationCode.Code <see cref="UserVerificationCode.Code"/></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    public Result VerifyLogin(string loginVerificationCode)
+    {
+        if (VerificationCodes.Count == 0)
+            throw new InvalidOperationException("This chat user does not have a verification code");
+
+        var userVerificationCode = VerificationCodes.FirstOrDefault(uvc => uvc.Code.Value == loginVerificationCode && uvc.CodeType == UserVerificationCodeType.Login);
+        if (userVerificationCode is null) return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
+
+        var verificationResult = userVerificationCode.Code.Verify(loginVerificationCode);
+
+        if (verificationResult.Success is false)
+            return verificationResult;
+
+        userVerificationCode.Code.Use();
         return Result.Ok();
     }
 
