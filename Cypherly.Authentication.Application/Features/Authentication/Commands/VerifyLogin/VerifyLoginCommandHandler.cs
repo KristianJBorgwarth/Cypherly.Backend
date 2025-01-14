@@ -1,4 +1,5 @@
 ﻿using Cypherly.Application.Abstractions;
+using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Caching.LoginNonce;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyNonce;
@@ -10,6 +11,7 @@ namespace Cypherly.Authentication.Application.Features.Authentication.Commands.V
 public sealed class VerifyLoginCommandHandler(
     IUserRepository userRepository,
     ILoginNonceCache loginNonceCache,
+    IUnitOfWork unitOfWork,
     ILogger<VerifyLoginCommandHandler> logger)
     : ICommandHandler<VerifyLoginCommand, VerifyLoginDto>
 {
@@ -34,6 +36,8 @@ public sealed class VerifyLoginCommandHandler(
             await loginNonceCache.AddNonceAsync(loginNonce, cancellationToken);
 
             var dto = VerifyLoginDto.Map(loginNonce);
+
+            await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Ok(dto);
         }
