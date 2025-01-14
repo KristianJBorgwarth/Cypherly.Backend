@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Caching.LoginNonce;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyLogin;
@@ -8,6 +9,7 @@ using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -22,7 +24,8 @@ public class VerifyLoginCommandHandlerTest : IntegrationTestBase
         var repo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
         var cache = scope.ServiceProvider.GetRequiredService<ILoginNonceCache>();
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<VerifyLoginCommandHandler>>();
-        _commandHandler = new VerifyLoginCommandHandler(repo, cache, logger);
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        _commandHandler = new VerifyLoginCommandHandler(repo, cache, unitOfWork, logger);
     }
 
     [Fact]
@@ -38,7 +41,7 @@ public class VerifyLoginCommandHandlerTest : IntegrationTestBase
         var cmd = new VerifyLoginCommand()
         {
             UserId = user.Id,
-            LoginVerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.Login)!.Code.Value
+            LoginVerificationCode = user.GetActiveVerificationCode(UserVerificationCodeType.Login)!.Code.Value,
         };
 
         // Act
@@ -56,6 +59,7 @@ public class VerifyLoginCommandHandlerTest : IntegrationTestBase
         var nonce = await Cache.GetAsync<LoginNonce>(result.Value!.NonceId.ToString(), options, new CancellationToken());
         nonce.Should().NotBeNull();
         nonce!.UserId.Should().Be(user.Id);
+        Db.User.AsNoTracking().Include(user => user.VerificationCodes).First().VerificationCodes.First().Code.IsUsed.Should().BeTrue();
         await Cache.RemoveAsync(result.Value!.NonceId.ToString(), new CancellationToken());
     }
 

@@ -1,4 +1,5 @@
 ﻿using Castle.Components.DictionaryAdapter.Xml;
+using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Caching.LoginNonce;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyLogin;
@@ -15,14 +16,16 @@ public class VerifyLoginCommandHandlerTest
 {
     private readonly IUserRepository _fakeRepo;
     private readonly ILoginNonceCache _fakeNonceCache;
+    private readonly IUnitOfWork _fakeUnitOfWork;
     private readonly VerifyLoginCommandHandler _sut;
 
     public VerifyLoginCommandHandlerTest()
     {
         _fakeRepo = A.Fake<IUserRepository>();
         _fakeNonceCache = A.Fake<ILoginNonceCache>();
+        _fakeUnitOfWork = A.Fake<IUnitOfWork>();
         var fakeLogger = A.Fake<ILogger<VerifyLoginCommandHandler>>();
-        _sut = new VerifyLoginCommandHandler(_fakeRepo, _fakeNonceCache, fakeLogger);
+        _sut = new VerifyLoginCommandHandler(_fakeRepo, _fakeNonceCache, _fakeUnitOfWork, fakeLogger);
     }
 
     [Fact]

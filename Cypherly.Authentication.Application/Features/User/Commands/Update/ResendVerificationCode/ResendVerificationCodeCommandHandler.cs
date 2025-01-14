@@ -8,14 +8,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 
-public sealed class GenerateAccountVerificationCodeCommandHandler(
+public sealed class ResendVerificationCodeCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IVerificationCodeService verificationCodeService,
-    ILogger<GenerateAccountVerificationCodeCommandHandler> logger)
-    : ICommandHandler<GenerateAccountVerificationCodeCommand>
+    ILogger<ResendVerificationCodeCommandHandler> logger)
+    : ICommandHandler<ResendVerificationCodeCommand>
 {
-    public async Task<Result> Handle(GenerateAccountVerificationCodeCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ResendVerificationCodeCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -26,13 +26,13 @@ public sealed class GenerateAccountVerificationCodeCommandHandler(
                 return Result.Fail(Errors.General.NotFound(request.UserId));
             }
 
-            if(user.IsVerified)
+            if(user.IsVerified && request.CodeType == UserVerificationCodeType.EmailVerification)
             {
                 logger.LogWarning("User {UserId} is already verified", request.UserId);
                 return Result.Fail(Errors.General.UnspecifiedError("User is already verified"));
             }
 
-            verificationCodeService.GenerateVerificationCode(user, UserVerificationCodeType.EmailVerification);
+            verificationCodeService.GenerateVerificationCode(user, request.CodeType);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Ok();

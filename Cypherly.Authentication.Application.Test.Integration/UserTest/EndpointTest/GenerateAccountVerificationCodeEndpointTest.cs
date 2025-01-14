@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Domain.Aggregates;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
 using FluentAssertions;
@@ -24,9 +25,10 @@ public class GenerateAccountVerificationCodeEndpointTest(IntegrationTestFactory<
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 
-        var cmd = new GenerateAccountVerificationCodeCommand
+        var cmd = new ResendVerificationCodeCommand
         {
-            UserId = user.Id
+            UserId = user.Id,
+            CodeType = UserVerificationCodeType.EmailVerification,
         };
 
         // Act
@@ -46,9 +48,10 @@ public class GenerateAccountVerificationCodeEndpointTest(IntegrationTestFactory<
         await Db.User.AddAsync(user);
         await Db.SaveChangesAsync();
 
-        var cmd = new GenerateAccountVerificationCodeCommand
+        var cmd = new ResendVerificationCodeCommand
         {
-            UserId = user.Id
+            UserId = user.Id,
+            CodeType = UserVerificationCodeType.EmailVerification,
         };
 
         // Act
