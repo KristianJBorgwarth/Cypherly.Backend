@@ -28,10 +28,6 @@ public class DeviceModelConfiguration : IEntityTypeConfiguration<Device>
         builder.Property(d => d.PublicKey)
             .IsRequired();
 
-        builder.Property(d=> d.Status)
-            .HasConversion<string>()
-            .IsRequired();
-
         builder.Property(d => d.Type)
             .HasConversion<string>()
             .IsRequired();
@@ -41,10 +37,5 @@ public class DeviceModelConfiguration : IEntityTypeConfiguration<Device>
             .IsRequired();
 
         builder.HasIndex(d=> d.UserId);
-
-        builder.HasMany<DeviceVerificationCode>()
-            .WithOne()
-            .HasForeignKey(dvc=> dvc.DeviceId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

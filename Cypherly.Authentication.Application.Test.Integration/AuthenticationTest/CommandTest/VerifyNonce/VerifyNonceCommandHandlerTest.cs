@@ -141,7 +141,7 @@ public class VerifyNonceCommandHandlerTest : IntegrationTestBase
         var result = await _sut.Handle(cmd, CancellationToken.None);
 
         // Assert
-    result.Success.Should().BeFalse();
+        result.Success.Should().BeFalse();
         result.Error.Should().BeEquivalentTo(Errors.General.Unauthorized());
         Db.RefreshToken.Count().Should().Be(0);
     }

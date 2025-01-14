@@ -56,6 +56,7 @@ public class VerifyLoginCommandHandlerTest : IntegrationTestBase
         var nonce = await Cache.GetAsync<LoginNonce>(result.Value!.NonceId.ToString(), options, new CancellationToken());
         nonce.Should().NotBeNull();
         nonce!.UserId.Should().Be(user.Id);
+        await Cache.RemoveAsync(result.Value!.NonceId.ToString(), new CancellationToken());
     }
 
     [Fact]

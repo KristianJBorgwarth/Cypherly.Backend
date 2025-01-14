@@ -130,9 +130,4 @@ public class User : AggregateRoot
     {
         return Devices.FirstOrDefault(d => d.Id == deviceId) ?? throw new InvalidOperationException("Device not found");
     }
-
-    public List<Device> GetValidDevices()
-    {
-        return Devices.Where(d => d.Status == DeviceStatus.Trusted).ToList();
-    }
 }

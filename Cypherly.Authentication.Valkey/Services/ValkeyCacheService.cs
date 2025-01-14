@@ -37,4 +37,9 @@ internal class ValkeyCacheService(IDistributedCache cache) : IValkeyCacheService
     {
         await cache.RemoveAsync(key, cancellationToken);
     }
+
+    public async Task ClearAllAsync(CancellationToken cancellationToken)
+    {
+
+    }
 }

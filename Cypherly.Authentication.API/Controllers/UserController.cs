@@ -1,8 +1,8 @@
-﻿using Cypherly.Authentication.Application.Features.User.Commands.Create;
+﻿using Cypherly.Authentication.Application.Features.Device.Commands.Create;
+using Cypherly.Authentication.Application.Features.User.Commands.Create;
 using Cypherly.Authentication.Application.Features.User.Commands.Delete;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.Verify;
-using Cypherly.Authentication.Application.Features.User.Commands.Update.VerifyDevice;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +13,9 @@ public class UserController(ISender sender) : BaseController
 {
     [HttpPost]
     [Route("")]
-    [ProducesResponseType(typeof(CreateUserDto),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateUserDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody]CreateUserCommand command)
+    public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
     {
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
@@ -25,7 +25,7 @@ public class UserController(ISender sender) : BaseController
     [Route("")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Delete([FromQuery]DeleteUserCommand command)
+    public async Task<IActionResult> Delete([FromQuery] DeleteUserCommand command)
     {
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
@@ -35,7 +35,7 @@ public class UserController(ISender sender) : BaseController
     [Route("verify")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Verify([FromBody]VerifyUserCommand command)
+    public async Task<IActionResult> Verify([FromBody] VerifyUserCommand command)
     {
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
@@ -45,19 +45,19 @@ public class UserController(ISender sender) : BaseController
     [Route("resend-verification")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ResendVerification([FromBody]GenerateAccountVerificationCodeCommand codeCommand)
+    public async Task<IActionResult> ResendVerification([FromBody] GenerateAccountVerificationCodeCommand codeCommand)
     {
         var result = await sender.Send(codeCommand);
         return result.Success ? Ok() : Error(result.Error);
     }
 
-    [HttpPut]
-    [Route("device/verify")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpPost]
+    [Route("device")]
+    [ProducesResponseType(typeof(CreateDeviceDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> VerifyDevice([FromBody]VerifyDeviceCommand command)
+    public async Task<IActionResult> CreateDevice([FromBody] CreateDeviceCommand command)
     {
         var result = await sender.Send(command);
-        return result.Success ? Ok() : Error(result.Error);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 }

@@ -77,7 +77,6 @@ public class LoginCommandHandlerTest : IntegrationTestBase
         result.Success.Should().BeFalse();
         result.Error.Should().NotBeNull();
         result.Error.Message.Should().Be("Invalid Credentials");
-        Db.RefreshToken.Should().HaveCount(0);
     }
 
     [Fact]

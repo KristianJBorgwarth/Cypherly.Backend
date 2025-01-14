@@ -8,17 +8,15 @@ public class Device : Entity
     public string Name { get; private init; } = null!;
     public string PublicKey { get; init; } = null!;
     public Guid ConnectionId { get; init; }
-    public DeviceStatus Status { get; private set; }
+    public DateTime? LastSeen { get; private set; }
     public DeviceType Type { get; init; }
     public DevicePlatform Platform { get; init; }
     public string AppVersion { get; private set; } = null!;
     public Guid UserId { get; private set; }
 
-    private readonly List<DeviceVerificationCode> _verificationCodes = [];
-
     private readonly List<RefreshToken> _refreshTokens = [];
     public virtual IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens;
-    public virtual IReadOnlyCollection<DeviceVerificationCode> VerificationCodes => _verificationCodes;
+
     public Device() : base(Guid.Empty) {} // For EF Core
 
     public Device(Guid id,
@@ -34,7 +32,6 @@ public class Device : Entity
         UserId = userId;
         Type = type;
         Platform = platform;
-        Status = DeviceStatus.Pending;
         ConnectionId = Guid.NewGuid();
     }
 
@@ -59,47 +56,12 @@ public class Device : Entity
     }
 
     /// <summary>
-    /// Adds a verification code to the device.
+    /// Sets the time the device was last seen.
     /// </summary>
-    public void AddDeviceVerificationCode()
+    public void SetLastSeen()
     {
-        _verificationCodes.Add(new(Guid.NewGuid(), deviceId: Id));
+        LastSeen = DateTime.UtcNow;
     }
-
-    /// <summary>
-    /// Returns the most recent active verification code.
-    /// </summary>
-    /// <returns><see cref="DeviceVerificationCode"/></returns>
-    public DeviceVerificationCode? GetActiveVerificationCode()
-    {
-        return VerificationCodes.Where(dvc => !dvc.Code.IsUsed && dvc.Code.ExpirationDate > DateTime.UtcNow).MaxBy(dvc => dvc.Code.ExpirationDate);
-    }
-
-    public Result Verify(string verificationCode)
-    {
-        if(VerificationCodes.Count == 0)
-            throw new InvalidOperationException("This device does not have a verification code");
-
-        if(Status == DeviceStatus.Trusted)
-            throw new InvalidOperationException("This device is already trusted");
-
-        var deviceVerificationCode = VerificationCodes.FirstOrDefault(c => c.Code.Value == verificationCode);
-        if (deviceVerificationCode is null) return Result.Fail(Errors.General.UnspecifiedError("Invalid verification code"));
-
-        var verificationResult = deviceVerificationCode.Code.Verify(verificationCode);
-        if (verificationResult.Success is false)
-            return verificationResult;
-
-        Status = DeviceStatus.Trusted;
-        deviceVerificationCode.Code.Use();
-        return Result.Ok();
-    }
-
-    /// <summary>
-    /// Set the status of the device to any of the <see cref="DeviceStatus"/> values.
-    /// </summary>
-    /// <param name="status"><see cref="DeviceStatus"/></param>
-    public void SetStatus(DeviceStatus status) => Status = status;
 
     /// <summary>
     /// Adds a valid refresh token <see cref="RefreshToken"/> to the device.
