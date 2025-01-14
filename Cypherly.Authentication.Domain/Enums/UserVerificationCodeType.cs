@@ -4,4 +4,5 @@ public enum UserVerificationCodeType
 {
     EmailVerification,
     PasswordReset,
+    Login,
 }

@@ -7,15 +7,6 @@ public enum DeviceType
     Desktop = 2,
 }
 
-public enum DeviceStatus
-{
-    Active = 1,
-    Trusted = 2,
-    Inactive = 3,
-    Pending = 4,
-    Revoked = 5,
-}
-
 public enum DevicePlatform
 {
     Windows = 1,

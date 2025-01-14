@@ -10,6 +10,7 @@ public class NonceCacheService(IValkeyCacheService valkeyCacheService) : INonceC
     {
         Converters = { new NonceJsonConverter() },
     };
+
     public async Task AddNonceAsync(Nonce nonce, CancellationToken cancellationToken)
     {
         await valkeyCacheService.SetAsync(nonce.Id.ToString(), nonce, cancellationToken, TimeSpan.FromMinutes(5));

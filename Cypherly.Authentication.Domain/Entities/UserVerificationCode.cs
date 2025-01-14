@@ -24,6 +24,7 @@ public class UserVerificationCode : Entity
         {
             UserVerificationCodeType.EmailVerification => VerificationCode.Create(DateTime.UtcNow.AddHours(1)),
             UserVerificationCodeType.PasswordReset => VerificationCode.Create(DateTime.UtcNow.AddMinutes(15)),
+            UserVerificationCodeType.Login => VerificationCode.Create(DateTime.UtcNow.AddMinutes(10)),
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }

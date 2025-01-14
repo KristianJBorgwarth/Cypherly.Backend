@@ -1,5 +1,6 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Authentication.Application.Contracts;
+using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Events.User;
 using Cypherly.Common.Messaging.Messages.PublishMessages;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
@@ -30,7 +31,15 @@ public class VerificationCodeGeneratedEventHandler(
             throw new InvalidOperationException("Verification code not found");
         }
 
-        var emailMessage = new SendEmailMessage(user.Email.Address, "Cypherly Verification", "Here is your verification code: " + verificationCode.Code.Value, Guid.NewGuid());
+        var message = notification.CodeType switch
+        {
+            UserVerificationCodeType.Login => "Here is your login verification code: ",
+            UserVerificationCodeType.EmailVerification => "Here is your email verification code: ",
+            UserVerificationCodeType.PasswordReset => "Here is your password reset verification code: ",
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        var emailMessage = new SendEmailMessage(user.Email.Address, "Cypherly Verification", message + verificationCode.Code.Value, Guid.NewGuid());
 
         await emailProducer.PublishMessageAsync(emailMessage, cancellationToken);
     }

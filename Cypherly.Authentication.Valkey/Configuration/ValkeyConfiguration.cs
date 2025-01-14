@@ -22,6 +22,7 @@ public static class ValkeyConfiguration
 
         services.AddSingleton<IValkeyCacheService, ValkeyCacheService>();
         services.AddScoped<INonceCacheService, NonceCacheService>();
+        services.AddScoped<ILoginNonceCache, LoginNonceCache>();
 
         return services;
     }

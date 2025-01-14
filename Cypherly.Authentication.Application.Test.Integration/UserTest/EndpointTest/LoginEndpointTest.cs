@@ -27,10 +27,6 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         {
             Email = user.Email.Address,
             Password = "TestPassword?123",
-            Base64DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0",
-            DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act
@@ -38,8 +34,8 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        Db.Device.Should().HaveCount(1);
-        Db.DeviceVerificationCode.Should().HaveCount(1);
+        Db.VerificationCode.Should().HaveCount(1);
+
     }
 
     [Fact]
@@ -55,10 +51,6 @@ public class LoginEndpointTest(IntegrationTestFactory<Program, AuthenticationDbC
         {
             Email = user.Email.Address,
             Password = "TestPassword?12323123", // Invalid password
-            Base64DevicePublicKey = "TestPublicKey",
-            DeviceAppVersion = "1.0.0",
-            DeviceType = DeviceType.Desktop,
-            DevicePlatform = DevicePlatform.Windows,
         };
 
         // Act

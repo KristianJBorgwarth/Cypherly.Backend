@@ -32,6 +32,7 @@ public class IntegrationTestBase : IDisposable
         Db.OutboxMessage.ExecuteDelete();
         Db.Claim.ExecuteDelete();
         Db.UserClaim.ExecuteDelete();
+        Db.Device.ExecuteDelete();
         Harness.Stop();
     }
 }
