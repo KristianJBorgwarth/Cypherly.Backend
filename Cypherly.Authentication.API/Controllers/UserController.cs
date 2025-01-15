@@ -1,4 +1,5 @@
 ﻿using Cypherly.Authentication.Application.Features.Device.Commands.Create;
+using Cypherly.Authentication.Application.Features.Device.Queries.GetDevices;
 using Cypherly.Authentication.Application.Features.User.Commands.Create;
 using Cypherly.Authentication.Application.Features.User.Commands.Delete;
 using Cypherly.Authentication.Application.Features.User.Commands.Update.ResendVerificationCode;
@@ -58,6 +59,16 @@ public class UserController(ISender sender) : BaseController
     public async Task<IActionResult> CreateDevice([FromBody] CreateDeviceCommand command)
     {
         var result = await sender.Send(command);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+    [HttpGet]
+    [Route("devices")]
+    [ProducesResponseType(typeof(GetDevicesDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetDevices([FromQuery] GetDevicesQuery query)
+    {
+        var result = await sender.Send(query);
         return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 }
