@@ -126,6 +126,15 @@ public class User : AggregateRoot
         _devices.Add(device);
     }
 
+    /// <summary>
+    /// Returns list of all active devices (Devices where DeletedAt value is null <see cref="Device.DeletedAt"/>
+    /// </summary>
+    /// <returns></returns>
+    public List<Device> GetDevices()
+    {
+        return Devices.Where(x => x.DeletedAt is null).ToList();
+    }
+
     public Device GetDevice(Guid deviceId)
     {
         return Devices.FirstOrDefault(d => d.Id == deviceId) ?? throw new InvalidOperationException("Device not found");

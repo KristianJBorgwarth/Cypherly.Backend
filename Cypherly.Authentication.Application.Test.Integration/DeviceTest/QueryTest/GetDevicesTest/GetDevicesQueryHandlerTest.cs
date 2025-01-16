@@ -6,7 +6,10 @@ using Cypherly.Authentication.Domain.Entities;
 using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
+using Cypherly.Domain.Common;
+using Cypherly.Domain.ValueObjects;
 using FluentAssertions;
+using MassTransit.SqlTransport;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -80,14 +83,34 @@ public class GetDevicesQueryHandlerTest : IntegrationTestBase
         var result = await _sut.Handle(query, CancellationToken.None);
 
         // Assert
-        result.Success.Should().BeTrue();
-        result.Value.Should().NotBeNull();
-        result.Value.Devices.Should().HaveCount(2);
+        result.Success.Should().BeFalse();
+        result.Error.Should().BeEquivalentTo(Errors.General.NotFound(query.UserId));
     }
 
     [Fact]
     public async Task Handle_Valid_Query_With_No_Devices_Should_Return_Empty_List()
     {
+        // Arrange 
+        var user = new User(Guid.NewGuid(), Email.Create("test@mail.dk"), Password.Create("test89?klsdKK"), true);
+        
+        var device = new Device(Guid.NewGuid(), "somekey", "1.0", DeviceType.Desktop, DevicePlatform.Windows, user.Id);
+        device.SetDelete();
+        
+        user.AddDevice(device);
+        await Db.AddAsync(user);
+        await Db.SaveChangesAsync();
 
+        var query = new GetDevicesQuery()
+        {
+            UserId = user.Id
+        };
+        
+        // Act
+        var result = await _sut.Handle(query, CancellationToken.None);
+        
+        
+        // Assert
+        result.Success.Should().BeTrue();
+        result.Value!.Devices.Count.Should().Be(0);
     }
 }

@@ -21,9 +21,9 @@ public class GetDevicesQueryHandler(
                 logger.LogCritical("User not found in GetDevicesQueryHandler for user with ID: {UserId}", request.UserId);
                 return Result.Fail<GetDevicesDto>(Errors.General.NotFound(request.UserId));
             }
-
-            var devices = user.Devices;
-
+            
+            var devices = user.GetDevices();
+            
             var dto = GetDevicesDto.Map(devices);
 
             return Result.Ok(dto);
