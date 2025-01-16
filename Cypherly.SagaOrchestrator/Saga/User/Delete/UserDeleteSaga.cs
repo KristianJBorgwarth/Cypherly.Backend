@@ -6,7 +6,7 @@ using MassTransit;
 using Microsoft.Extensions.Logging;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-namespace Cypherly.SagaOrchestrator.Messaging.Saga.User.Delete;
+namespace Cypherly.SagaOrchestrator.Saga.User.Delete;
 
 public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState>
 {

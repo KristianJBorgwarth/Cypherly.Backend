@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace Cypherly.SagaOrchestrator.Messaging.Abstractions;
+namespace Cypherly.SagaOrchestrator.Abstractions;
 
 public abstract class BaseState : SagaStateMachineInstance
 {

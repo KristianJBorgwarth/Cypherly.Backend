@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Cypherly.SagaOrchestrator.Messaging.Data.Context;
+namespace Cypherly.SagaOrchestrator.Data.Context;
 
 public sealed class OrchestratorDbContextFactory : IDesignTimeDbContextFactory<OrchestratorDbContext>
 {

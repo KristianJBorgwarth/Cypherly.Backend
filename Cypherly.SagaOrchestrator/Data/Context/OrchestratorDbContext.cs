@@ -1,8 +1,8 @@
-﻿using Cypherly.SagaOrchestrator.Messaging.Data.ModelConfigurations;
+﻿using Cypherly.SagaOrchestrator.Data.ModelConfigurations;
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cypherly.SagaOrchestrator.Messaging.Data.Context;
+namespace Cypherly.SagaOrchestrator.Data.Context;
 
 public sealed class OrchestratorDbContext : SagaDbContext
 {

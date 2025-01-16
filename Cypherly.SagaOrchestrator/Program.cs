@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Cypherly.MassTransit.Messaging.Configuration;
-using Cypherly.SagaOrchestrator.Messaging.Data.Context;
-using Cypherly.SagaOrchestrator.Messaging.Saga.User.Delete;
+using Cypherly.SagaOrchestrator.Data.Context;
+using Cypherly.SagaOrchestrator.Saga.User.Delete;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

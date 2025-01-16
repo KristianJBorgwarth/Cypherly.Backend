@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Cypherly.SagaOrchestrator.Messaging.Data.Migrations
+namespace Cypherly.SagaOrchestrator.Data.Migrations
 {
     /// <inheritdoc />
     public partial class error_column : Migration

@@ -1,9 +1,9 @@
-﻿using Cypherly.SagaOrchestrator.Messaging.Saga.User.Delete;
+﻿using Cypherly.SagaOrchestrator.Saga.User.Delete;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Cypherly.SagaOrchestrator.Messaging.Data.ModelConfigurations;
+namespace Cypherly.SagaOrchestrator.Data.ModelConfigurations;
 
 public sealed class UserDeleteSagaMap : SagaClassMap<UserDeleteSagaState>
 {

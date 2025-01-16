@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Cypherly.SagaOrchestrator.Messaging.Data.Migrations
+namespace Cypherly.SagaOrchestrator.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

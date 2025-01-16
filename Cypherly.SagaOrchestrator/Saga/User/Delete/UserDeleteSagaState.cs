@@ -1,6 +1,6 @@
-﻿using Cypherly.SagaOrchestrator.Messaging.Abstractions;
+﻿using Cypherly.SagaOrchestrator.Abstractions;
 
-namespace Cypherly.SagaOrchestrator.Messaging.Saga.User.Delete;
+namespace Cypherly.SagaOrchestrator.Saga.User.Delete;
 
 public sealed class UserDeleteSagaState : BaseState
 {
