@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Cypherly.API\Cypherly.API.csproj" />
+      <ProjectReference Include="..\Cypherly.ChatServer.Application\Cypherly.ChatServer.Application.csproj" />
     </ItemGroup>
 
 </Project>
