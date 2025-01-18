@@ -7,12 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Configuration\" />
       <Folder Include="Migrations\" />
-      <Folder Include="Repositories\" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Cypherly.ChatServer.Application\Cypherly.ChatServer.Application.csproj" />
       <ProjectReference Include="..\Cypherly.ChatServer.Domain\Cypherly.ChatServer.Domain.csproj" />
       <ProjectReference Include="..\Cypherly.Persistence\Cypherly.Persistence.csproj" />
     </ItemGroup>

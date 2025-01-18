@@ -1,5 +1,6 @@
 using System.Reflection;
 using Cypherly.ChatServer.Application.Configuration;
+using Cypherly.ChatServer.Persistence.Configuration;
 using Serilog;
 
 
@@ -34,6 +35,12 @@ builder.Host.UseSerilog();
 #region Application Layer
 
 builder.Services.AddChatServerApplication(Assembly.Load("Cypherly.ChatServer.Application"));
+
+#endregion
+
+# region Persistence Layer
+
+builder.Services.AddChatServerPersistence(configuration);
 
 #endregion
 
