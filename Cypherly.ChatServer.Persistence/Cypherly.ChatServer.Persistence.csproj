@@ -8,10 +8,13 @@
 
     <ItemGroup>
       <Folder Include="Configuration\" />
-      <Folder Include="Context\" />
       <Folder Include="Migrations\" />
-      <Folder Include="ModelConfigurations\" />
       <Folder Include="Repositories\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Cypherly.ChatServer.Domain\Cypherly.ChatServer.Domain.csproj" />
+      <ProjectReference Include="..\Cypherly.Persistence\Cypherly.Persistence.csproj" />
     </ItemGroup>
 
 </Project>
