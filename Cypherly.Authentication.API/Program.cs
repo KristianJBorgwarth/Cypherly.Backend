@@ -128,10 +128,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowElectron", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:8080")
             .AllowAnyMethod()
-            .AllowAnyHeader()
-            .WithOrigins("http://localhost:8080");
+            .AllowAnyHeader();
     });
 });
 
@@ -212,11 +211,11 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowElectron");
+
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseCors("AllowElectron");
 
 app.Run();
 
