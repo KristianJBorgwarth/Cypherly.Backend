@@ -8,15 +8,18 @@ namespace Cypherly.ChatServer.API.Hubs;
 
 public sealed class ConnectionHub(ISender sender) : Hub
 {
-    public async Task<Result> ConnectAsync(ConnectCommand cmd)
+    public async Task ConnectAsync(ConnectCommand cmd)
     {
         var result = await sender.Send(cmd);
-        return result;
+        if (result.Success is false)
+        {
+            throw new HubException("Failed to map connection to client.");
+        }
     }
 
-    public override async Task OnConnectedAsync()
+    public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        var transientId = Context.ConnectionId;
-        var result = await sender.Send(new DisconnectCommand() {TransientConnectionId = transientId});
+        await sender.Send(new DisconnectCommand() { TransientConnectionId = Context.ConnectionId });
+        await base.OnDisconnectedAsync(exception);
     }
 }
