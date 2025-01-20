@@ -7,6 +7,7 @@ public class LogoutCommandValidator : AbstractValidator<LogoutCommand>
 {
     public LogoutCommandValidator()
     {
+
         RuleFor(x=> x.Id)
             .NotEmpty()
             .WithMessage(Errors.General.ValueIsEmpty(nameof(LogoutCommand.Id)).Message);

@@ -52,6 +52,7 @@ public class AuthenticationService : IAuthenticationService
     public void Logout(Aggregates.User user, Guid deviceId)
     {
         var device = user.GetDevice(deviceId);
+
         device.RevokeRefreshTokens();
         device.SetLastSeen();
         device.SetDelete();
