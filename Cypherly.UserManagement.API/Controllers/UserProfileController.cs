@@ -89,7 +89,6 @@ public class UserProfileController(ISender sender) : BaseController
         return result.Success ? Ok() : Error(result.Error);
     }
 
-
     [HttpGet("friendships")]
     [ProducesResponseType(typeof(GetFriendsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
