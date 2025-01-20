@@ -1,9 +1,13 @@
-﻿using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
+﻿using Cypherly.API.Filters;
+using Cypherly.Authentication.Application.Features.Authentication.Commands.Login;
+using Cypherly.Authentication.Application.Features.Authentication.Commands.Logout;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.RefreshTokens;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyLogin;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyNonce;
 using Cypherly.Authentication.Application.Features.Authentication.Queries.GetNonce;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.Authentication.Controllers;
@@ -19,6 +23,18 @@ public class AuthenticationController(ISender sender) : BaseController
     {
         var result = await sender.Send(command);
         return result.Success ? Ok(result.Value) : Error(result.Error);
+    }
+
+    [ServiceFilter(typeof(IValidateUserIdFilter))]
+    [Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpPost]
+    [Route("logout")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Logout([FromBody] LogoutCommand command)
+    {
+        var result = await sender.Send(command);
+        return result.Success ? Ok() : Error(result.Error);
     }
 
     [HttpPost]

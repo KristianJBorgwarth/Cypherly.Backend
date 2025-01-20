@@ -11,6 +11,7 @@ public interface IAuthenticationService
     RefreshToken GenerateRefreshToken(Aggregates.User user, Guid deviceId);
     bool VerifyRefreshToken(Aggregates.User user, Guid deviceId, string refreshToken);
     void GenerateLoginVerificationCode(Aggregates.User user);
+    void Logout(Aggregates.User user, Guid deviceId);
 }
 public class AuthenticationService : IAuthenticationService
 {
@@ -45,5 +46,14 @@ public class AuthenticationService : IAuthenticationService
     {
         user.AddVerificationCode(UserVerificationCodeType.Login);
         user.AddDomainEvent(new VerificationCodeGeneratedEvent(user.Id, UserVerificationCodeType.Login));
+    }
+
+    //TODO: write tests for this
+    public void Logout(Aggregates.User user, Guid deviceId)
+    {
+        var device = user.GetDevice(deviceId);
+        device.RevokeRefreshTokens();
+        device.SetLastSeen();
+        device.SetDelete();
     }
 }

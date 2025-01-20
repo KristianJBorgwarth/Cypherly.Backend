@@ -127,7 +127,8 @@ public class User : AggregateRoot
     }
 
     /// <summary>
-    /// Returns list of all active devices (Devices where DeletedAt value is null <see cref="Device.DeletedAt"/>
+    /// Returns list of all active devices.
+    /// Devices where DeletedAt value is null <see cref="Device.DeletedAt"/>
     /// </summary>
     /// <returns></returns>
     public List<Device> GetDevices()
