@@ -1,6 +1,6 @@
 ﻿using Cypherly.Authentication.Domain.Entities;
 
-namespace Cypherly.Authentication.Application.Services.Authentication;
+namespace Cypherly.Authentication.Application.Features.Authentication.Token;
 
 public interface IJwtService
 {

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Cypherly.Application.Configuration;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyNonce;
-using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cypherly.Authentication.Application.Configuration;

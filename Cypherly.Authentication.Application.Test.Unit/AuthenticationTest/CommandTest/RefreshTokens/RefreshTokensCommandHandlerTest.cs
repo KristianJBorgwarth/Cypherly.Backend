@@ -1,7 +1,7 @@
 ﻿using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.RefreshTokens;
-using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Domain.Entities;
 using Cypherly.Authentication.Domain.Services.User;

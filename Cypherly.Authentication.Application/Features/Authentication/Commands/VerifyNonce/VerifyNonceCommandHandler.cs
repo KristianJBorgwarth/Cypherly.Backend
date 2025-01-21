@@ -1,7 +1,7 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
-using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
