@@ -36,7 +36,7 @@ public class RefreshTokensCommandHandler(
 
             var refreshToken = authService.GenerateRefreshToken(user, request.DeviceId);
 
-            var accessToken = jwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims());
+            var accessToken = jwtService.GenerateToken(user.Id, request.DeviceId, user.GetUserClaims());
 
             var dto = RefreshTokensDto.Map(accessToken, refreshToken);
 

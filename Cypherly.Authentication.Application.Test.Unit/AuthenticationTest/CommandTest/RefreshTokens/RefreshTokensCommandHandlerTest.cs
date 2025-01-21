@@ -91,7 +91,7 @@ public class RefreshTokensCommandHandlerTest
         A.CallTo(() => _fakeUserRepo.GetByIdAsync(command.UserId))!.Returns(user);
         A.CallTo(() => _fakeAuthService.VerifyRefreshToken(user, command.DeviceId, command.RefreshToken))!.Returns(true);
         A.CallTo(() => _fakeAuthService.GenerateRefreshToken(user, command.DeviceId))!.Returns(new RefreshToken(Guid.NewGuid(), Guid.NewGuid()));
-        A.CallTo(() => _fakeJwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims())).Returns(Guid.NewGuid().ToString());
+        A.CallTo(() => _fakeJwtService.GenerateToken(user.Id, command.DeviceId, user.GetUserClaims())).Returns(Guid.NewGuid().ToString());
 
         // Act
         var result = await _sut.Handle(command, CancellationToken.None);

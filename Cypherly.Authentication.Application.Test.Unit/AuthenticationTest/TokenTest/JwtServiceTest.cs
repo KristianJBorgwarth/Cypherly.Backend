@@ -14,7 +14,7 @@ namespace Cypherly.Authentication.Application.Test.Unit.AuthenticationTest.Token
 
 public class JwtServiceTest
 {
-    private readonly IJwtService _jwtService;
+    private readonly JwtService _jwtService;
     private readonly IOptions<JwtSettings> _jwtSettings;
 
     public JwtServiceTest()
@@ -48,7 +48,7 @@ public class JwtServiceTest
         var userClaims = new List<UserClaim> { userClaim };
 
         // Act
-        var token = _jwtService.GenerateToken2(user.Id, device.Id, userClaims);
+        var token = _jwtService.GenerateToken(user.Id, device.Id, userClaims);
 
         // Decode the token
         var jwtHandler = new JsonWebTokenHandler();
