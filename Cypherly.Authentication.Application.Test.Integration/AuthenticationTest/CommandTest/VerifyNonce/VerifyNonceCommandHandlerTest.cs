@@ -2,7 +2,7 @@
 using Cypherly.Authentication.Application.Caching;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Application.Features.Authentication.Commands.VerifyNonce;
-using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Cypherly.Authentication.Application.Test.Integration.Setup;
 using Cypherly.Authentication.Application.Test.Integration.Setup.Helpers;
 using Cypherly.Authentication.Domain.Aggregates;

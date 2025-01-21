@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Text;
 using Cypherly.Authentication.Application.Configuration;
+using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Cypherly.Authentication.Application.Features.User.Consumers;
-using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
 using Cypherly.Authentication.Persistence.Context;

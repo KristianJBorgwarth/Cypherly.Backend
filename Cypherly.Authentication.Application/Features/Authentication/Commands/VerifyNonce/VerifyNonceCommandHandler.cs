@@ -1,7 +1,7 @@
 ﻿using Cypherly.Application.Abstractions;
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
-using Cypherly.Authentication.Application.Services.Authentication;
+using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
 
@@ -43,7 +43,7 @@ public class VerifyNonceCommandHandler(
             if (!isNonceValid)
                 return Result.Fail<VerifyNonceDto>(Errors.General.Unauthorized());
 
-            var token = jwtService.GenerateToken(user.Id, user.Email.Address, user.GetUserClaims());
+            var token = jwtService.GenerateToken(user.Id, cmd.DeviceId, user.GetUserClaims());
             device.AddRefreshToken();
             var refreshToken = device.GetActiveRefreshToken();
 
