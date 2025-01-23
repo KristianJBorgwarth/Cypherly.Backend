@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+// ReSharper disable UseCollectionExpression
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -127,6 +128,20 @@ builder.Services.AddScoped<IValidateUserIdFilter, ValidateUserIdIdFilter>();
 
 #endregion
 
+#region CORS
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowElectron", policy =>
+    {
+        policy.WithOrigins("http://localhost:8080")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+#endregion
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -134,7 +149,7 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new()
     {
         Title = "Cypherly.UserManagement.API",
-        Version = "v1"
+        Version = "v1",
     });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -144,7 +159,7 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
-        BearerFormat = "JWT"
+        BearerFormat = "JWT",
     });
 
     c.AddSecurityRequirement(new()
@@ -155,11 +170,11 @@ builder.Services.AddSwaggerGen(c =>
                 Reference = new()
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
+                    Id = "Bearer",
+                },
             },
-            new string[] { }
-        }
+            Array.Empty<string>()
+        },
     });
 });
 
@@ -200,7 +215,10 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowElectron");
+
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
