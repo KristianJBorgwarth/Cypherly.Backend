@@ -87,9 +87,6 @@ public class Device : Entity
     /// </summary>
     public void RevokeRefreshTokens()
     {
-        foreach(var token in RefreshTokens)
-        {
-            token.Revoke();
-        }
+        RefreshTokens.Where(t=> !t.IsRevoked).ToList().ForEach(t=> t.Revoke());
     }
 }
