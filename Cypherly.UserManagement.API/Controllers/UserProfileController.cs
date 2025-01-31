@@ -17,8 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.UserManagement.API.Controllers;
 
-// [Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-// [ServiceFilter(typeof(IValidateUserIdFilter))]
+[Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+[ServiceFilter(typeof(IValidateUserIdFilter))]
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
 {
@@ -88,7 +88,6 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
     }
-
 
     [HttpGet("friendships")]
     [ProducesResponseType(typeof(GetFriendsDto), StatusCodes.Status200OK)]

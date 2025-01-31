@@ -1,4 +1,4 @@
-﻿using Cypherly.Authentication.Application.Services.Authentication;
+﻿using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Cypherly.Authentication.Redis.Configuration;
 using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 using DotNet.Testcontainers.Builders;

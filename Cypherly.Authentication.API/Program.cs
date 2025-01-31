@@ -1,8 +1,9 @@
 using System.Reflection;
 using System.Text;
+using Cypherly.API.Filters;
 using Cypherly.Authentication.Application.Configuration;
+using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Cypherly.Authentication.Application.Features.User.Consumers;
-using Cypherly.Authentication.Application.Services.Authentication;
 using Cypherly.Authentication.Domain.Configuration;
 using Cypherly.Authentication.Persistence.Configuration;
 using Cypherly.Authentication.Persistence.Context;
@@ -119,6 +120,8 @@ builder.Services.AddAuthentication()
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("AdminOnly", policy => policy.RequireRole("admin"))
     .AddPolicy("User", policy => policy.RequireRole("user"));
+
+builder.Services.AddScoped<IValidateUserIdFilter, ValidateUserIdIdFilter>();
 
 #endregion
 

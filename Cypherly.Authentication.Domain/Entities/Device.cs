@@ -81,4 +81,12 @@ public class Device : Entity
     {
         return RefreshTokens.Where(rt=> rt.IsValid()).MaxBy(rt => rt.Expires);
     }
+
+    /// <summary>
+    /// Revoke all refresh tokens for the device.
+    /// </summary>
+    public void RevokeRefreshTokens()
+    {
+        RefreshTokens.Where(t=> !t.IsRevoked).ToList().ForEach(t=> t.Revoke());
+    }
 }

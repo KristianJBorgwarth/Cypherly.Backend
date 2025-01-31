@@ -121,13 +121,18 @@ public class User : AggregateRoot
         return UserClaims.ToList();
     }
 
+    /// <summary>
+    /// Add a device to the user.
+    /// </summary>
+    /// <param name="device"></param>
     public void AddDevice(Device device)
     {
         _devices.Add(device);
     }
 
     /// <summary>
-    /// Returns list of all active devices (Devices where DeletedAt value is null <see cref="Device.DeletedAt"/>
+    /// Returns list of all active devices.
+    /// Devices where DeletedAt value is null <see cref="Device.DeletedAt"/>
     /// </summary>
     /// <returns></returns>
     public List<Device> GetDevices()
@@ -135,8 +140,14 @@ public class User : AggregateRoot
         return Devices.Where(x => x.DeletedAt is null).ToList();
     }
 
+    /// <summary>
+    /// Returns the device with the specified deviceId.
+    /// </summary>
+    /// <param name="deviceId">The ID of the device to retreive</param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException">Exception thrown if the device is marked as Deleted</exception>
     public Device GetDevice(Guid deviceId)
     {
-        return Devices.FirstOrDefault(d => d.Id == deviceId) ?? throw new InvalidOperationException("Device not found");
+        return Devices.FirstOrDefault(d => d.Id == deviceId && d.DeletedAt is null) ?? throw new InvalidOperationException("Device not found");
     }
 }

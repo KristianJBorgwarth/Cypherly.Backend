@@ -1,5 +1,5 @@
 ﻿
-namespace Cypherly.Authentication.Application.Services.Authentication;
+namespace Cypherly.Authentication.Application.Features.Authentication.Token;
 
 public class JwtSettings
 {
