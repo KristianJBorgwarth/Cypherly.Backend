@@ -1,6 +1,7 @@
 using System.Reflection;
 using Cypherly.ChatServer.Application.Configuration;
 using Cypherly.ChatServer.Persistence.Configuration;
+using Cypherly.ChatServer.Valkey.Configuration;
 using Cypherly.MassTransit.Messaging.Configuration;
 using MassTransit;
 using Serilog;
@@ -23,7 +24,6 @@ if(env.IsDevelopment())
 }
 
 #endregion
-
 
 #region MassTransit
 
@@ -51,6 +51,12 @@ builder.Services.AddChatServerApplication(Assembly.Load("Cypherly.ChatServer.App
 # region Persistence Layer
 
 builder.Services.AddChatServerPersistence(configuration);
+
+#endregion
+
+#region Caching
+
+builder.Services.AddValkey(configuration);
 
 #endregion
 

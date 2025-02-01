@@ -20,8 +20,8 @@ public class Client : AggregateRoot
     public string? TransientId { get; private set; }
     private Client () : base(Guid.Empty) { } // For EF Core
 
-    private List<ChatMessage> _messages = [];
-    public IReadOnlyCollection<ChatMessage> Messages => _messages;
+    private List<ChatMessage> _chatMessages = [];
+    public IReadOnlyCollection<ChatMessage> ChatMessages => _chatMessages;
 
     public Client(Guid id, Guid connectionId) : base(id)
     {
