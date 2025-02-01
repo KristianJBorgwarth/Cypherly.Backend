@@ -54,11 +54,8 @@ public class CreateUserCommandHandlerTests
         A.CallTo(() => _fakeUnitOfWork.SaveChangesAsync(A<CancellationToken>.Ignored)).DoesNothing();
         A.CallTo(() => _fakeRepo.CreateAsync(A<User>.Ignored)).DoesNothing();
 
-
-        // Create the response message you want to return
-        var responseMessage = new CreateUserProfileResponse();
-
         // Fake the MassTransit response
+        var responseMessage = new CreateUserProfileResponse();
         var fakeMassTransitResponse = A.Fake<MassTransit.Response<CreateUserProfileResponse>>();
         A.CallTo(() => fakeMassTransitResponse.Message).Returns(responseMessage);
 

@@ -5,9 +5,11 @@ using Cypherly.Authentication.Application.Features.Device.Commands.Create;
 using Cypherly.Authentication.Domain.Aggregates;
 using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Services.User;
+using Cypherly.Common.Messaging.Messages.RequestMessages.Client;
 using Cypherly.Domain.Common;
 using FakeItEasy;
 using FluentAssertions;
+using MassTransit;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Test.Unit.DeviceTest.CreateTest;
@@ -18,7 +20,7 @@ public class CreateDeviceCommandHandlerTest
     private readonly ILoginNonceCache _fakeLoginNonceCache;
     private readonly IDeviceService _fakeDeviceService;
     private readonly IUnitOfWork _fakeUnitOfWork;
-
+    private readonly IRequestClient<CreateClientRequest> _fakeRequestClient;
     private readonly CreateDeviceCommandHandler _sut;
 
     public CreateDeviceCommandHandlerTest()
@@ -27,8 +29,9 @@ public class CreateDeviceCommandHandlerTest
         _fakeLoginNonceCache = A.Fake<ILoginNonceCache>();
         _fakeDeviceService = A.Fake<IDeviceService>();
         _fakeUnitOfWork = A.Fake<IUnitOfWork>();
+        _fakeRequestClient = A.Fake<IRequestClient<CreateClientRequest>>();
 
-        _sut = new CreateDeviceCommandHandler(_fakeRepo, _fakeLoginNonceCache, _fakeDeviceService, _fakeUnitOfWork, A.Fake<ILogger<CreateDeviceCommandHandler>>());
+        _sut = new CreateDeviceCommandHandler(_fakeRepo, _fakeRequestClient, _fakeLoginNonceCache, _fakeDeviceService, _fakeUnitOfWork, A.Fake<ILogger<CreateDeviceCommandHandler>>());
     }
 
 

@@ -8,8 +8,10 @@ using Cypherly.Authentication.Domain.Enums;
 using Cypherly.Authentication.Domain.Services.User;
 using Cypherly.Authentication.Domain.ValueObjects;
 using Cypherly.Authentication.Persistence.Context;
+using Cypherly.Common.Messaging.Messages.RequestMessages.Client;
 using Cypherly.Domain.Common;
 using FluentAssertions;
+using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -27,8 +29,9 @@ public class CreateDeviceCommandHandlerTest : IntegrationTestBase
         _loginNonceCache = scoperino.ServiceProvider.GetRequiredService<ILoginNonceCache>();
         var deviceService = scoperino.ServiceProvider.GetRequiredService<IDeviceService>();
         var unitOfWork = scoperino.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        var requestClient = scoperino.ServiceProvider.GetRequiredService<IRequestClient<CreateClientRequest>>();
         var logger = scoperino.ServiceProvider.GetRequiredService<ILogger<CreateDeviceCommandHandler>>();
-        _sut = new CreateDeviceCommandHandler(repo, _loginNonceCache, deviceService, unitOfWork, logger);
+        _sut = new CreateDeviceCommandHandler(repo,requestClient, _loginNonceCache, deviceService, unitOfWork, logger);
     }
 
     [Fact]
@@ -42,7 +45,7 @@ public class CreateDeviceCommandHandlerTest : IntegrationTestBase
 
         // Arrange nonce
         var loginNonce = LoginNonce.Create(user.Id);
-        await _loginNonceCache.AddNonceAsync(loginNonce, new CancellationToken());
+        await _loginNonceCache.AddNonceAsync(loginNonce, CancellationToken.None);
 
         // Arrange command
         var cmd = new CreateDeviceCommand()
@@ -64,8 +67,8 @@ public class CreateDeviceCommandHandlerTest : IntegrationTestBase
         result.Value.Should().NotBeNull();
         result.Value.DeviceId.Should().NotBeEmpty();
         result.Value.DeviceConnectionId.Should().NotBeEmpty();
-
         Db.Device.Count().Should().Be(1);
+        Harness.Published.Select<CreateClientRequest>().Where(cr=> cr.Context.Message.DeviceId == Db.Device.FirstOrDefault()!.Id).Should().HaveCount(1);
         var device = Db.Device.First();
         device.UserId.Should().Be(user.Id);
     }
@@ -104,7 +107,7 @@ public class CreateDeviceCommandHandlerTest : IntegrationTestBase
 
         // Arrange nonce
         var loginNonce = LoginNonce.Create(user.Id);
-        await _loginNonceCache.AddNonceAsync(loginNonce, new CancellationToken());
+        await _loginNonceCache.AddNonceAsync(loginNonce, CancellationToken.None);
 
         // Arrange command
         var cmd = new CreateDeviceCommand()

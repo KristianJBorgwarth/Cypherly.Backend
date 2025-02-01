@@ -2,13 +2,16 @@
 using Cypherly.Application.Contracts.Repository;
 using Cypherly.Authentication.Application.Contracts;
 using Cypherly.Authentication.Domain.Services.User;
+using Cypherly.Common.Messaging.Messages.RequestMessages.Client;
 using Cypherly.Domain.Common;
+using MassTransit;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.Authentication.Application.Features.Device.Commands.Create;
 
 public class CreateDeviceCommandHandler(
     IUserRepository userRepository,
+    IRequestClient<CreateClientRequest> requestClient,
     ILoginNonceCache loginNonceCache,
     IDeviceService deviceService,
     IUnitOfWork unitOfWork,
@@ -36,6 +39,11 @@ public class CreateDeviceCommandHandler(
 
             var device = deviceService.RegisterDevice(user, request.Base64DevicePublicKey, request.DeviceAppVersion, request.DeviceType, request.DevicePlatform);
 
+            var createClientResult = await CreateProfile(device.Id, device.ConnectionId);
+
+            if (createClientResult.Success is false)
+                return Result.Fail<CreateDeviceDto>(createClientResult.Error);
+
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
             var dto = CreateDeviceDto.Map(device);
@@ -47,5 +55,16 @@ public class CreateDeviceCommandHandler(
             logger.LogCritical(e, "exception occured while creating device for user {UserId}", request.UserId);
             return Result.Fail<CreateDeviceDto>(Errors.General.UnspecifiedError("An exception occured while creating device"));
         }
+    }
+
+    private async Task<Result> CreateProfile(Guid deviceId, Guid connectionId)
+    {
+        var response = await requestClient.GetResponse<CreateClientResponse>(new CreateClientRequest(deviceId,  connectionId));
+
+        if(response.Message.IsSuccess)
+            return Result.Ok();
+
+        logger.LogError("Got a fail response from the Chat server attempting to create a Client for Device with ID {DeviceId}",  deviceId);
+        return Result.Fail(Errors.General.UnspecifiedError("Failed to create profile"));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Cypherly.Authentication.Application.Features.Authentication.Token;
 using Cypherly.Authentication.Redis.Configuration;
+using Cypherly.Common.Messaging.Messages.RequestMessages.Client;
 using Cypherly.Common.Messaging.Messages.RequestMessages.User.Create;
 using DotNet.Testcontainers.Builders;
 using MassTransit;
@@ -46,6 +47,11 @@ public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestF
                 cfg.AddHandler<CreateUserProfileRequest>(async cxt =>
                 {
                     await cxt.RespondAsync(new CreateUserProfileResponse());
+                });
+
+                cfg.AddHandler<CreateClientRequest>(async cxt =>
+                {
+                    await cxt.RespondAsync(new CreateClientResponse());
                 });
             });
 
