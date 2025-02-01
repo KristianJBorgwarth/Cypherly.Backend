@@ -8,7 +8,7 @@ WORKDIR /src
 COPY ["Cypherly.SagaOrchestrator/Cypherly.SagaOrchestrator.csproj", "Cypherly.SagaOrchestrator/"]
 RUN dotnet restore "Cypherly.SagaOrchestrator/Cypherly.SagaOrchestrator.csproj"
 COPY . .
-WORKDIR "/src/Cypherly.SagaOrchstrator"
+WORKDIR "/src/Cypherly.SagaOrchestrator"
 RUN dotnet build "Cypherly.SagaOrchestrator.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
