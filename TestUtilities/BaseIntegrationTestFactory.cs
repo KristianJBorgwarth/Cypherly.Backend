@@ -46,12 +46,11 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
             // Mock out authentication and authorization for testing
             services.AddAuthentication("Test")
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true));
-                options.AddPolicy("User", policy => policy.RequireAssertion(_ => true));
-            });
-            
+
+            services.AddAuthorizationBuilder()
+                .AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true))
+                .AddPolicy("User", policy => policy.RequireAssertion(_ => true));
+
             // Mock out ValidateUserIdFilter
             // Remove the existing ValidateUserIdFilter registration
             var actionFilterDescriptor = services.SingleOrDefault(
@@ -67,12 +66,12 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
         });
     }
 
-    public virtual async Task InitializeAsync()
+    public async virtual Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
     }
 
-    public new virtual async Task DisposeAsync()
+    public async virtual new Task DisposeAsync()
     {
         await _dbContainer.DisposeAsync();
     }

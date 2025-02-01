@@ -119,6 +119,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.ChatServer.Domain"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.ChatServer.Valkey", "Cypherly.ChatServer.Valkey\Cypherly.ChatServer.Valkey.csproj", "{47D2B55E-3D4A-4F98-9C00-44D8BBAE61F9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cypherly.ChatServer.Test", "Cypherly.ChatServer.Test", "{9985D49A-2B55-4D1D-B3D7-175348D27B92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.ChatServer.Application.Test.Integration", "Cypherly.ChatServer.Application.Test.Integration\Cypherly.ChatServer.Application.Test.Integration.csproj", "{EE3DDBE4-3666-4163-93F0-D0FE3D9777F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cypherly.ChatServer.Application.Test.Unit", "Cypherly.ChatServer.Application.Test.Unit\Cypherly.ChatServer.Application.Test.Unit.csproj", "{5B399750-DA0E-4E46-9D76-2BDFE4CAAA26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -281,6 +287,14 @@ Global
 		{47D2B55E-3D4A-4F98-9C00-44D8BBAE61F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47D2B55E-3D4A-4F98-9C00-44D8BBAE61F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47D2B55E-3D4A-4F98-9C00-44D8BBAE61F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE3DDBE4-3666-4163-93F0-D0FE3D9777F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE3DDBE4-3666-4163-93F0-D0FE3D9777F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE3DDBE4-3666-4163-93F0-D0FE3D9777F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE3DDBE4-3666-4163-93F0-D0FE3D9777F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B399750-DA0E-4E46-9D76-2BDFE4CAAA26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B399750-DA0E-4E46-9D76-2BDFE4CAAA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B399750-DA0E-4E46-9D76-2BDFE4CAAA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B399750-DA0E-4E46-9D76-2BDFE4CAAA26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8918B395-BF77-410D-A2CE-8D0389FD3EB8} = {D388C026-0CAC-4E23-AFC5-080C14BC571D}
@@ -337,5 +351,8 @@ Global
 		{6A173959-0C65-4A4E-9788-C0B5209040B2} = {D9F0428A-9F33-4AEE-A853-1FAA4B9C1297}
 		{DC37BB5C-D4BE-4A3D-86F4-11D7CFC4C970} = {D9F0428A-9F33-4AEE-A853-1FAA4B9C1297}
 		{47D2B55E-3D4A-4F98-9C00-44D8BBAE61F9} = {D9F0428A-9F33-4AEE-A853-1FAA4B9C1297}
+		{9985D49A-2B55-4D1D-B3D7-175348D27B92} = {E895BA28-EE61-4B1D-A846-77FDD447597D}
+		{EE3DDBE4-3666-4163-93F0-D0FE3D9777F1} = {9985D49A-2B55-4D1D-B3D7-175348D27B92}
+		{5B399750-DA0E-4E46-9D76-2BDFE4CAAA26} = {9985D49A-2B55-4D1D-B3D7-175348D27B92}
 	EndGlobalSection
 EndGlobal

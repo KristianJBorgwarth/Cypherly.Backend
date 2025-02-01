@@ -83,13 +83,13 @@ public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestF
         });
     }
 
-    public override async Task InitializeAsync()
+    public async override Task InitializeAsync()
     {
         await base.InitializeAsync();
         await _valkeyContainer.StartAsync();
     }
 
-    public override async Task DisposeAsync()
+    public async override Task DisposeAsync()
     {
         await base.DisposeAsync();
         await _valkeyContainer.StopAsync();
