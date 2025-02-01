@@ -2,7 +2,7 @@
 using Cypherly.Common.Messaging.Messages.PublishMessages;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using Cypherly.Common.Messaging.Messages.PublishMessages.User.Delete;
-using Cypherly.SagaOrchestrator.Messaging.Saga.User.Delete;
+using Cypherly.SagaOrchestrator.Saga.User.Delete;
 using FluentAssertions;
 using MassTransit;
 using MassTransit.Testing;

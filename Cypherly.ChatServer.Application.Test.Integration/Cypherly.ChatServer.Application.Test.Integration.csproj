@@ -4,7 +4,6 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
     </PropertyGroup>
@@ -12,7 +11,7 @@
     <ItemGroup>
         <PackageReference Include="coverlet.collector" Version="6.0.0"/>
         <PackageReference Include="FakeItEasy" Version="8.3.0" />
-        <PackageReference Include="FluentAssertions" Version="7.0.0-alpha.4" />
+        <PackageReference Include="FluentAssertions" Version="7.1.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
         <PackageReference Include="xunit" Version="2.5.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
@@ -23,8 +22,10 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Cypherly.Common.Messaging\Cypherly.Common.Messaging.csproj" />
-      <ProjectReference Include="..\Cypherly.SagaOrchestrator\Cypherly.SagaOrchestrator.csproj" />
+      <ProjectReference Include="..\Cypherly.ChatServer.API\Cypherly.ChatServer.API.csproj" />
+      <ProjectReference Include="..\Cypherly.ChatServer.Persistence\Cypherly.ChatServer.Persistence.csproj" />
+      <ProjectReference Include="..\Cypherly.ChatServer.Valkey\Cypherly.ChatServer.Valkey.csproj" />
+      <ProjectReference Include="..\TestUtilities\TestUtilities.csproj" />
     </ItemGroup>
 
 </Project>

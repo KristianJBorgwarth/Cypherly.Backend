@@ -14,6 +14,7 @@ namespace TestUtilities;
 public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFactory<TProgram>, IAsyncLifetime
     where TProgram : class where TDbContext : DbContext
 {
+    protected bool ShouldTestWithLazyLoadingProxies { get; set; } = true;
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
         .WithCleanUp(true)
@@ -36,8 +37,12 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
             services.AddDbContext<TDbContext>(options =>
             {
                 options.UseNpgsql(_dbContainer.GetConnectionString(),
-                    b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName))
-                    .UseLazyLoadingProxies();
+                    b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName));
+
+                if (ShouldTestWithLazyLoadingProxies)
+                {
+                    options.UseLazyLoadingProxies();
+                }
             });
 
             #endregion
@@ -46,12 +51,11 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
             // Mock out authentication and authorization for testing
             services.AddAuthentication("Test")
                 .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>("Test", options => { });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true));
-                options.AddPolicy("User", policy => policy.RequireAssertion(_ => true));
-            });
-            
+
+            services.AddAuthorizationBuilder()
+                .AddPolicy("AdminOnly", policy => policy.RequireAssertion(_ => true))
+                .AddPolicy("User", policy => policy.RequireAssertion(_ => true));
+
             // Mock out ValidateUserIdFilter
             // Remove the existing ValidateUserIdFilter registration
             var actionFilterDescriptor = services.SingleOrDefault(
@@ -67,12 +71,12 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
         });
     }
 
-    public virtual async Task InitializeAsync()
+    public async virtual Task InitializeAsync()
     {
         await _dbContainer.StartAsync();
     }
 
-    public new virtual async Task DisposeAsync()
+    public async virtual new Task DisposeAsync()
     {
         await _dbContainer.DisposeAsync();
     }

@@ -51,7 +51,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Deploy MiniEmail.API
       - name: Build and Push Docker Image for MiniEmail.API
         run: |
           docker buildx build --platform linux/amd64 \
@@ -59,7 +58,6 @@ jobs:
             -f MiniEmail.API/Dockerfile . \
             --push
 
-      # Deploy Cypherly.Authentication.API
       - name: Build and Push Docker Image for Cypherly.Authentication.API
         run: |
           docker buildx build --platform linux/amd64 \
@@ -67,7 +65,6 @@ jobs:
             -f Cypherly.Authentication.API/Dockerfile . \
             --push
 
-      # Deploy Cypherly.UserManagement.API
       - name: Build and Push Docker Image for Cypherly.UserManagement.API
         run: |
           docker buildx build --platform linux/amd64 \
@@ -75,10 +72,9 @@ jobs:
             -f Cypherly.UserManagement.API/Dockerfile . \
             --push
 
-      # Deploy Cypherly.SagaOrchestrator.Messaging
       - name: Build and Push Docker Image for Cypherly.SagaOrchestrator.Messaging
         run: |
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-sagaorchestrator-messaging:latest \
-            -f Cypherly.SagaOrchestrator.Messaging/Dockerfile . \
+            -f Cypherly.SagaOrchestrator/Dockerfile . \
             --push
