@@ -76,5 +76,5 @@ jobs:
         run: |
           docker buildx build --platform linux/amd64 \
             -t ${{ secrets.DOCKER_USERNAME }}/dev-cypherly-sagaorchestrator-messaging:latest \
-            -f Cypherly.SagaOrchestrator.Messaging/Dockerfile . \
+            -f Cypherly.SagaOrchestrator/Dockerfile . \
             --push
