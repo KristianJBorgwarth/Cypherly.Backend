@@ -13,7 +13,7 @@ RUN dotnet build "Cypherly.SagaOrchestrator.csproj" -c $BUILD_CONFIGURATION -o /
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "Cypherly.SagaOrchestratorcsproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Cypherly.SagaOrchestrator.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
