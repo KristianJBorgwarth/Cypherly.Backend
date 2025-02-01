@@ -7,8 +7,12 @@ public class ConnectCommandValidator : AbstractValidator<ConnectCommand>
 {
     public ConnectCommandValidator()
     {
-        RuleFor(x => x.CliendId)
+        RuleFor(x => x.ClientId)
             .NotEmpty()
-            .WithMessage(Errors.General.ValueIsEmpty(nameof(ConnectCommand.CliendId)).Message);
+            .WithMessage(Errors.General.ValueIsEmpty(nameof(ConnectCommand.ClientId)).Message);
+
+        RuleFor(x => x.TransientId)
+            .NotEmpty()
+            .WithMessage(Errors.General.ValueIsEmpty(nameof(ConnectCommand.TransientId)).Message);
     }
 }
