@@ -3,6 +3,7 @@ using Cypherly.ChatServer.Domain.Aggregates;
 
 namespace Cypherly.ChatServer.Application.Contracts;
 
-public interface IClientCache : ICache<Client> 
+public interface IClientCache : ICache<Client>
 {
+
 }

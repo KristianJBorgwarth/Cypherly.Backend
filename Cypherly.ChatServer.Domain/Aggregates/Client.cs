@@ -12,21 +12,21 @@ public class Client : AggregateRoot
     /// ConnectionId is used send msg between clients and serves as a stable identifier for the SignalR connection.
     /// </summary>
     public Guid ConnectionId { get; init; }
-    
+
     /// <summary>
     /// TransientId is used to store the SignalR connectionId for caching purposes.
     /// Will not be persisted to the database.
     /// </summary>
     public string? TransientId { get; private set; }
     private Client () : base(Guid.Empty) { } // For EF Core
-    
+
     private List<ChatMessage> _messages = [];
-    public virtual IReadOnlyCollection<ChatMessage> Messages => _messages;
-    
+    public IReadOnlyCollection<ChatMessage> Messages => _messages;
+
     public Client(Guid id, Guid connectionId) : base(id)
     {
         ConnectionId = connectionId;
     }
-    
+
     public void SetTransientId(string transientId) => TransientId = transientId;
 }

@@ -1,12 +1,14 @@
 using System.Reflection;
 using Cypherly.ChatServer.Application.Configuration;
 using Cypherly.ChatServer.Persistence.Configuration;
+using Cypherly.MassTransit.Messaging.Configuration;
+using MassTransit;
 using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-#region Configuration 
+#region Configuration
 
 var env = builder.Environment;
 
@@ -19,6 +21,14 @@ if(env.IsDevelopment())
     configuration.AddJsonFile($"appsettings.{Environments.Development}.json", true, true);
     configuration.AddUserSecrets(Assembly.GetExecutingAssembly(), true);
 }
+
+#endregion
+
+
+#region MassTransit
+
+builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.ChatServer.Application"));
 
 #endregion
 

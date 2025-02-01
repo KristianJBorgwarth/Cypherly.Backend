@@ -24,6 +24,7 @@
       <ProjectReference Include="..\Cypherly.API\Cypherly.API.csproj" />
       <ProjectReference Include="..\Cypherly.ChatServer.Application\Cypherly.ChatServer.Application.csproj" />
       <ProjectReference Include="..\Cypherly.ChatServer.Persistence\Cypherly.ChatServer.Persistence.csproj" />
+      <ProjectReference Include="..\Cypherly.MassTransit.Messaging\Cypherly.MassTransit.Messaging.csproj" />
     </ItemGroup>
 
 </Project>

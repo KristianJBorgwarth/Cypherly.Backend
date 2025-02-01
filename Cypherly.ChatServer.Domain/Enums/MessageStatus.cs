@@ -2,7 +2,7 @@ namespace Cypherly.ChatServer.Domain.Enums;
 
 public enum MessageStatus
 {
-    Sent, 
+    Sent,
     Delivered,
-    Read
+    Read,
 }
