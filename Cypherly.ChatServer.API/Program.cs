@@ -1,10 +1,12 @@
 using System.Reflection;
+using Cypherly.ChatServer.API.Hubs;
 using Cypherly.ChatServer.Application.Configuration;
 using Cypherly.ChatServer.Persistence.Configuration;
 using Cypherly.ChatServer.Valkey.Configuration;
 using Cypherly.MassTransit.Messaging.Configuration;
 using MassTransit;
 using Serilog;
+using StackExchange.Redis;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,6 +62,39 @@ builder.Services.AddValkey(configuration);
 
 #endregion
 
+#region SignalR Backplane
+
+builder.Services.AddSignalR()
+    .AddStackExchangeRedis(options =>
+    {
+        var valkeyHost = configuration["Valkey:Host"];
+        var valkeyPort = configuration["Valkey:Port"];
+
+        options.ConnectionFactory = async writer =>
+        {
+            var config = new ConfigurationOptions
+            {
+                AbortOnConnectFail = false,
+                EndPoints = { $"{valkeyHost}:{valkeyPort}" },
+                ChannelPrefix = "Cypherly.ChatServer.API_",
+            };
+
+            var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+
+            connection.ConnectionFailed += (_, e) =>
+                Log.Warning("Connection to Valkey failed: {Exception}", e.Exception);
+
+            if(connection.IsConnected)
+                Log.Information("Connected to Valkey");
+
+            return connection;
+        };
+
+        Log.Information("SignalR backplane configured to use Valkey");
+    });
+
+#endregion
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
@@ -72,6 +107,7 @@ if (app.Environment.IsDevelopment())
 
 Log.Information("Chat Server booted up");
 
+app.MapHub<MessageHub>("/messagehub");
 app.UseHttpsRedirection();
 
 app.Run();
