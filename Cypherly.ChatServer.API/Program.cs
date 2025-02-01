@@ -75,3 +75,5 @@ Log.Information("Chat Server booted up");
 app.UseHttpsRedirection();
 
 app.Run();
+
+public partial class Program { }

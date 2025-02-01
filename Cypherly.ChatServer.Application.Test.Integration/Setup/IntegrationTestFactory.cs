@@ -25,6 +25,7 @@ public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestF
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        ShouldTestWithLazyLoadingProxies = false;
         base.ConfigureWebHost(builder);
 
         builder.ConfigureServices(services =>
@@ -36,10 +37,9 @@ public class IntegrationTestFactory<TProgram, TDbContext> : BaseIntegrationTestF
             if(rmqDescriptor is not null)
                 services.Remove(rmqDescriptor);
 
-            services.AddMassTransit(cfg =>
+            services.AddMassTransitTestHarness(cfg =>
             {
                 cfg.AddConsumers(typeof(TProgram).Assembly);
-
             });
             #endregion
 

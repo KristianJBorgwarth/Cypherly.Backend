@@ -6,9 +6,9 @@ namespace Cypherly.ChatServer.Persistence.Repositories;
 
 public class ClientRepository(ChatServerDbContext context) : IClientRepository
 {
-    public Task CreateAsync(Client entity)
+    public async Task CreateAsync(Client entity)
     {
-        throw new NotImplementedException();
+        await context.Client.AddAsync(entity);
     }
 
     public Task DeleteAsync(Client entity)

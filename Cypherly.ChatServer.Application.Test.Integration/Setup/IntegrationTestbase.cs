@@ -8,6 +8,9 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Cypherly.ChatServer.Application.Test.Integration.Setup;
 
+/// <summary>
+/// <see cref="IntegrationTestFactory{TProgram,TDbContext}"/>
+/// </summary>
 [Collection("ChatServerApplication")]
 public class IntegrationTestbase : IDisposable
 {
@@ -33,5 +36,6 @@ public class IntegrationTestbase : IDisposable
         Db.ChatMessage.ExecuteDelete();
         Db.Client.ExecuteDelete();
         Db.OutboxMessage.ExecuteDelete();
+        Harness.Stop();
     }
 }

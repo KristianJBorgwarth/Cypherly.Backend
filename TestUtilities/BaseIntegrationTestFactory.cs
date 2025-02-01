@@ -14,6 +14,7 @@ namespace TestUtilities;
 public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFactory<TProgram>, IAsyncLifetime
     where TProgram : class where TDbContext : DbContext
 {
+    protected bool ShouldTestWithLazyLoadingProxies { get; set; } = true;
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
         .WithCleanUp(true)
@@ -36,8 +37,12 @@ public class BaseIntegrationTestFactory<TProgram, TDbContext> : WebApplicationFa
             services.AddDbContext<TDbContext>(options =>
             {
                 options.UseNpgsql(_dbContainer.GetConnectionString(),
-                    b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName))
-                    .UseLazyLoadingProxies();
+                    b => b.MigrationsAssembly(typeof(TDbContext).Assembly.FullName));
+
+                if (ShouldTestWithLazyLoadingProxies)
+                {
+                    options.UseLazyLoadingProxies();
+                }
             });
 
             #endregion
