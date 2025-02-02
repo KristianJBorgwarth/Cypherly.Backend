@@ -6,14 +6,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Cypherly.ChatServer.Application.Features.Client.Commands.Connect;
 
-public sealed class ConnectCommandHandler(
+public sealed class ConnectClientCommandHandler(
     IClientRepository clientRepository,
     IUnitOfWork unitOfWork,
     IClientCache clientCache,
-    ILogger<ConnectCommandHandler> logger)
-    : ICommandHandler<ConnectCommand>
+    ILogger<ConnectClientCommandHandler> logger)
+    : ICommandHandler<ConnectClientCommand>
 {
-    public async Task<Result> Handle(ConnectCommand command, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ConnectClientCommand command, CancellationToken cancellationToken)
     {
         try
         {

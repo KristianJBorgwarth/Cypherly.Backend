@@ -14,7 +14,7 @@ public class ClientConnectionFilter(ISender sender) : IHubFilter
 
         if (deviceId != null && Guid.TryParse(deviceId, out var deviceIdGuid))
         {
-            var result = await sender.Send(new ConnectCommand() { ClientId = deviceIdGuid, TransientId = context.Context.ConnectionId }, cancellationToken);
+            var result = await sender.Send(new ConnectClientCommand() { ClientId = deviceIdGuid, TransientId = context.Context.ConnectionId }, cancellationToken);
 
             if (result.Success is false)
             {
@@ -34,7 +34,7 @@ public class ClientConnectionFilter(ISender sender) : IHubFilter
     public async Task OnDisconnectedAsync(HubLifetimeContext context, Exception? exception,
         Func<HubLifetimeContext, Exception?, Task> next)
     {
-        await sender.Send(new DisconnectCommand() { TransientId = context.Context.ConnectionId });
+        await sender.Send(new DisconnectClientCommand() { TransientId = context.Context.ConnectionId });
         await next(context, exception);
     }
 }
