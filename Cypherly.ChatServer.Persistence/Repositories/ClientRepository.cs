@@ -1,6 +1,7 @@
 using Cypherly.ChatServer.Application.Contracts;
 using Cypherly.ChatServer.Domain.Aggregates;
 using Cypherly.ChatServer.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cypherly.ChatServer.Persistence.Repositories;
 
@@ -24,5 +25,17 @@ public class ClientRepository(ChatServerDbContext context) : IClientRepository
     public Task UpdateAsync(Client entity)
     {
         throw new NotImplementedException();
+    }
+
+    public Task QueryAsync(Guid id, Func<IQueryable<Client>, IQueryable<Client>>? includeFunc)
+    {
+        IQueryable<Client> query = context.Set<Client>();
+
+        if(includeFunc is not null)
+        {
+            query = includeFunc(query);
+        }
+
+        return query.FirstOrDefaultAsync(c => c.Id == id);
     }
 }
