@@ -32,4 +32,8 @@ public class UserRepository(AuthenticationDbContext context) : IUserRepository
     {
         return await context.User.FirstOrDefaultAsync(c => c.Email.Address.Equals(email));
     }
+    public Task<User?> GetByDeviceIdAsync(Guid deviceId)
+    {
+        return context.User.FirstOrDefaultAsync(c => c.Devices.Any(c=> c.Id == deviceId));
+    }
 }

@@ -3,6 +3,7 @@ using Cypherly.ChatServer.API.Hubs;
 using Cypherly.ChatServer.Application.Configuration;
 using Cypherly.ChatServer.Persistence.Configuration;
 using Cypherly.ChatServer.Valkey.Configuration;
+using Cypherly.Common.Messaging.Messages.PublishMessages.Client;
 using Cypherly.MassTransit.Messaging.Configuration;
 using MassTransit;
 using Serilog;
@@ -30,7 +31,8 @@ if(env.IsDevelopment())
 #region MassTransit
 
 builder.Services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.ChatServer.Application"));
+builder.Services.AddMassTransitWithRabbitMq(Assembly.Load("Cypherly.ChatServer.Application"))
+    .AddProducer<ClientConnectedMessage>();
 
 #endregion
 
