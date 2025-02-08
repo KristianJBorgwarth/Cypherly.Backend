@@ -1,3 +1,4 @@
+using Cypherly.Domain.Common;
 using FluentValidation;
 
 namespace Cypherly.ChatServer.Application.Features.Client.Commands.Disconnect;
@@ -6,6 +7,8 @@ public class DisconnectCommandValidator : AbstractValidator<DisconnectClientComm
 {
     public DisconnectCommandValidator()
     {
-
+        RuleFor(x => x.TransientId)
+            .NotEmpty()
+            .WithMessage(Errors.General.ValueIsRequired(nameof(DisconnectClientCommand.TransientId)).Message);
     }
 }
