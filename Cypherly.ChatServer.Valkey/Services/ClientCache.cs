@@ -13,12 +13,24 @@ public class ClientCache(IValkeyCacheService valkeyCacheService) : IClientCache
 
     /// <summary>
     /// Add a Client to the cache by Clients ConnectionId
+    /// Adds the inverse mapping of ConnectionId to TransientId as well
     /// </summary>
     /// <param name="value">Client to be added</param>
     /// <param name="cancellationToken"></param>
     public async Task AddAsync(ClientCacheDto value, CancellationToken cancellationToken)
     {
         await valkeyCacheService.SetAsync(value.ConnectionId.ToString(), value, cancellationToken, shouldExipire: false);
+        await valkeyCacheService.SetAsync(value.TransientId, value.ConnectionId, cancellationToken, shouldExipire: false);
+    }
+    public async Task<ClientCacheDto?> GetByTransientIdAsync(string transientId, CancellationToken cancellationToken)
+    {
+        var connectionIdStr = await valkeyCacheService.GetAsync<string>(transientId, _options ,cancellationToken);
+
+        if (connectionIdStr is not null && Guid.TryParse(connectionIdStr, out var connectionId))
+        {
+            return await GetAsync(connectionId, cancellationToken);
+        }
+        return null;
     }
 
     /// <summary>
@@ -39,6 +51,14 @@ public class ClientCache(IValkeyCacheService valkeyCacheService) : IClientCache
     /// <param name="cancellationToken"></param>
     public async Task RemoveAsync(Guid id, CancellationToken cancellationToken)
     {
+        var client = await GetAsync(id, cancellationToken);
         await valkeyCacheService.RemoveAsync(id.ToString(), cancellationToken);
+        await RemoveTransientMappingAsync(client.TransientId, cancellationToken);
+
+    }
+
+    private async Task RemoveTransientMappingAsync(string transientId, CancellationToken cancellationToken)
+    {
+        await valkeyCacheService.RemoveAsync(transientId, cancellationToken);
     }
 }

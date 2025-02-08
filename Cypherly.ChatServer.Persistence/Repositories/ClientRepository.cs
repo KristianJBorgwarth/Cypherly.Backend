@@ -17,9 +17,9 @@ public class ClientRepository(ChatServerDbContext context) : IClientRepository
         throw new NotImplementedException();
     }
 
-    public Task<Client?> GetByIdAsync(Guid id)
+    public async Task<Client?> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        return await context.Client.FindAsync(id);
     }
 
     public Task UpdateAsync(Client entity)

@@ -1,5 +1,4 @@
 ﻿using Cypherly.Application.Abstractions;
-using Cypherly.Application.Contracts.Repository;
 using Cypherly.ChatServer.Application.Contracts;
 using Cypherly.Domain.Common;
 using Microsoft.Extensions.Logging;
@@ -7,9 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace Cypherly.ChatServer.Application.Features.Client.Commands.Disconnect;
 
 public class DisconnectClientCommandHandler(
-    IClientRepository clientRepository,
     IClientCache clientCache,
-    IUnitOfWork unitOfWork,
     ILogger<DisconnectClientCommandHandler> logger)
     : ICommandHandler<DisconnectClientCommand>
 {
@@ -17,7 +14,17 @@ public class DisconnectClientCommandHandler(
     {
         try
         {
-            throw new NotImplementedException();
+            var client = await clientCache.GetByTransientIdAsync(command.TransientId, cancellationToken);
+
+            if (client is null)
+            {
+                logger.LogWarning("Client with Transient ID: {ID} not found in cache", command.TransientId);
+                return Result.Fail(Errors.General.NotFound("Client"));
+            }
+
+            await clientCache.RemoveAsync(client.ConnectionId, cancellationToken);
+
+            return Result.Ok();
         }
         catch (Exception e)
         {
