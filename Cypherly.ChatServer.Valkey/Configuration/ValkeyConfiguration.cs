@@ -1,4 +1,5 @@
-﻿using Cypherly.ChatServer.Valkey.Services;
+﻿using Cypherly.ChatServer.Application.Contracts;
+using Cypherly.ChatServer.Valkey.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,7 @@ public static class ValkeyConfiguration
         });
 
         services.AddSingleton<IValkeyCacheService, ValkeyCacheService>();
+        services.AddScoped<IClientCache, ClientCache>();
 
         return services;
     }

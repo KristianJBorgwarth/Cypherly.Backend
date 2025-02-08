@@ -3,6 +3,7 @@ using Cypherly.ChatServer.Domain.Entities;
 using Cypherly.Domain.Common;
 // ReSharper disable ConvertToPrimaryConstructor
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace Cypherly.ChatServer.Domain.Aggregates;
 
@@ -18,11 +19,12 @@ public class Client : AggregateRoot
     /// Will not be persisted to the database.
     /// </summary>
     public string? TransientId { get; private set; }
-    private Client () : base(Guid.Empty) { } // For EF Core
 
     private List<ChatMessage> _chatMessages = [];
+
     public IReadOnlyCollection<ChatMessage> ChatMessages => _chatMessages;
 
+    private Client () : base(Guid.Empty) { } // For EF Core
     public Client(Guid id, Guid connectionId) : base(id)
     {
         ConnectionId = connectionId;

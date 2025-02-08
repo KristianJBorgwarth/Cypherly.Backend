@@ -8,7 +8,7 @@ namespace Cypherly.ChatServer.Valkey.Services;
 public interface IValkeyCacheService
 {
     Task<T?> GetAsync<T>(string key,JsonSerializerOptions? options, CancellationToken cancellationToken);
-    Task SetAsync<T>(string key, T value, CancellationToken cancellationToken, TimeSpan? expiry);
+    Task SetAsync<T>(string key, T value, CancellationToken cancellationToken, bool shouldExipire = true, TimeSpan? expiry = null);
     Task RemoveAsync(string key, CancellationToken cancellationToken);
 }
 
@@ -21,12 +21,14 @@ internal class ValkeyCacheService(IDistributedCache cache) : IValkeyCacheService
         return serializedValue == null ? default : JsonSerializer.Deserialize<T>(serializedValue, options ?? null);
     }
 
-    public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken, TimeSpan? expiry = null)
+    public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken,  bool shouldExipire = true, TimeSpan? expiry = null)
     {
-        var options = new DistributedCacheEntryOptions()
+        var options = new DistributedCacheEntryOptions();
+
+        if (shouldExipire)
         {
-            AbsoluteExpirationRelativeToNow = expiry ?? TimeSpan.FromMinutes(10),
-        };
+            options.AbsoluteExpirationRelativeToNow = expiry ?? TimeSpan.FromMinutes(5);
+        }
 
         var serializedValue = JsonSerializer.Serialize(value);
 
