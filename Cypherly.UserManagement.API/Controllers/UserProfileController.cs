@@ -7,6 +7,7 @@ using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.D
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.UnblockUser;
+using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriendRequests;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileByTag;
@@ -100,6 +101,15 @@ public class UserProfileController(ISender sender) : BaseController
         if (result.Success is false) return Error(result.Error);
 
         return result.Value.Count > 0 ? Ok(result.Value) : NoContent();
+    }
+
+    [HttpGet("friendship-requests")]
+    [ProducesResponseType(typeof(GetFriendRequestsDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetFriendRequests([FromQuery] GetFriendRequestsQuery query)
+    {
+        throw new NotImplementedException();
     }
 
     [HttpPut("friendship")]
