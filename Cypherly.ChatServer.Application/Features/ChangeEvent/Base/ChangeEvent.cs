@@ -2,27 +2,27 @@
 
 namespace Cypherly.ChatServer.Application.Features.ChangeEvent;
 
-public class ChangeEvent<T>
+public class ChangeEvent(Guid id, ChangeEventType type, string title, string description, object data)
 {
     /// <summary>
     /// Unique identifier for the event
     /// </summary>
-    public Guid Id { get; private init; }
+    public Guid Id { get; private init; } = id;
 
     /// <summary>
     /// The type of the event
     /// </summary>
-    public ChangeEventType Type { get; private set; }
+    public ChangeEventType Type { get; private set; } = type;
 
     /// <summary>
     /// A short, human-readable title for the event
     /// </summary>
-    public string Title { get; private set; }
+    public string Title { get; private set; } = title;
 
     /// <summary>
     /// Short description of the event
     /// </summary>
-    public string Description { get; private set; }
+    public string Description { get; private set; } = description;
 
     /// <summary>
     /// When the event occured
@@ -32,6 +32,5 @@ public class ChangeEvent<T>
     /// <summary>
     /// Payload containing the data of the event
     /// </summary>
-    public T Data { get; private set; }
-
+    public object Data { get; private set; } = data;
 }

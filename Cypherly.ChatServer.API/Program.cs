@@ -1,6 +1,7 @@
 using System.Reflection;
 using Cypherly.ChatServer.API.Hubs;
 using Cypherly.ChatServer.Application.Configuration;
+using Cypherly.ChatServer.Application.Features.ChangeEvent;
 using Cypherly.ChatServer.Persistence.Configuration;
 using Cypherly.ChatServer.Valkey.Configuration;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Client;
@@ -109,7 +110,7 @@ if (app.Environment.IsDevelopment())
 
 Log.Information("Chat Server booted up");
 
-app.MapHub<MessageHub>("/messagehub");
+app.MapHub<ChangeEventHub>("/ChangeEventHub");
 app.UseHttpsRedirection();
 
 app.Run();
