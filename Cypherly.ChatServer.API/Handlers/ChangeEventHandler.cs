@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Cypherly.ChatServer.API.Handlers;
 
-public class ChangeEventHandler(IHubContext<ChangeEventHub> context) : IChangeEventNotifier
+public class ChangeEventHandler(IHubContext<ChangeEventHub> hubContext) : IChangeEventNotifier
 {
-    public Task NotifyAsync(string ConnectionId, ChangeEvent changeEvent, CancellationToken cancellationToken = default)
+    public async Task NotifyAsync(string connectionId, ChangeEvent changeEvent, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+       await hubContext.Clients.Client(connectionId).SendAsync("ChangeNotification", changeEvent, cancellationToken);
     }
 }

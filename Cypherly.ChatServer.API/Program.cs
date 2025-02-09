@@ -1,6 +1,8 @@
 using System.Reflection;
+using Cypherly.ChatServer.API.Handlers;
 using Cypherly.ChatServer.API.Hubs;
 using Cypherly.ChatServer.Application.Configuration;
+using Cypherly.ChatServer.Application.Contracts;
 using Cypherly.ChatServer.Application.Features.ChangeEvent;
 using Cypherly.ChatServer.Persistence.Configuration;
 using Cypherly.ChatServer.Valkey.Configuration;
@@ -9,6 +11,7 @@ using Cypherly.MassTransit.Messaging.Configuration;
 using MassTransit;
 using Serilog;
 using StackExchange.Redis;
+#pragma warning disable CS0618 // Type or member is obsolete
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -65,7 +68,7 @@ builder.Services.AddValkey(configuration);
 
 #endregion
 
-#region SignalR Backplane
+#region SignalR Configuration
 
 builder.Services.AddSignalR()
     .AddStackExchangeRedis(options =>
@@ -95,6 +98,8 @@ builder.Services.AddSignalR()
 
         Log.Information("SignalR backplane configured to use Valkey");
     });
+
+builder.Services.AddScoped<IChangeEventNotifier, ChangeEventHandler>();
 
 #endregion
 
