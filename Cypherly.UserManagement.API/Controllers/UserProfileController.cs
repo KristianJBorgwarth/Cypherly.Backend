@@ -18,8 +18,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Cypherly.UserManagement.API.Controllers;
 
-[Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[ServiceFilter(typeof(IValidateUserIdFilter))]
+// [Authorize(Policy = "User", AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+// [ServiceFilter(typeof(IValidateUserIdFilter))]
 [Route("api/[controller]")]
 public class UserProfileController(ISender sender) : BaseController
 {
@@ -100,7 +100,7 @@ public class UserProfileController(ISender sender) : BaseController
 
         if (result.Success is false) return Error(result.Error);
 
-        return result.Value.Count > 0 ? Ok(result.Value) : NoContent();
+        return result.Value!.Count > 0 ? Ok(result.Value) : NoContent();
     }
 
     [HttpGet("friendship-requests")]
@@ -109,7 +109,11 @@ public class UserProfileController(ISender sender) : BaseController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetFriendRequests([FromQuery] GetFriendRequestsQuery query)
     {
-        throw new NotImplementedException();
+        var result = await sender.Send(query);
+
+        if(result.Success is false) return Error(result.Error);
+
+        return result.Value!.Count > 0 ? Ok(result.Value) : NoContent();
     }
 
     [HttpPut("friendship")]
