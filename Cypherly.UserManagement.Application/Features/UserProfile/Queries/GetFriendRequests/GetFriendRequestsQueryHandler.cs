@@ -25,7 +25,7 @@ public class GetFriendRequestsQueryHandler(
 
             var friendRequests = userProfile.FriendshipsReceived
                 .Where(f => f.Status == FriendshipStatus.Pending)
-                .Select(f => GetFriendRequestsDto.MapFrom(f.FriendProfile.Username, f.FriendProfile.UserTag.Tag, f.FriendProfile.DisplayName))
+                .Select(f => GetFriendRequestsDto.MapFrom(f.UserProfile.Username, f.FriendProfile.UserTag.Tag, f.FriendProfile.DisplayName))
                 .ToList();
 
 
