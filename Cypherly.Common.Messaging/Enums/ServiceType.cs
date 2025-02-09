@@ -4,5 +4,5 @@ public enum ServiceType
 {
     AuthenticationService,
     UserManagementService,
-    EmailService
+    EmailService,
 }

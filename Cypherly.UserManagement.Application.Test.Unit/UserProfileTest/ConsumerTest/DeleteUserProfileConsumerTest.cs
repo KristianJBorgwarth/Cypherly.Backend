@@ -35,11 +35,11 @@ public class DeleteUserProfileConsumerTest
     public async Task Consume_When_User_Exists_Should_SoftDelete()
     {
         // Arrange
-        var message = new UserProfileDeleteMessage(Guid.NewGuid(), Guid.NewGuid(), null);
+        var message = new UserDeleteMessage(Guid.NewGuid(), Guid.NewGuid(), null);
         var user = new UserProfile();
         A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserProfileId)).Returns(user);
 
-        var fakeConsumeContext = A.Fake<ConsumeContext<UserProfileDeleteMessage>>();
+        var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
         // Act
@@ -55,10 +55,10 @@ public class DeleteUserProfileConsumerTest
     public async Task Consume_When_User_Does_Not_Exist_Should_Throw_KeyNotFoundException()
     {
         // Arrange
-        var message = new UserProfileDeleteMessage(Guid.NewGuid(), Guid.NewGuid(), null);
+        var message = new UserDeleteMessage(Guid.NewGuid(), Guid.NewGuid(), null);
         A.CallTo(() => _fakeRepo.GetByIdAsync(message.UserProfileId)).Returns<UserProfile?>(null);
 
-        var fakeConsumeContext = A.Fake<ConsumeContext<UserProfileDeleteMessage>>();
+        var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
         // Act

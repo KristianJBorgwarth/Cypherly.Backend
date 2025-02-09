@@ -15,9 +15,9 @@ public class DeleteUserProfileConsumer(
     IUnitOfWork unitOfWork,
     IProducer<OperationSuccededMessage> producer,
     ILogger<DeleteUserProfileConsumer> logger)
-    : IConsumer<UserProfileDeleteMessage>
+    : IConsumer<UserDeleteMessage>
 {
-    public async Task Consume(ConsumeContext<UserProfileDeleteMessage> context)
+    public async Task Consume(ConsumeContext<UserDeleteMessage> context)
     {
         try
         {

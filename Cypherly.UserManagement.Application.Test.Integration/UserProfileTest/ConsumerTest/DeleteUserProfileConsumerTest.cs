@@ -39,9 +39,9 @@ public class DeleteUserProfileConsumerTest : IntegrationTestBase
         await Db.UserProfile.AddAsync(userProfile);
         await Db.SaveChangesAsync();
 
-        var message = new UserProfileDeleteMessage(userProfile.Id, Guid.NewGuid());
+        var message = new UserDeleteMessage(userProfile.Id, Guid.NewGuid());
 
-        var fakeConsumeContext = A.Fake<ConsumeContext<UserProfileDeleteMessage>>();
+        var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
         // Act
@@ -60,9 +60,9 @@ public class DeleteUserProfileConsumerTest : IntegrationTestBase
         await Db.SaveChangesAsync();
         var invalidId = Guid.NewGuid();
 
-        var message = new UserProfileDeleteMessage(invalidId, Guid.NewGuid());
+        var message = new UserDeleteMessage(invalidId, Guid.NewGuid());
 
-        var fakeConsumeContext = A.Fake<ConsumeContext<UserProfileDeleteMessage>>();
+        var fakeConsumeContext = A.Fake<ConsumeContext<UserDeleteMessage>>();
         A.CallTo(() => fakeConsumeContext.Message).Returns(message);
 
         // Act
