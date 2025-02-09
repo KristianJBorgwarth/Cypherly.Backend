@@ -3,12 +3,10 @@ using Cypherly.ChatServer.API.Handlers;
 using Cypherly.ChatServer.API.Hubs;
 using Cypherly.ChatServer.Application.Configuration;
 using Cypherly.ChatServer.Application.Contracts;
-using Cypherly.ChatServer.Application.Features.ChangeEvent;
 using Cypherly.ChatServer.Persistence.Configuration;
 using Cypherly.ChatServer.Valkey.Configuration;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Client;
 using Cypherly.MassTransit.Messaging.Configuration;
-using MassTransit;
 using Serilog;
 using StackExchange.Redis;
 #pragma warning disable CS0618 // Type or member is obsolete
