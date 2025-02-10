@@ -155,5 +155,4 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
     }
-
 }
