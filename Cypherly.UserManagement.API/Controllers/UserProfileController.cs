@@ -7,6 +7,7 @@ using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.D
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.ProfilePicture;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.TogglePrivacy;
 using Cypherly.UserManagement.Application.Features.UserProfile.Commands.Update.UnblockUser;
+using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetBlockedUserProfiles;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriendRequests;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
@@ -81,6 +82,18 @@ public class UserProfileController(ISender sender) : BaseController
         return result.Success ? Ok() : Error(result.Error);
     }
 
+    [HttpGet("blocked-users")]
+    [ProducesResponseType(typeof(GetBlockedUserProfilesDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetBlockedUserProfiles([FromQuery] GetBlockedUserProfilesQuery query)
+    {
+        var result = await sender.Send(query);
+        if (result.Success is false) return Error(result.Error);
+
+        return result.Value!.Count > 0 ? Ok(result.Value) : NoContent();
+    }
+
     [HttpPost("friendship")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -142,5 +155,4 @@ public class UserProfileController(ISender sender) : BaseController
         var result = await sender.Send(command);
         return result.Success ? Ok() : Error(result.Error);
     }
-
 }
