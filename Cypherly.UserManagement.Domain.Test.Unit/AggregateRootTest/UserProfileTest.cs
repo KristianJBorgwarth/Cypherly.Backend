@@ -51,7 +51,7 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
             // Assert
             result.Success.Should().BeFalse();
             result.Error.Message.Should().Contain("should be at least 3.");
-            userProfile.DisplayName.Should().BeNull();
+            userProfile.DisplayName.Should().Be("TestUser");
             userProfile.DomainEvents.Should().HaveCount(0);
         }
 
@@ -68,7 +68,7 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
             // Assert
             result.Success.Should().BeFalse();
             result.Error.Message.Should().Contain("should not exceed 20.");
-            userProfile.DisplayName.Should().BeNull();
+            userProfile.DisplayName.Should().Be("TestUser");
             userProfile.DomainEvents.Should().HaveCount(0);
 
         }
@@ -86,7 +86,7 @@ namespace Cypherly.UserManagement.Domain.Test.Unit.AggregateRootTest
             // Assert
             result.Success.Should().BeFalse();
             result.Error.Message.Should().Contain("not valid");
-            userProfile.DisplayName.Should().BeNull();
+            userProfile.DisplayName.Should().Be("TestUser");
             userProfile.DomainEvents.Should().HaveCount(0);
 
         }

@@ -88,6 +88,6 @@ public class UpdateUserProfileDisplayNameCommandHandlerTest : IntegrationTestBas
 
         // Assert
         result.Success.Should().BeFalse();
-        Db.UserProfile.AsNoTracking().FirstOrDefault(u=> u.Id == userprofile.Id)!.DisplayName.Should().Be(null);
+        Db.UserProfile.AsNoTracking().FirstOrDefault(u=> u.Id == userprofile.Id)!.DisplayName.Should().Be("david");
     }
 }

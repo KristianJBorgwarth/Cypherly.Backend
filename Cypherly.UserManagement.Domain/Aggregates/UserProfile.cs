@@ -27,6 +27,7 @@ public partial class UserProfile : AggregateRoot
     public UserProfile(Guid id, string username, UserTag userUserTag) : base(id)
     {
         Username = username;
+        DisplayName = username;
         UserTag = userUserTag;
     }
 
