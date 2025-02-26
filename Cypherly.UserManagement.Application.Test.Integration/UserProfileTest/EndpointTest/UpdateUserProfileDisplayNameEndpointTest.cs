@@ -56,6 +56,6 @@ public class UpdateUserProfileDisplayNameEndpointTest(IntegrationTestFactory<Pro
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        Db.UserProfile.AsNoTracking().FirstOrDefault(u=> u.Id == userprofile.Id)!.DisplayName.Should().Be(null);
+        Db.UserProfile.AsNoTracking().FirstOrDefault(u=> u.Id == userprofile.Id)!.DisplayName.Should().Be("david");
     }
 }
