@@ -27,7 +27,7 @@ public class ProfilePictureUpdatedConsumer(
                     logger.LogWarning("Client not found for connectionId {ConnectionId}", connectionId);
                     continue;
                 }
-                await changeEventNotifier.NotifyAsync(connectionId.ToString(), changeEvent);
+                await changeEventNotifier.NotifyAsync(connectionId.ToString(), changeEvent, context.CancellationToken);
             }
         }
         catch (Exception ex)
