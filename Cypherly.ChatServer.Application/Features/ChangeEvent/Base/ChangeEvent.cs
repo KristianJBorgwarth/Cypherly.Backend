@@ -1,4 +1,4 @@
-﻿using Cypherly.Common.Messaging.Enums;
+﻿using System;
 
 namespace Cypherly.ChatServer.Application.Features.ChangeEvent;
 

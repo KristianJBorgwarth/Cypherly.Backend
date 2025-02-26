@@ -26,4 +26,8 @@
       <ProjectReference Include="..\Cypherly.ChatServer.Application\Cypherly.ChatServer.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ChangeEvent\" />
+    </ItemGroup>
+
 </Project>

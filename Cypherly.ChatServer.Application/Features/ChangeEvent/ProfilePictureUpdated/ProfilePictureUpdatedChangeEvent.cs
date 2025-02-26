@@ -1,4 +1,6 @@
-﻿namespace Cypherly.ChatServer.Application.Features.ChangeEvent.ProfilePictureUpdated;
+﻿using System;
+
+namespace Cypherly.ChatServer.Application.Features.ChangeEvent.ProfilePictureUpdated;
 
 public sealed class ProfilePictureUpdatedChangeEvent(Guid userProfileId, string profilePictureUrl)
 {

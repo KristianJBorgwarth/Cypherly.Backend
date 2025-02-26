@@ -1,7 +1,6 @@
 ﻿using Cypherly.ChatServer.Application.Contracts;
 using Cypherly.Common.Messaging.Messages.PublishMessages.UserProfile;
 using MassTransit;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Cypherly.ChatServer.Application.Features.ChangeEvent.ProfilePictureUpdated;
@@ -34,6 +33,7 @@ public class ProfilePictureUpdatedConsumer(
         catch (Exception ex)
         {
             logger.LogError(ex, "Error processing ProfilePictureUpdatedMessage");
+            throw;
         }
     }
 }
