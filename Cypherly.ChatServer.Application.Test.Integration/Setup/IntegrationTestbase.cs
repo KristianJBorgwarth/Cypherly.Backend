@@ -1,8 +1,11 @@
 ﻿using Cypherly.ChatServer.Persistence.Context;
 using Cypherly.ChatServer.Valkey.Services;
 using MassTransit.Testing;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -14,6 +17,7 @@ namespace Cypherly.ChatServer.Application.Test.Integration.Setup;
 [Collection("ChatServerApplication")]
 public class IntegrationTestbase : IDisposable
 {
+    private readonly IntegrationTestFactory<Program, ChatServerDbContext> _factory;
     protected readonly ChatServerDbContext Db;
     protected readonly HttpClient Client;
     protected readonly ITestHarness Harness;
@@ -28,6 +32,7 @@ public class IntegrationTestbase : IDisposable
         Db.Database.EnsureCreated();
         Client = factory.CreateClient();
         Harness.Start();
+
     }
 
     /// <inheritdoc />

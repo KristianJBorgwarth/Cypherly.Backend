@@ -74,11 +74,11 @@ public class UserDeleteSagaTest
         instance.CurrentState.Should().Be("DeletingUserProfile");
 
         // 2. Publish UserProfileDeleteMessage, which will fail in the FaultyUserProfileDeleteConsumer
-        var userProfileDeleteMessage = new UserProfileDeleteMessage(correlationId, correlationId, Guid.NewGuid());
+        var userProfileDeleteMessage = new UserDeleteMessage(correlationId, correlationId, Guid.NewGuid());
         await harness.Bus.Publish(userProfileDeleteMessage);
 
         // Assert that the saga instance transitioned to Failed state due to the fault
-        (await sagaHarness.Consumed.Any<Fault<UserProfileDeleteMessage>>()).Should().BeTrue();
+        (await sagaHarness.Consumed.Any<Fault<UserDeleteMessage>>()).Should().BeTrue();
 
         instance = sagaHarness.Created.Contains(correlationId);
         instance.Should().NotBeNull();
@@ -241,9 +241,9 @@ public class UserDeleteSagaTest
     }
 }
 
-public class FaultyUserProfileDeleteConsumer : IConsumer<UserProfileDeleteMessage>
+public class FaultyUserProfileDeleteConsumer : IConsumer<UserDeleteMessage>
 {
-    public Task Consume(ConsumeContext<UserProfileDeleteMessage> context)
+    public Task Consume(ConsumeContext<UserDeleteMessage> context)
     {
         throw new Exception("Simulated failure during UserProfileDelete");
     }

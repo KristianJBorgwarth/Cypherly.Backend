@@ -12,7 +12,7 @@ public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState
 {
     public Event<UserDeletedMessage> UserDeleteMessageReceived { get; private set; }
     public Event<OperationSuccededMessage> OperationSuccededReceived { get; private set; }
-    public Event<Fault<UserProfileDeleteMessage>> UserProfileDeleteFault { get; private set; }
+    public Event<Fault<UserDeleteMessage>> UserProfileDeleteFault { get; private set; }
     public Event<Fault<SendEmailMessage>> SendEmailFault { get; private set; }
     public State DeletingUserProfile { get; private set; }
     public State SendingEmail { get; private set; }
@@ -36,7 +36,7 @@ public sealed class UserDeleteSaga : MassTransitStateMachine<UserDeleteSagaState
                     context.Saga.SetEmail(context.Message.Email);
                     logger.LogInformation("Received UserDeletedMessage, publishing UserProfileDeleteMessage.");
 
-                    await context.Publish(new UserProfileDeleteMessage(
+                    await context.Publish(new UserDeleteMessage(
                         context.Message.UserId,
                         context.Message.CorrelationId,
                         context.Message.Id));
