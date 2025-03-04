@@ -5,10 +5,13 @@ using Cypherly.ChatServer.API.Hubs;
 using Cypherly.ChatServer.Application.Configuration;
 using Cypherly.ChatServer.Application.Contracts;
 using Cypherly.ChatServer.Persistence.Configuration;
+using Cypherly.ChatServer.Persistence.Context;
 using Cypherly.ChatServer.Valkey.Configuration;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Client;
 using Cypherly.MassTransit.Messaging.Configuration;
+using Cypherly.Persistence.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using StackExchange.Redis;
@@ -117,7 +120,8 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = configuration["Jwt:Issuer"] ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Issuer"]}"),
         ValidAudience = configuration["Jwt:Audience"] ?? throw new NotImplementedException($"MISSING VALUE IN JWT SETTINGS {configuration["Jwt:Audience"]}"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"] ?? throw new NotImplementedException("MISSING VALUE IN JWT SETTINGS Jwt:Secret"))),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"] ??
+                                                                           throw new NotImplementedException("MISSING VALUE IN JWT SETTINGS Jwt:Secret"))),
     };
 
     options.Events = new JwtBearerEvents()
@@ -142,15 +146,19 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI();
+
+if (env.IsProduction())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.Services.ApplyPendingMigrations<ChatServerDbContext>();
 }
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 Log.Information("Chat Server booted up");
