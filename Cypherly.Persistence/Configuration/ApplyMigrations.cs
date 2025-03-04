@@ -14,7 +14,7 @@ public static class ApplyMigrations
         {
             var services = scope.ServiceProvider;
 
-            var logger = services.GetRequiredService<Logger<IServiceProvider>>();
+            var logger = services.GetRequiredService<ILogger<TDbContext>>();
 
             try
             {
