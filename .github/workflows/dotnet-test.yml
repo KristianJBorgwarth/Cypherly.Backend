@@ -3,11 +3,13 @@ name: Run Tests
 on:
   pull_request:
     branches:
-      - develop  # ✅ Runs tests on PRs
+      - develop
+      - master
 
   push:
     branches:
-      - develop  # ✅ Runs tests when PR is merged
+      - develop
+      - master
 
 jobs:
   build-and-test:
