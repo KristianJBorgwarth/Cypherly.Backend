@@ -1,9 +1,10 @@
 name: Build and Push Images
 
 on:
-  push: 
+  push:
     branches:
       - develop
+      - master
 
 jobs:
   deploy:
