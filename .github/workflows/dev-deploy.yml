@@ -1,8 +1,13 @@
 name: Deploy to Development Environment
 
 on:
+  pull_request:
+    branches:
+      - develop
+
   push:
-    branches: [ "develop" ]
+    branches:
+      - develop
 
 jobs:
   build-and-test:
@@ -32,6 +37,7 @@ jobs:
 
   deploy:
     needs: build-and-test
+    if: github.event_name == 'push' # deploy only on push (after PR merged)
     runs-on: ubuntu-latest
     steps:
       # Checkout the code
