@@ -142,6 +142,7 @@ builder.Services.AddCors(options =>
 
 #endregion
 
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
