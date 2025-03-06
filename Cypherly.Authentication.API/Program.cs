@@ -13,6 +13,7 @@ using Cypherly.Common.Messaging.Messages.PublishMessages.Email;
 using Cypherly.Common.Messaging.Messages.PublishMessages.User.Delete;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
+using Cypherly.Persistence.Configuration;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -180,37 +181,10 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-
-#region Migration
-
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsProduction())
 {
-    var services = scope.ServiceProvider;
-
-    try
-    {
-        var dbcontext = services.GetRequiredService<AuthenticationDbContext>();
-
-        Log.Information("Looking for pending migrations...");
-        if (dbcontext.Database.GetPendingMigrations().Any())
-        {
-            Log.Information("Applying migrations...");
-            dbcontext.Database.Migrate();
-            Log.Information("Migrations applied successfully");
-        }
-        else
-        {
-            Log.Information("No pending migrations found");
-        }
-
-    }
-    catch (Exception ex)
-    {
-        Log.Fatal(ex, "An error occured while attempting to migrate the database");
-    }
+    app.Services.ApplyPendingMigrations<AuthenticationDbContext>();
 }
-
-#endregion
 
 app.UseHttpsRedirection();
 
