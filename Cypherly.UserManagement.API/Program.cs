@@ -4,6 +4,7 @@ using Cypherly.API.Filters;
 using Cypherly.Common.Messaging.Messages.PublishMessages;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Outboxing.Messaging.Configuration;
+using Cypherly.Persistence.Configuration;
 using Cypherly.UserManagement.Application.Configuration;
 using Cypherly.UserManagement.Application.Features.UserProfile.Consumers;
 using Cypherly.UserManagement.Domain.Configuration;
@@ -185,34 +186,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-#region Migration
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var dbcontext = services.GetRequiredService<UserManagementDbContext>();
-
-        Log.Information("Looking for pending migrations...");
-        if (dbcontext.Database.GetPendingMigrations().Any())
-        {
-            Log.Information("Applying migrations...");
-            dbcontext.Database.Migrate();
-            Log.Information("Migrations applied successfully");
-        }
-        else
-        {
-            Log.Information("No pending migrations found");
-        }
-    }
-    catch (Exception ex)
-    {
-        Log.Fatal(ex, "An error occured while attempting to migrate the database");
-    }
-}
-
-#endregion
+app.Services.ApplyPendingMigrations<UserManagementDbContext>();
 
 app.UseHttpsRedirection();
 
