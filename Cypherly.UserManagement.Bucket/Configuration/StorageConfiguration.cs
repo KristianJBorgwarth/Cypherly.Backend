@@ -20,8 +20,13 @@ public static class StorageConfiguration
             return new AmazonS3Client(credentials, new AmazonS3Config
             {
                 ServiceURL = minioSettings.Host,
-                ForcePathStyle = true
+                ForcePathStyle = true,
             });
+        });
+
+        services.AddHttpClient<IMinioProxyClient, MinioProxyClient>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(sp.GetRequiredService<IOptions<MinioSettings>>().Value.Host);
         });
 
         services.AddScoped<IProfilePictureService, ProfilePictureService>();

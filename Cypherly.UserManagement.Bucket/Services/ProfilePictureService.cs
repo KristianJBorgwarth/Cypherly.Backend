@@ -62,10 +62,15 @@ public class ProfilePictureService(
             Expires = DateTime.UtcNow.AddMinutes(10)
         };
 
+
         var url = await s3Client.GetPreSignedURLAsync(getRequest);
-        return url is not null
-            ? Result.Ok(url)
-            : Result.Fail<string>(Errors.General.UnspecifiedError("Failed to generate presigned URL."));
+        if(url is null)
+            return Result.Fail<string>(Errors.General.UnspecifiedError("Failed to generate presigned URL."));
+
+        var originalUri = new Uri(url);
+        var relativeUri = originalUri.PathAndQuery;
+
+        return Result.Ok(relativeUri);
     }
 
     /// <summary>

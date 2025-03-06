@@ -12,6 +12,7 @@ using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriend
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetFriends;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfile;
 using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfileByTag;
+using Cypherly.UserManagement.Application.Features.UserProfile.Queries.GetUserProfilePicture;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -44,6 +45,15 @@ public class UserProfileController(ISender sender) : BaseController
         if (result.Success is false) return Error(result.Error);
 
         return result.Value is not null ? Ok(result.Value) : NoContent();
+    }
+
+    [HttpGet("profile-picture")]
+    [ProducesResponseType(typeof(GetUserProfilePictureDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> GetProfilePicture([FromQuery] GetUserProfilePictureQuery query)
+    {
+        var result = await sender.Send(query);
+        return result.Success ? Ok(result.Value) : Error(result.Error);
     }
 
     [HttpPut("profile-picture")]
