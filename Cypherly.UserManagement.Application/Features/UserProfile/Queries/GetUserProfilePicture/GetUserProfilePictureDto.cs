@@ -13,7 +13,7 @@ public sealed class GetUserProfilePictureDto
 
     public static GetUserProfilePictureDto MapFrom(byte[] imageBytes, string contentType)
     {
-        var base64ProfilePicture = Convert.ToBase64String(imageBytes);
+        var base64ProfilePicture = $"data:{contentType};base64,{Convert.ToBase64String(imageBytes)}";
         return new GetUserProfilePictureDto(base64ProfilePicture, contentType);
     }
 }
