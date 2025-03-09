@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
 using Cypherly.ChatServer.API.Filters;
@@ -115,6 +116,7 @@ builder.Services.AddScoped<IChangeEventNotifier, ChangeEventHandler>();
 
 #region Authentication & Authorization
 
+JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new()

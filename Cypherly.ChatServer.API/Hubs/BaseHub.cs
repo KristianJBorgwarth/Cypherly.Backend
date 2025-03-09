@@ -14,7 +14,7 @@ public class BaseHub(
     public async override Task OnConnectedAsync()
     {
         var httpContext = Context.GetHttpContext();
-        var deviceId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var deviceId = httpContext.User.FindFirst("sub")?.Value;
 
         logger.LogInformation("OnConnectedAsync triggered for connection: {ConnectionId}", Context.ConnectionId);
 
