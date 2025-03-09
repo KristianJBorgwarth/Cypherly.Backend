@@ -71,6 +71,7 @@ builder.Services.AddChatServerPersistence(configuration);
 #region ConnectionMultiplexer
 
 builder.Services.Configure<ValkeySettings>(configuration.GetSection("Valkey"));
+
 builder.Services.AddSingleton<IConnectionMultiplexer>(provider =>
 {
     var valkeySettings = provider.GetRequiredService<IOptions<ValkeySettings>>().Value;
@@ -80,7 +81,6 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(provider =>
         EndPoints = { $"{valkeySettings.Host}:{valkeySettings.Port}" },
         ChannelPrefix = "Cypherly.ChatServer.API_",
     };
-
     var multiplexer = ConnectionMultiplexer.Connect(config);
 
     multiplexer.ConnectionFailed += (_, e) =>
