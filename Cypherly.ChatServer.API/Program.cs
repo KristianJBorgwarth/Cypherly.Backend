@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Text;
-using Cypherly.ChatServer.API.Filters;
 using Cypherly.ChatServer.API.Handlers;
 using Cypherly.ChatServer.API.Hubs;
 using Cypherly.ChatServer.Application.Configuration;
@@ -12,10 +11,8 @@ using Cypherly.ChatServer.Valkey.Configuration;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Client;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Persistence.Configuration;
-using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using StackExchange.Redis;
@@ -71,48 +68,53 @@ builder.Services.AddChatServerPersistence(configuration);
 
 #endregion
 
-#region Caching
+#region ConnectionMultiplexer
 
 builder.Services.Configure<ValkeySettings>(configuration.GetSection("Valkey"));
-builder.Services.AddValkey(configuration);
+builder.Services.AddSingleton<IConnectionMultiplexer>(provider =>
+{
+    var valkeySettings = provider.GetRequiredService<IOptions<ValkeySettings>>().Value;
+    var config = new ConfigurationOptions
+    {
+        AbortOnConnectFail = false,
+        EndPoints = { $"{valkeySettings.Host}:{valkeySettings.Port}" },
+        ChannelPrefix = "Cypherly.ChatServer.API_",
+    };
+
+    var multiplexer = ConnectionMultiplexer.Connect(config);
+
+    multiplexer.ConnectionFailed += (_, e) =>
+        Log.Warning("Connection to Valkey failed: {Exception}", e.Exception);
+
+    multiplexer.ConnectionRestored += (_, e) =>
+        Log.Information("Connection to Valkey restored");
+
+    Log.Information("Connected to Valkey");
+    return multiplexer;
+});
+#endregion
+
+#region Caching
+
+builder.Services.AddValkey();
 
 #endregion
 
 #region SignalR Configuration
 
+var valkeyHost = configuration["Valkey:Host"];
+var valkeyPort = configuration["Valkey:Port"];
+Log.Information("SignalR backplane using Valkey at {Host}:{Port}", valkeyHost, valkeyPort);
 
-builder.Services.AddSignalR().AddStackExchangeRedis(options =>
-    {
-        Log.Information("Configuring SignalR backplane to use");
-        var valkeyHost = configuration["Valkey:Host"];
-        var valkeyPort = configuration["Valkey:Port"];
-        Log.Information("Valkey host: {ValkeyHost}, port: {ValkeyPort}", valkeyHost, valkeyPort);
-
-        options.ConnectionFactory = async writer =>
-        {
-            var config = new ConfigurationOptions
-            {
-                AbortOnConnectFail = false,
-                EndPoints = { $"{valkeyHost}:{valkeyPort}" },
-                ChannelPrefix = "Cypherly.ChatServer.API_",
-            };
-
-            var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
-
-            connection.ConnectionFailed += (_, e) =>
-                Log.Warning("Connection to Valkey failed: {Exception}", e.Exception);
-
-            if (connection.IsConnected)
-                Log.Information("Connected to Valkey");
-
-            Log.Information("SignalR backplane configured to use Valkey");
-            return connection;
-        };
-
+builder.Services.AddSignalR()
+    .AddStackExchangeRedis(options =>
+    {;
+        options.ConnectionFactory = async _ =>
+            await Task.FromResult(builder.Services.BuildServiceProvider()
+                .GetRequiredService<IConnectionMultiplexer>());
     });
 
 builder.Services.AddScoped<IChangeEventNotifier, ChangeEventHandler>();
-
 #endregion
 
 #region Authentication & Authorization

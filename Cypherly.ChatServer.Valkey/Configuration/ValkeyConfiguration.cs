@@ -1,25 +1,26 @@
 ﻿using Cypherly.ChatServer.Application.Contracts;
 using Cypherly.ChatServer.Valkey.Services;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using StackExchange.Redis;
 
 namespace Cypherly.ChatServer.Valkey.Configuration;
 
 public static class ValkeyConfiguration
 {
-    public static IServiceCollection AddValkey(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddValkey(this IServiceCollection services)
     {
         Console.WriteLine("Adding Valkey configuration");
-        services.AddStackExchangeRedisCache(options =>
+
+        services.AddSingleton<IDistributedCache>(provider =>
         {
-            var serviceProvider = services.BuildServiceProvider();
-            var valkeySettings = serviceProvider.GetRequiredService<IOptions<ValkeySettings>>().Value;
-            var logger = serviceProvider.GetRequiredService<ILogger<object>>();
-            // Construct the connection string from ValkeySettings
-            options.Configuration = $"{valkeySettings.Host}:{valkeySettings.Port}";
-            options.InstanceName = "Cypherly.ChatServer.API_";
+            var multiplexer = provider.GetRequiredService<IConnectionMultiplexer>();
+            return new RedisCache(new RedisCacheOptions()
+            {
+                ConnectionMultiplexerFactory = () => Task.FromResult(multiplexer),
+            });
         });
 
         services.AddSingleton<IValkeyCacheService, ValkeyCacheService>();
