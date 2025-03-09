@@ -11,6 +11,7 @@ using Cypherly.ChatServer.Valkey.Configuration;
 using Cypherly.Common.Messaging.Messages.PublishMessages.Client;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Persistence.Configuration;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -77,16 +78,13 @@ builder.Services.AddValkey(configuration);
 
 #region SignalR Configuration
 
-builder.Services.AddScoped<ClientConnectionFilter>();
 
-builder.Services.AddSignalR(options =>
+builder.Services.AddSignalR().AddStackExchangeRedis(options =>
     {
-        options.AddFilter<ClientConnectionFilter>();
-    })
-    .AddStackExchangeRedis(options =>
-    {
+        Log.Information("Configuring SignalR backplane to use");
         var valkeyHost = configuration["Valkey:Host"];
         var valkeyPort = configuration["Valkey:Port"];
+        Log.Information("Valkey host: {ValkeyHost}, port: {ValkeyPort}", valkeyHost, valkeyPort);
 
         options.ConnectionFactory = async writer =>
         {
@@ -105,10 +103,10 @@ builder.Services.AddSignalR(options =>
             if (connection.IsConnected)
                 Log.Information("Connected to Valkey");
 
+            Log.Information("SignalR backplane configured to use Valkey");
             return connection;
         };
 
-        Log.Information("SignalR backplane configured to use Valkey");
     });
 
 builder.Services.AddScoped<IChangeEventNotifier, ChangeEventHandler>();

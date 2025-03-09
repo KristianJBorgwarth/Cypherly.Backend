@@ -27,6 +27,14 @@ public sealed class ConnectClientCommandHandler(
                 return Result.Fail(Errors.General.Unauthorized());
             }
 
+            var existingClient = await clientCache.GetAsync(client.ConnectionId, cancellationToken);
+
+            if (existingClient is not null)
+            {
+                logger.LogInformation("Client with ID: {ID} already connected", command.ClientId);
+                return Result.Ok();
+            }
+
             var cachableClient = ClientCacheDto.Create(client, command.TransientId);
 
             await clientCache.AddAsync(cachableClient, cancellationToken);
