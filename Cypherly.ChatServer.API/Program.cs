@@ -73,6 +73,7 @@ builder.Services.AddChatServerPersistence(configuration);
 
 #region Caching
 
+builder.Services.Configure<ValkeySettings>(configuration.GetSection("Valkey"));
 builder.Services.AddValkey(configuration);
 
 #endregion
