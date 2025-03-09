@@ -119,7 +119,6 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new()
     {
-        NameClaimType = "sub",
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
@@ -143,17 +142,6 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
             {
                 context.Token = accessToken;
             }
-
-            // Important: Also check Authorization header for SignalR
-            if (string.IsNullOrEmpty(context.Token))
-            {
-                var authorization = context.Request.Headers.Authorization.FirstOrDefault();
-                if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
-                {
-                    context.Token = authorization["Bearer ".Length..].Trim();
-                }
-            }
-
             return Task.CompletedTask;
         },
 
@@ -161,16 +149,6 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         {
             Log.Information("Successfully validated token for: {User}",
                 context.Principal?.Identity?.Name);
-
-            // Log all claims for debugging
-            if (context.Principal?.Claims != null)
-            {
-                foreach (var claim in context.Principal.Claims)
-                {
-                    Log.Information("Claim: {Type} = {Value}", claim.Type, claim.Value);
-                }
-            }
-
             return Task.CompletedTask;
         },
         OnAuthenticationFailed = context =>
