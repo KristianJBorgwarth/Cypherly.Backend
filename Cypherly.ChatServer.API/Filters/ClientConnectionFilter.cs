@@ -12,6 +12,7 @@ public class ClientConnectionFilter(
 {
     public async Task OnConnectedAsync(HubLifetimeContext context, Func<HubLifetimeContext, Task> next, CancellationToken cancellationToken)
     {
+        logger.LogInformation("Client connected: {ClientId}", context.Context.ConnectionId);
         var httpContext = context.Context.GetHttpContext();
         var deviceId = httpContext?.User.FindFirst("sub")?.Value;
 
