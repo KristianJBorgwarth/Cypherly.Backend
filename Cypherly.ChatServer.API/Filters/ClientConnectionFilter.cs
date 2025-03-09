@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Cypherly.ChatServer.API.Filters;
 
-public class ClientConnectionFilter(ISender sender) : IHubFilter
+public class ClientConnectionFilter(
+    ISender sender,
+    ILogger<ClientConnectionFilter> logger)
+    : IHubFilter
 {
     public async Task OnConnectedAsync(HubLifetimeContext context, Func<HubLifetimeContext, Task> next, CancellationToken cancellationToken)
     {
@@ -18,12 +21,15 @@ public class ClientConnectionFilter(ISender sender) : IHubFilter
 
             if (result.Success is false)
             {
+                logger.LogWarning("ConnectClientCommand failed for client: {ClientId}", deviceIdGuid);
                 context.Context.Abort();
                 return;
             }
+            logger.LogInformation("Client connected: {ClientId}", deviceIdGuid);
         }
         else
         {
+            logger.LogWarning("Client connection failed: {ClientId}", deviceId);
             context.Context.Abort();
             return;
         }
@@ -34,6 +40,7 @@ public class ClientConnectionFilter(ISender sender) : IHubFilter
     public async Task OnDisconnectedAsync(HubLifetimeContext context, Exception? exception,
         Func<HubLifetimeContext, Exception?, Task> next)
     {
+        logger.LogInformation("Client disconnected: {ClientId}", context.Context.ConnectionId);
         await sender.Send(new DisconnectClientCommand() { TransientId = context.Context.ConnectionId });
         await next(context, exception);
     }
