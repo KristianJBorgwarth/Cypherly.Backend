@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text;
+using Cypherly.ChatServer.API.Filters;
 using Cypherly.ChatServer.API.Handlers;
 using Cypherly.ChatServer.API.Hubs;
 using Cypherly.ChatServer.Application.Configuration;
@@ -11,6 +12,7 @@ using Cypherly.Common.Messaging.Messages.PublishMessages.Client;
 using Cypherly.MassTransit.Messaging.Configuration;
 using Cypherly.Persistence.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -75,7 +77,10 @@ builder.Services.AddValkey(configuration);
 
 #region SignalR Configuration
 
-builder.Services.AddSignalR()
+builder.Services.AddSignalR(options =>
+    {
+        options.AddFilter<ClientConnectionFilter>();
+    })
     .AddStackExchangeRedis(options =>
     {
         var valkeyHost = configuration["Valkey:Host"];
