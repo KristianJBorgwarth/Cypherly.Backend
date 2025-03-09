@@ -77,6 +77,8 @@ builder.Services.AddValkey(configuration);
 
 #region SignalR Configuration
 
+builder.Services.AddScoped<ClientConnectionFilter>();
+
 builder.Services.AddSignalR(options =>
     {
         options.AddFilter<ClientConnectionFilter>();
@@ -136,12 +138,27 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
             var accessToken = context.Request.Query["access_token"];
             var path = context.HttpContext.Request.Path;
 
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/change-eventhub"))
+            if (!string.IsNullOrEmpty(accessToken) &&
+                (path.StartsWithSegments("/hubs") ||
+                 path.StartsWithSegments("/change-eventhub")))
             {
                 context.Token = accessToken;
             }
             return Task.CompletedTask;
         },
+
+        OnTokenValidated = context =>
+        {
+            Log.Information("Successfully validated token for: {User}",
+                context.Principal?.Identity?.Name);
+            return Task.CompletedTask;
+        },
+        OnAuthenticationFailed = context =>
+        {
+            Log.Information("Authentication failed: {Exception}",
+                context.Exception);
+            return Task.CompletedTask;
+        }
     };
 });
 
