@@ -15,6 +15,19 @@ public class BaseHub(
         var httpContext = Context.GetHttpContext();
         var deviceId = httpContext?.User.FindFirst("sub")?.Value;
 
+
+        string? token = null;
+        if (httpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) == true)
+        {
+            var authHeaderValue = authHeader.ToString();
+            if (!string.IsNullOrEmpty(authHeaderValue) && authHeaderValue.StartsWith("Bearer "))
+            {
+                token = authHeaderValue.Substring("Bearer ".Length);
+                logger.LogInformation("Authorization token found: {TokenStart}...", token.Substring(0, Math.Min(20, token.Length)));
+            }
+        }
+
+
         logger.LogInformation("OnConnectedAsync triggered for connection: {ConnectionId}", Context.ConnectionId);
 
 
@@ -40,7 +53,6 @@ public class BaseHub(
             Context.Abort();
             return;
         }
-
         await base.OnConnectedAsync();
     }
 
