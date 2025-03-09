@@ -1,4 +1,5 @@
-﻿using Cypherly.ChatServer.Application.Features.Client.Commands.Connect;
+﻿using System.Security.Claims;
+using Cypherly.ChatServer.Application.Features.Client.Commands.Connect;
 using Cypherly.ChatServer.Application.Features.Client.Commands.Disconnect;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
@@ -13,20 +14,7 @@ public class BaseHub(
     public async override Task OnConnectedAsync()
     {
         var httpContext = Context.GetHttpContext();
-        var deviceId = httpContext?.User.FindFirst("sub")?.Value;
-
-
-        string? token = null;
-        if (httpContext?.Request.Headers.TryGetValue("Authorization", out var authHeader) == true)
-        {
-            var authHeaderValue = authHeader.ToString();
-            if (!string.IsNullOrEmpty(authHeaderValue) && authHeaderValue.StartsWith("Bearer "))
-            {
-                token = authHeaderValue.Substring("Bearer ".Length);
-                logger.LogInformation("Authorization token found: {TokenStart}...", token.Substring(0, Math.Min(20, token.Length)));
-            }
-        }
-
+        var deviceId = httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         logger.LogInformation("OnConnectedAsync triggered for connection: {ConnectionId}", Context.ConnectionId);
 
