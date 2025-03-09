@@ -78,6 +78,7 @@ builder.Services.AddValkey(configuration);
 
 #region SignalR Configuration
 
+
 builder.Services.AddSignalR().AddStackExchangeRedis(options =>
     {
         Log.Information("Configuring SignalR backplane to use");
