@@ -144,6 +144,20 @@ builder.Services.AddAuthorization();
 
 #endregion
 
+#region CORS
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowElectron", policy =>
+    {
+        policy.WithOrigins("http://localhost:8080")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+#endregion
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -156,6 +170,8 @@ if (env.IsProduction())
 {
     app.Services.ApplyPendingMigrations<ChatServerDbContext>();
 }
+
+app.UseCors("AllowElectron");
 
 app.UseAuthentication();
 
