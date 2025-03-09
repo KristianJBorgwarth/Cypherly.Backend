@@ -131,7 +131,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
             var accessToken = context.Request.Query["access_token"];
             var path = context.HttpContext.Request.Path;
 
-            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/ChangeEventHub"))
+            if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/change-eventhub"))
             {
                 context.Token = accessToken;
             }
@@ -180,7 +180,7 @@ app.UseAuthorization();
 
 Log.Information("Chat Server booted up");
 
-app.MapHub<ChangeEventHub>("Hubs/ChangeEventHub");
+app.MapHub<ChangeEventHub>("change-eventhub");
 
 app.Run();
 
